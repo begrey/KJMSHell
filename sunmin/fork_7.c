@@ -1,7 +1,12 @@
 #include <unistd.h>
 
+#include <stdio.h>
+
 int		main(void)
 {
-	fork();
+	pid_t	pid;
+
+	pid = fork();
+	printf("%d\n", pid);
 	return (0);
 }

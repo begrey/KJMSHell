@@ -1,3 +1,59 @@
+<unistd.h>
+
+write, read, close, fork, getcwd, chdir, execve, dup, dup2, pipe, isatty, ttyname, ttyslot, getenv
+
+
+<stdlib.h>
+
+malloc, free, exit
+
+
+<sys/wait.h>
+
+wait, waitpid, wait3, wait4
+
+
+<sys/stat.h>
+
+stat, lstat, fstat
+
+
+<signal.h>
+
+signal, kill
+
+
+<fcntl.h>
+
+open
+
+
+<dirent.h>
+
+opendir, readdir, closedir
+
+
+<string>
+
+strerror
+
+
+<sys/ioctl.h>
+
+ioctl
+
+
+<termios.h>
+
+tcsetattr, tcgetattr
+
+
+<termcap.h>
+
+tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+
+
+
 1.	malloc
 2.	free
 3.	write
