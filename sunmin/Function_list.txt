@@ -1,0 +1,97 @@
+<unistd.h>
+
+write, read, close, fork, getcwd, chdir, execve, dup, dup2, pipe, isatty, ttyname, ttyslot, getenv
+
+
+<stdlib.h>
+
+malloc, free, exit
+
+
+<sys/wait.h>
+
+wait, waitpid, wait3, wait4
+
+
+<sys/stat.h>
+
+stat, lstat, fstat
+
+
+<signal.h>
+
+signal, kill
+
+
+<fcntl.h>
+
+open
+
+
+<dirent.h>
+
+opendir, readdir, closedir
+
+
+<string>
+
+strerror
+
+
+<sys/ioctl.h>
+
+ioctl
+
+
+<termios.h>
+
+tcsetattr, tcgetattr
+
+
+<termcap.h>
+
+tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+
+
+0.	printf			int			printf(const char *restrict format, ...);
+1.	malloc			void		*malloc(size_t size);
+2.	free			void		free(void *ptr);
+3.	write			ssize_t		write(int fd, const void *buf, size_t count);
+4.	read			ssize_t		read(int fd, void *buf, size_t count);
+5.	open			int			open(const char *pathname, int flags, mode_t mode);
+6.	close			int			close(int fd);
+7.	fork			pid_t		fork(void);
+8.	wait			pid_t		wait(int *status);
+9.	waitpid			pid_t		waitpid(pid_t pid, int *status, int options);
+10.	wait3			pid_t		wait3(int *statloc, int options, strusct rusage *rusage);
+11.	wait4			pid_t		wait4(pid_t pid, int *statloc, int options, struct rusage *rusage);
+12.	signal			void		(*signal(int sig, void (*handler) (int))) (int);
+13.	kill			int			kill(pid_t pid, int signal);
+14.	exit			void		exit(int status);
+15.	getcwd			char		*getcwd(char *buf, size_t size);
+16.	chdir			int			chdir(const char *dirname);
+17.	stat			int			stat(const char *path, struct stat *buf);
+18.	lstat			int			lstat(const char *path, struct stat *buf);
+19.	fstat			int			fstat(int fd, struct stat *buf);
+20.	execve			int			execve(const char *path, char *const argv[], char *const envp[])
+21.	dup				int			dup(int oldfd);
+22.	dup2			int			dup2(int oldfd, int newfd);
+23.	pipe			int			pipe(int fd[2]);
+24.	opendir			DIR			*opendir(const char *name);
+25.	readdir			struct dirent	*readdir(DIR *dir);
+26.	closedir		int			closedir(DIR *dir);
+27.	strerror		char		*strerrer(int errnum);
+28.	errno			
+29.	isatty			int			isatty(int fildes);
+30.	ttyname			char		*ttyname(int fd);
+31.	ttyslot			int			ttyslot(void);
+32.	ioctl			int			ioctl(int fd, unsigned long request, ...);
+33.	getenv			char		*getenv(const char *name);
+34.	tcsetattr		int			tcsetattr(int fd, int optional_actions, const struct termio *termios_p);
+35.	tcgetattr		int			tcgetatr(int fd, struct termios *termios_p);
+36.	tgetent			int			tgetent(char *bp, const char *name);
+37.	tgetflag		int			tgetflag(char *id);
+38.	tgetnum			int			tgetnum(char *id);
+39.	tgetstr			char		*tetstr(char *id, char **area);
+40.	tgoto			char		*tgoto(const char *cap, int col, int row);
+41.	tputs			int			tputs(const char *cp, int affcnt, int (*outc)(int));

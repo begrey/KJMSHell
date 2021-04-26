@@ -1,7 +1,6 @@
-#include <unistd.h>
-
 int		main(void)
 {
-	fork();
+	int		a;
+
 	return (0);
 }
