@@ -1,21 +1,13 @@
-/*
-
-* Objective of this file*
-
-To make a program that uses all of functions allowed, to be accustomed to them.
-
-*/
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 
-int		main(void)
+int		main(int argc, char **argv, char **envp)
 {
 
 	int		pid;
 	char	*path;
-	char	*buf;
+	char	buf[4096];
 	int		chdirn;
 
 	pid = fork();
@@ -31,7 +23,7 @@ int		main(void)
 		printf("%d : I'm your father\n", pid);
 		printf("\n");
 
-		path = getcwd(buf, 1);
+		path = getcwd(buf, 200);
 		printf("current directory : %s\n", path);
 		printf("buf %s\n", buf);
 		printf("\n");
@@ -41,7 +33,7 @@ int		main(void)
 			printf("chdir successed\n");
 		else
 			printf("chdir failed\n");
-		path = getcwd(buf, 70);
+		path = getcwd(buf, 200);
 		printf("current directory : %s\n", path);
 		printf("\n");
 
@@ -50,7 +42,7 @@ int		main(void)
 			printf("chdir successed\n");
 		else
 			printf("chdir failed\n");
-		path = getcwd(buf, 20);
+		path = getcwd(buf, 200);
 		printf("current directory : %s\n", path);
 		printf("\n");
 
@@ -59,7 +51,7 @@ int		main(void)
 			printf("chdir successed\n");
 		else
 			printf("chdir failed\n");
-		path = getcwd(buf, 20);
+		path = getcwd(buf, 200);
 		printf("current directory : %s\n", path);
 		printf("\n");
 
@@ -68,7 +60,7 @@ int		main(void)
 			printf("~/ chdir successed\n");
 		else
 			printf("~/ chdir failed\n");
-		path = getcwd(buf, 20);
+		path = getcwd(buf, 200);
 		printf("current directory : %s\n", path);
 		printf("\n");
 
@@ -77,11 +69,9 @@ int		main(void)
 			printf("chdir successed\n");
 		else
 			printf("chdir failed\n");
-		path = getcwd(buf, 20);
+		path = getcwd(buf, 200);
 		printf("current directory : %s\n", path);
 		printf("\n");
-
-		free(path);
 	}
 	return (0);
 }
