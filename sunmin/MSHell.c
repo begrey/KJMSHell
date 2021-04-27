@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 09:58:10 by sunmin            #+#    #+#             */
-/*   Updated: 2021/04/27 12:49:11 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/04/27 14:19:54 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,40 @@ int		main(int argc, char **argv, char **envp)
 		split_line = ft_split(raw_line , ' ');
 		command = split_line[0];
 
-		if ((ft_strncmp(command, "exit", 4) == STRING_EQUAL))
-			break;
+		if (find(';'))
+		{
+
+		}
+		else if (find('\'') || fine('\"'))
+		{
+
+		}
+		else if (file('<') || find('>'))
+		{
+
+		}
+		else if (find('|'))
+		{
+
+		}
+
 		else
 		{
-			if ((ft_strncmp(command, "ls", 2) == STRING_EQUAL))
+			if ((ft_strncmp(command, "echo", 4) == STRING_EQUAL))		// 만약 여기다 jimkwon/echo.c 를 연동한다고 하면
 				break;
-			if ((ft_strncmp(command, "cd", 2) == STRING_EQUAL))
+			else if ((ft_strncmp(command, "cd", 2) == STRING_EQUAL))
 				break;
-			if ((ft_strncmp(command, "echo", 2) == STRING_EQUAL))		// 만약 여기다 jimkwon/echo.c 를 연동한다고 하면
+			else if ((ft_strncmp(command, "ls", 2) == STRING_EQUAL))
 				break;
-			if ((ft_strncmp(command, "pwd", 2) == STRING_EQUAL))
+			else if ((ft_strncmp(command, "pwd", 3) == STRING_EQUAL))
+				break;
+			else if ((ft_strncmp(command, "export", 6) == STRING_EQUAL))
+				break;
+			else if ((ft_strncmp(command, "unset", 5) == STRING_EQUAL))
+				break;
+			else if ((ft_strncmp(command, "env", 3) == STRING_EQUAL))
+				break;
+			else if ((ft_strncmp(command, "exit", 4) == STRING_EQUAL))
 				break;
 			else	
 				write(1, "command not found\n", 18);
