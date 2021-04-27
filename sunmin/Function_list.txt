@@ -1,3 +1,6 @@
+<stdio.h>
+printf
+
 <unistd.h>
 
 write, read, close, fork, getcwd, chdir, execve, dup, dup2, pipe, isatty, ttyname, ttyslot, getenv
@@ -33,7 +36,7 @@ open
 opendir, readdir, closedir
 
 
-<string>
+<string.h>
 
 strerror
 
