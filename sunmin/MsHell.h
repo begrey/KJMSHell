@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:01:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/04/27 12:24:26 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/04/27 19:22:10 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
 #include <stdlib.h>
 
 
-#define STRING_EQUAL 0
+#define EQUAL 0
+#define EXIST 1
 
 //	main.c
 int				main(int argc, char **argv, char **envp);
@@ -48,5 +49,8 @@ static int		ft_word_num(char *s, char c);
 static int		chnum(char *s, int index, char c);
 static char		**ft_push_split(char *s, char **split, int num, char c);
 char			**ft_split(char const *s, char c);
+
+//	util.c
+int				ft_find(char *s, char key);
 
 #endif
