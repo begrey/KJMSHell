@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:01:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/04/27 10:38:49 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/04/27 12:24:26 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,27 @@
 #include <termcap.h>
 #include <stdlib.h>
 
-char	*ft_append(char *line, char buf);
-int		ft_strlen(char *s);
+
+#define STRING_EQUAL 0
+
+//	main.c
+int				main(int argc, char **argv, char **envp);
+
+//	get_next_line.c
+static int		push_gnl(char **remain, char *temp, char **line);
+int				get_next_line(int fd, char **line);
+
+//	libft.c
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t			ft_strlen(const char *str);
+char			*ft_strdup(const char *s);
+char			*ft_strjoin(char const *s1, char const *s2);
+char			*is_new(char *s, char c);
+
+//	ft_split.c
+static int		ft_word_num(char *s, char c);
+static int		chnum(char *s, int index, char c);
+static char		**ft_push_split(char *s, char **split, int num, char c);
+char			**ft_split(char const *s, char c);
 
 #endif

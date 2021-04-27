@@ -6,45 +6,19 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 09:58:10 by sunmin            #+#    #+#             */
-/*   Updated: 2021/04/27 11:25:00 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/04/27 12:37:13 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./MsHell.h"
 
-int		ft_strlen(char *s)
-{
-	int		i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char		*ft_append(char *line, char buf)
-{
-	int		i;
-	char	*result;
-
-	if (!(result = (char *)malloc(sizeof(char) * (ft_strlen(line) + 2))))
-		return NULL;
-	i = 0;
-	while (line[i])
-	{
-		result[i] = line[i];
-		i++;
-	}
-	result[i] = buf;
-	i++;
-	result[i] = '\0';
-	free(line);
-	return (result);
-}
-
 int		main(int argc, char **argv, char **envp)
 {
-	char	*one_line;
+	char	*raw_line;
+	char	**split_line;
+	char	*command;
+	char	*option;
+	char	*string;
 	char	buf;
 	char	path_buf[4096];
 	int		read_n;
@@ -53,14 +27,29 @@ int		main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		current_path = getcwd(path_buf, 100);
-		write(1, "MSHell# ", 8);							// write 대신 printf를 사용하면 바로 출력 안됨 
+
+		write(1, "MSHell ", 7);
 		write(1, current_path, ft_strlen(current_path));
-		write(1, " ", 1);
-		while ((read_n = read(0, &buf, 1)) > 0)
+		write(1, "## ", 3);
+
+		get_next_line(0, &raw_line);
+		split_line = ft_split(raw_line , ' ');
+		command = split_line[0];
+
+		if ((ft_strncmp(command, "exit", 4) == STRING_EQUAL))
+			break;
+		else
 		{
-			if (buf == '\n')
-				continue;
-//				split_command();
+			if ((ft_strncmp(command, "ls", 2) == STRING_EQUAL))
+				break;
+			if ((ft_strncmp(command, "cd", 2) == STRING_EQUAL))
+				break;
+			if ((ft_strncmp(command, "echo", 2) == STRING_EQUAL))		// 만약 여기서 echo.c 를 붙인다고 하면
+				break;
+			if ((ft_strncmp(command, "pwd", 2) == STRING_EQUAL))
+				break;
+			else	
+				write(1, "command not found\n", 18);
 		}
 	}
 	return (0);
