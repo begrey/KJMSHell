@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 09:58:10 by sunmin            #+#    #+#             */
-/*   Updated: 2021/04/27 12:37:13 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/04/27 12:49:11 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		main(int argc, char **argv, char **envp)
 				break;
 			if ((ft_strncmp(command, "cd", 2) == STRING_EQUAL))
 				break;
-			if ((ft_strncmp(command, "echo", 2) == STRING_EQUAL))		// 만약 여기서 echo.c 를 붙인다고 하면
+			if ((ft_strncmp(command, "echo", 2) == STRING_EQUAL))		// 만약 여기다 jimkwon/echo.c 를 연동한다고 하면
 				break;
 			if ((ft_strncmp(command, "pwd", 2) == STRING_EQUAL))
 				break;
