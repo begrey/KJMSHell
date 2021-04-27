@@ -3,13 +3,15 @@
 int		ft_find(char *s, char key)
 {
 	int		i;
+	int		num;
 
+	num = 0;
 	i = 0;
 	while (s[i])
 	{
 		if (s[i] == key)
-			return (1);
+			num++;
 		i++;
 	}
-	return (0);
+	return (num);
 }

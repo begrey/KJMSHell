@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:01:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/04/27 19:22:10 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/04/27 19:34:00 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 
 #define EQUAL 0
-#define EXIST 1
 
 //	main.c
 int				main(int argc, char **argv, char **envp);
