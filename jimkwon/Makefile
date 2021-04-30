@@ -6,6 +6,7 @@ LIBFT		= libft.a
 SRCS		= ./srcs/main.c \
 			  ./srcs/parse_line.c \
 			  ./srcs/parse_token.c \
+			  ./srcs/parse_command.c \
 
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -f
@@ -23,11 +24,11 @@ $(LIBFT) :
 
 fclean : clean
 	$(RM) $(NAME) $(bonus)
-	make fclean -C $(LIBFT)
+	make fclean -C ./libft
 
 clean :
 	$(RM) $(OBJS)
-	make clean -C $(LIBFT)
+	make clean -C ./libft
 
 re : fclean all
 
