@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:39:43 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/01 14:00:53 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/02 18:40:41 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	split_pipes(char *command_line)
 		str = parse_command(pipe_line[i], str);
 		i++;
 	}
-	write(1, str, ft_strlen(str));
+	if (str)		// 있어야 아무 명령어나 입력했을 때 세그폴트 안 뜸
+		write(1, str, ft_strlen(str));
 }
 
 int main(int argc, char **argv, char **envp)

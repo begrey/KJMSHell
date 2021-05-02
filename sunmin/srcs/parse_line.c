@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:41:50 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/04/30 00:49:22 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/02 16:39:30 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int ft_strcmp(char *dest, char *src) {
 
 char *append(char *line, char c)
 {
-	char *str; //이어붙힌 문자열
+	char *str; //이어붙인 문자열
 	int i;
 
 	i = 0;

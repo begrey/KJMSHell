@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/01 13:54:28 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/02 18:50:05 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ char  *parse_command(char *line_piece, char *str)
 	else if (ft_strcmp(command, "export") == 0)
 	{
 		pipe_arg = exec_export(command_line, len);
-//		pipe_arg = ft_strdup("export 명령어입니다.\n");
-		printf("export success\n");
 	}
 	else if (ft_strcmp(command, "unset") == 0)
 		pipe_arg = ft_strdup("unset 명령어입니다.\n");
 	else if (ft_strcmp(command, "env") == 0)
-		pipe_arg = ft_strdup("env 명령어입니다.\n");
+	{
+		pipe_arg = exec_env(len);
+	}
 	else if (ft_strcmp(command, "exit") == 0)
 		exit(0);
 	// else if (ft_strchr("<>|;", command[0]) != NULL)

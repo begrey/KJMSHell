@@ -8,13 +8,14 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/parse_command.c \
 		  ./srcs/exec_pwd.c \
 		  ./srcs/exec_export.c \
-		  ./srcs/init.c 
+		  ./srcs/init.c \
+		  ./srcs/util_list.c 
 
 
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -rf
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror
 
 all : $(NAME)
 
