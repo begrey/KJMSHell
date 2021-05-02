@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/02 18:27:27 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/02 21:33:26 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,14 @@ char	*exec_pwd(void);
 
 //	exec_export.c
 char	*exec_export(char **command_line, int len);
-char	*exec_env(int len);
-char	*exec_unset(void);
+char	*exec_env(char **command_line, int len);
+char	*exec_unset(char **command_line, int len);
+int		find_c(char *s, char c);
 
 //	init.c
 int		init_env(char *envp[]);
-char	*find_key(char *s);
-char	*find_value(char *s);
+char	*find_key(const char *str);
+char	*find_value(const char *str);
 
 //	util_list.c
 t_env	*ft_listnew(void *key, void *value);

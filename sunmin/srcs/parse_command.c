@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/02 18:50:05 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/02 21:33:11 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ char  *parse_command(char *line_piece, char *str)
 		pipe_arg = exec_export(command_line, len);
 	}
 	else if (ft_strcmp(command, "unset") == 0)
-		pipe_arg = ft_strdup("unset 명령어입니다.\n");
+	{
+		pipe_arg = exec_unset(command_line, len);
+	}
 	else if (ft_strcmp(command, "env") == 0)
 	{
-		pipe_arg = exec_env(len);
+		pipe_arg = exec_env(command_line, len);
 	}
 	else if (ft_strcmp(command, "exit") == 0)
 		exit(0);

@@ -37,47 +37,51 @@ int		init_env(char *envp[])
 	return (0);
 }
 
-char	*find_key(char *s)
+char	*find_key(const char *str)
 {
 	int		i;
 	int		equal;
 	char	*key;
+	int		flag;
 	
+	flag = 0;
+	key = ft_strdup((char *)str);
+	equal = 0;
 	i = 0;
-	while (s[i])
+	while (key[i])
 	{
-		if (s[i] == '=')
+		if (key[i] == '=' && flag == 0)
 		{
-			i++;
-			break ;
+			equal = i;
+			flag = 1;
 		}
 		i++;
 	}
-	equal = i - 1;
-	s[equal] = '\0';
-	key = ft_strdup(s);
+	if (equal == 0)
+		equal = i;
+	key[equal] = '\0';
 	return (key);
 }
 
-char	*find_value(char *s)
+char	*find_value(const char *str)
 {
 	char	*value;
 	int		i;
 	int		equal;
+	int		flag;
 
+	flag = 0;
+	value = ft_strdup((char *)str);
+	equal = 0;
 	i = 0;
-	while (s[i])
+	while (value[i])
 	{
-		if (s[i] == '=')
+		if (value[i] == '=' && flag == 0)
 		{
-			i++;
-			break ;
+			equal = i;
+			flag = 1;
 		}
 		i++;
 	}
-	equal = i + 1;
-	if (equal == (int)ft_strlen(s))
-		return (NULL);
-	value = ft_strdup(s + equal);
-	return (value);
+	return (value + equal + 1);
 }

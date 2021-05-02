@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/02 18:54:31 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/02 21:36:50 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,35 +26,42 @@ char	*exec_export(char **command_line, int len)
 		while (idx)
 		{
 			str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
-//			if (idx->if_value)
-//			{
+			if (idx->if_value)
+			{
 				str = ft_strjoin(str, "=");
 				str = ft_strjoin(str, "\"");
 				str = ft_strjoin(str, idx->value);
 				str = ft_strjoin(str, "\"");
-//			}
+			}
 			str = ft_strjoin(str, "\n");
 			idx = idx->next; 
 		}
 	}
-	else								// export 뒤에 설정 값이 있을 때
+	else								// export 뒤에 설정 값이 있을 때 (중복 처리 구현해야 함)
 	{
-		temp = (t_env *)malloc(sizeof(t_env) * (len - 1));
+		temp = (t_env *)malloc(sizeof(t_env) * (len));
 		i = 1;
 		while (command_line[i])
 		{
-			if (command_line[i][0] >= '0' && command_line[i][0] <= '9')		// 변수명이 숫자로 시작하면 안됨
+			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z'))
+			{
+				(*temp).key = find_key(command_line[i]);
+				if (find_c(command_line[i], '=') == 1)
+				{
+					(*temp).if_value = 1;
+					(*temp).value = find_value(command_line[i]);
+				}
+				else
+					(*temp).if_value = 0;
+				ft_listadd_back(&env, temp);
+			}
+			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 			{
 				str = ft_strjoin(str, "export: ");
 				str = ft_strjoin(str, &command_line[i][0]);
 				str = ft_strjoin(str, ": not a valid identifier\n");
 			}
-			else
-			{
-				(*temp).key = find_key(command_line[i]);
-				(*temp).value = find_value(command_line[i]);
-				ft_listadd_back(&env, temp);
-			}
+
 			i++;
 			temp++;
 		}
@@ -62,10 +69,23 @@ char	*exec_export(char **command_line, int len)
 	return (str);
 }
 
-
-char	*exec_env(int len)		// 환경 변수 중 value가 있는 것만 출력
+int		find_c(char *s, char c)
 {
-	t_env	*temp;
+	int		i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	*exec_env(char **command_line, int len)		// 환경 변수 중 value가 있는 것만 출력
+{
+	t_env	*idx;
 	char	*str;
 
 	if (len > 1)
@@ -73,25 +93,30 @@ char	*exec_env(int len)		// 환경 변수 중 value가 있는 것만 출력
 		str = ft_strdup("env: No such file or directory\n");
 		return (str);
 	}
-	temp = env;
 	str = ft_strdup("");
-	while (temp->next)
+	if (command_line[1] == NULL)
 	{
-		if (temp->key)
+		idx = env;
+		while (idx)
 		{
-			str = ft_strjoin(str, temp->key);		// 메모리 릭 체크해야
-			str = ft_strjoin(str, "=");
-			str = ft_strjoin(str, temp->value);
-			str = ft_strjoin(str, "\n");
+			if (idx->if_value)
+			{
+				str = ft_strjoin(str, idx->key);
+				str = ft_strjoin(str, "=");
+				str = ft_strjoin(str, idx->value);
+				str = ft_strjoin(str, "\n");
+			}
+			idx = idx->next; 
 		}
-		temp = temp->next;
 	}
 	return (str);
 }
 
-char	*exec_unset(void)
+char	*exec_unset(char **command_line, int len)
 {
-
+	command_line = NULL;
+	len = 0;
+	// key로 find해서 delone 하기
 	// 찾아서 해당리스트를 지우기
 	return (NULL);
 }

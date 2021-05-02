@@ -29,7 +29,7 @@ ${LIBFT} :
 
 clean	:
 	make clean -C ./libft
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(LIBFT)
 
 fclean 	: clean
 	$(RM) $(NAME)
