@@ -32,6 +32,8 @@ typedef struct s_env
 
 t_env *env;		// 리스트 구조체를 key, value, prev 등 수정해야 하고 리스트 함수도 다시 만들어야 함
 
+//  ft_echo.c
+char	*ft_echo(char *args);
 
 //	parse_line.c
 int		ft_strcmp(char *dest, char *src);

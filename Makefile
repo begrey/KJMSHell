@@ -9,7 +9,8 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/ft_pwd.c \
 		  ./srcs/ft_export.c \
 		  ./srcs/init_env.c \
-		  ./srcs/util_list.c 
+		  ./srcs/util_list.c \
+		  ./srcs/ft_echo.c \
 
 
 OBJS	= $(SRCS:.c=.o)

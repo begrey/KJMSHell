@@ -27,7 +27,7 @@ char  *parse_command(char *line_piece, char *str)
 	while (command_line[len])
 		len++;
 	if (ft_strcmp(command, "echo") == 0)
-		pipe_arg = ft_strdup("echo 명령어입니다.\n");
+		pipe_arg = ft_echo(line_piece + 5);
 	else if (ft_strcmp(command, "cd") == 0)
 	{
 		pipe_arg = exec_cd(command_line);

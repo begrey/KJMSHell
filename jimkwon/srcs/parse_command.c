@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/04/30 14:11:34 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/03 13:08:28 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char  *parse_command(char *line_piece, char *str)
 	command_line = ft_split(line_piece, ' ');
 	command = command_line[0];
 	if (ft_strcmp(command, "echo") == 0)
-		pipe_arg = ft_strdup("echo 명령어입니다.\n");
+		pipe_arg = ft_echo(line_piece + 5);
 	else if (ft_strcmp(command, "cd") == 0)
 		pipe_arg = ft_strdup("cd 명령어입니다.\n");
 	else if (ft_strcmp(command, "pwd") == 0)
