@@ -8,7 +8,7 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/parse_command.c \
 		  ./srcs/exec_pwd.c \
 		  ./srcs/exec_export.c \
-		  ./srcs/init.c \
+		  ./srcs/init_env.c \
 		  ./srcs/util_list.c 
 
 
