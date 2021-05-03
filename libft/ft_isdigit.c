@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pwd.c                                         :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/01 11:21:53 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/01 11:29:12 by sunmin           ###   ########.fr       */
+/*   Created: 2020/10/05 16:42:30 by jimkwon           #+#    #+#             */
+/*   Updated: 2020/10/12 04:56:18 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*exec_pwd(void)
+int	ft_isdigit(int c)
 {
-	char	*current_path;
-	char	*buf;
-
-	buf = NULL;
-	current_path = getcwd(buf, 100);
-	return (current_path);
+	if (c >= 48 && c <= 57)
+		return (1);
+	else
+		return (0);
 }

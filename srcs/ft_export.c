@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/03 11:02:43 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/03 15:50:57 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*exec_export(char **command_line, int len)
 	t_env	*idx;
 
 	str = ft_strdup("");
-	if (command_line[1] == NULL)		// export 단독일 때 환경변수 전체 출력
+	if (command_line[1] == NULL)
 	{
 		idx = env;		// 임시 변수를 사용하지 않으면 한번밖에 사용할 수 없음
 		while (idx)
@@ -38,7 +38,7 @@ char	*exec_export(char **command_line, int len)
 			idx = idx->next; 
 		}
 	}
-	else								// export 뒤에 설정 값이 있을 때 (중복 처리 구현해야 함)
+	else
 	{
 		temp = (t_env *)malloc(sizeof(t_env) * (len));
 		i = 1;
@@ -53,7 +53,7 @@ char	*exec_export(char **command_line, int len)
 					(*temp).key = extract_env(find_key(command_line[i]));
 					ft_listadd_back(&env, temp);
 				}
-				if (find_c(command_line[i], '=') == 1)
+				if (ft_strchr(command_line[i], '=') != 0)
 				{
 					(*temp).if_value = 1;
 					(*temp).value = extract_env(find_value(command_line[i]));
@@ -76,21 +76,7 @@ char	*exec_export(char **command_line, int len)
 	return (str);
 }
 
-int		find_c(char *s, char c)
-{
-	int		i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*exec_env(char **command_line, int len)		// 환경 변수 중 value가 있는 것만 출력
+char	*exec_env(char **command_line, int len)
 {
 	t_env	*idx;
 	char	*str;
@@ -155,6 +141,10 @@ char	*extract_env(char *str)
 
 	if (*str != '$')
 		return (str);
+	else if (str[0] == '$' && str[1] == '\0')
+	{
+		return (str);
+	}
 	s = str + 1;
 	ex = ft_listfind(&env, s);
 	ret = ex->value;
