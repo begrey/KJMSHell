@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/02 21:33:26 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/03 11:00:49 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*exec_export(char **command_line, int len);
 char	*exec_env(char **command_line, int len);
 char	*exec_unset(char **command_line, int len);
 int		find_c(char *s, char c);
+char	*extract_env(char *str);
 
 //	init.c
 int		init_env(char *envp[]);
@@ -65,5 +66,6 @@ char	*find_value(const char *str);
 t_env	*ft_listnew(void *key, void *value);
 void	ft_listadd_back(t_env **lst, t_env *new);
 t_env	*ft_listlast(t_env *lst);
+t_env	*ft_listfind(t_env **lst, char *s);
 
 #endif

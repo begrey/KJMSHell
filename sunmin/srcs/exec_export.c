@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/02 21:36:50 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/03 11:02:43 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*exec_export(char **command_line, int len)
 		idx = env;		// 임시 변수를 사용하지 않으면 한번밖에 사용할 수 없음
 		while (idx)
 		{
+			str = ft_strjoin(str, "declare -x ");
 			str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
 			if (idx->if_value)
 			{
@@ -43,17 +44,23 @@ char	*exec_export(char **command_line, int len)
 		i = 1;
 		while (command_line[i])
 		{
-			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z'))
+			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
 			{
-				(*temp).key = find_key(command_line[i]);
+				if (ft_listfind(&env, extract_env(find_key(command_line[i]))))
+					temp = ft_listfind(&env, extract_env(find_key(command_line[i])));
+				else
+				{
+					(*temp).key = extract_env(find_key(command_line[i]));
+					ft_listadd_back(&env, temp);
+				}
 				if (find_c(command_line[i], '=') == 1)
 				{
 					(*temp).if_value = 1;
-					(*temp).value = find_value(command_line[i]);
+					(*temp).value = extract_env(find_value(command_line[i]));
 				}
 				else
 					(*temp).if_value = 0;
-				ft_listadd_back(&env, temp);
+
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 			{
@@ -114,9 +121,44 @@ char	*exec_env(char **command_line, int len)		// 환경 변수 중 value가 있�
 
 char	*exec_unset(char **command_line, int len)
 {
+	t_env	*now;
+	t_env	*begin;
+	int		i;
+
+	i = 1;
+	while (i < len)
+	{
+		now = begin;
+		begin = env;
+		while (begin)
+		{
+			if (ft_strcmp(begin->key, find_key(command_line[i])) == 0)
+			{
+				if (now->next)
+					now->next = begin->next;
+			}
+			now = begin;
+			begin = begin->next;
+		}
+		i++;
+	}
+	return (NULL);
 	command_line = NULL;
 	len = 0;
-	// key로 find해서 delone 하기
-	// 찾아서 해당리스트를 지우기
-	return (NULL);
+}
+
+char	*extract_env(char *str)
+{
+	char	*s;
+	char	*ret;
+	t_env	*ex;
+
+	if (*str != '$')
+		return (str);
+	s = str + 1;
+	ex = ft_listfind(&env, s);
+	ret = ex->value;
+	if (!ret)
+		ret = ft_strdup("");
+	return (ret);
 }

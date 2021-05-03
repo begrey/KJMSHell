@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 16:31:13 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/02 17:24:57 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/03 09:04:58 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,18 @@ t_env	*ft_listlast(t_env *lst)
 			break;
 	}
 	return (lst);
+}
+
+t_env	*ft_listfind(t_env **lst, char *s)
+{
+	t_env *begin;
+
+	begin = *lst;
+	while (begin)
+	{
+		if ((ft_strcmp(begin->key, s)) == 0)
+			return (begin);
+		begin = begin->next;
+	}
+	return NULL;
 }
