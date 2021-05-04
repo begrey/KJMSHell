@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/04 15:03:30 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/04 15:10:32 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,8 @@ t_env	*ft_listfind(t_env **lst, char *s);
 
 //	other_command.c
 char	*other_command(char **command_line, int len);
+
+//	re_direction.c
+
 
 #endif
