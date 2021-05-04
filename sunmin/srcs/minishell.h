@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/04 21:02:32 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/04 21:30:36 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,9 @@ t_env	*ft_listfind(t_env **lst, char *s);
 //	util_str.c
 int		is_alpha(char c);
 int		is_dollar(char c);
+char	*ft_joinfree(char **s1, char **s2);
+char	*append_bigquote(char *s);
+char	*str_append(char *s1, char *s2);
 
 //	other_command.c
 char	*other_command(char **command_line, int len);
