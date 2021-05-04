@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/03 15:50:57 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/04 21:04:51 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*exec_export(char **command_line, int len)
 		i = 1;
 		while (command_line[i])
 		{
-			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
+			if (is_alpha(command_line[i][0]) || is_dollar(command_line[i][0]))
 			{
 				if (ft_listfind(&env, extract_env(find_key(command_line[i]))))
 					temp = ft_listfind(&env, extract_env(find_key(command_line[i])));
@@ -152,3 +152,4 @@ char	*extract_env(char *str)
 		ret = ft_strdup("");
 	return (ret);
 }
+
