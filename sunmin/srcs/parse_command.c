@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/03 15:42:10 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/04 13:29:47 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char  *parse_command(char *line_piece, char *str)
 	while (command_line[len])
 		len++;
 	if (ft_strcmp(command, "echo") == 0)
-		pipe_arg = ft_strdup("echo 명령어입니다.\n");
+		pipe_arg = ft_echo(line_piece + 5);
 	else if (ft_strcmp(command, "cd") == 0)
 	{
 		pipe_arg = exec_cd(command_line);
@@ -57,6 +57,6 @@ char  *parse_command(char *line_piece, char *str)
 	// else if (ft_strchr("<>|;", command[0]) != NULL)
 	// 	parse_token(split_line, i);	
 	else
-		printf("%s: command not found\n", command);
+		other_command(command_line, len);
 	return (pipe_arg);
 }

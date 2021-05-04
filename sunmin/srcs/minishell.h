@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/03 12:15:31 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/04 15:03:30 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
+# include <sys/wait.h>
 # include "../libft/libft.h"
 
 typedef struct s_env
@@ -30,8 +31,10 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-t_env *env;		// 리스트 구조체를 key, value, prev 등 수정해야 하고 리스트 함수도 다시 만들어야 함
+t_env *env;
 
+//  ft_echo.c
+char	*ft_echo(char *args);
 
 //	parse_line.c
 int		ft_strcmp(char *dest, char *src);
@@ -68,5 +71,8 @@ t_env	*ft_listnew(void *key, void *value);
 void	ft_listadd_back(t_env **lst, t_env *new);
 t_env	*ft_listlast(t_env *lst);
 t_env	*ft_listfind(t_env **lst, char *s);
+
+//	other_command.c
+char	*other_command(char **command_line, int len);
 
 #endif
