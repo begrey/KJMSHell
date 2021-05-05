@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/03 13:08:28 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/03 23:28:40 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char  *parse_command(char *line_piece, char *str)
 	char	*pipe_arg;
 
 	pipe_arg = 0;
-	str = "a";
+	if (str[0] == 0)
+		printf("aa\n");
 	command_line = ft_split(line_piece, ' ');
 	command = command_line[0];
 	if (ft_strcmp(command, "echo") == 0)

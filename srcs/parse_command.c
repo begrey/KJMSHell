@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/04 13:29:47 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 12:32:47 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ char  *parse_command(char *line_piece, char *str)
 	else
 		other_command(command_line, len);
 	return (pipe_arg);
+	printf("%s\n", str);
 }

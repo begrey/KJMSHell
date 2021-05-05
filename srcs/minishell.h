@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/04 15:03:30 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 12:30:59 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ typedef struct s_env
 }				t_env;
 
 t_env *env;
+
+//  ft_split_syn.c
+char        **ft_split_syn(char const *s, char c);
 
 //  ft_echo.c
 char	*ft_echo(char *args);

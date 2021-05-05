@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 09:28:27 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/03 14:39:25 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/03 23:29:52 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int			append_syntax(char *arg, char **line, int i)
 	if (arg[i] == 34 || arg[i] == 39)
 	{
 		i++;
+		if (ft_strchr(arg + i, arg[i]) == NULL)
+			return (-1);
 		while (arg[i] != '\0' && arg[i] != 34 && arg[i] != 39)
 		{
 			if (arg[i] == '$')
@@ -85,9 +87,7 @@ int			append_syntax(char *arg, char **line, int i)
 			i++;
 		}
 	}
-	if (arg[i] == '\0')
-		return (-1);
-	else if (arg[i] == 34 || arg[i] == 39 || arg[i] == 96)
+	if (arg[i] != '\0')
 		i++;
 	return (i);
 }
@@ -135,11 +135,9 @@ char		*append_args(char *arg, char *line)
 
 char		*ft_echo(char *args)
 {
-	int		i;
 	char	*echo_content;
 	char	*line;
 
-	i = 1;
 	if (!(line = malloc(1)))
 		return NULL;
 	(line)[0] = 0;

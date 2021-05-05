@@ -12,6 +12,7 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/util_list.c \
 		  ./srcs/ft_echo.c \
 		  ./srcs/other_command.c \
+		  ./srcs/ft_split_syn.c \
 
 
 OBJS	= $(SRCS:.c=.o)

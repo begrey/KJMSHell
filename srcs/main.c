@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:39:43 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/03 12:48:36 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 06:02:00 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int main(int argc, char **argv, char **envp)
 
 
 	//
+	printf("%s\n", argv[0]);
 	argc = 1;
 	argv = NULL;
 	envp = NULL;
