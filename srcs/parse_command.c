@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/03 15:42:10 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 06:02:36 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ char  *parse_command(char *line_piece, char *str)
 	else
 		printf("%s: command not found\n", command);
 	return (pipe_arg);
+	printf("%s\n", str);
 }
