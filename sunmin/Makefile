@@ -13,6 +13,7 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/ft_echo.c \
 		  ./srcs/other_command.c \
 		  ./srcs/re_direction.c \
+		  ./srcs/util_str.c \
 
 
 OBJS	= $(SRCS:.c=.o)

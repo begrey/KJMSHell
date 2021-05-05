@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/04 15:10:32 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 09:45:42 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,17 @@ void	ft_listadd_back(t_env **lst, t_env *new);
 t_env	*ft_listlast(t_env *lst);
 t_env	*ft_listfind(t_env **lst, char *s);
 
+//	util_str.c
+int		is_alpha(char c);
+int		is_dollar(char c);
+char	*ft_joinfree1(char **s1, char **s2);
+char	*ft_joinfree2(char **s1, char **s2);
+char	*str_append1(char *s1, char *s2);
+char	*str_append2(char *s1, char *s2);
+void	free_split(char ***split);
+
 //	other_command.c
-char	*other_command(char **command_line, int len);
+char	*other_command(char **command_line);
 
 //	re_direction.c
 

@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/04 13:29:47 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 09:46:31 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char  *parse_command(char *line_piece, char *str)
 	// else if (ft_strchr("<>|;", command[0]) != NULL)
 	// 	parse_token(split_line, i);	
 	else
-		other_command(command_line, len);
+		other_command(command_line);
+	free_split(&command_line);
 	return (pipe_arg);
 }
