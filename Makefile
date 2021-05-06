@@ -30,7 +30,7 @@ ${LIBFT} :
 	cp ./libft/$(LIBFT) .
 
 clean	:
-	make clean -C ./libft
+	make fclean -C ./libft
 	$(RM) $(OBJS) $(LIBFT)
 
 fclean 	: clean
