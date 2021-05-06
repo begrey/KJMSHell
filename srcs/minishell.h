@@ -66,4 +66,13 @@ t_env	*ft_listfind(t_env **lst, char *s);
 //	other_command.c
 char	*other_command(char **command_line, int len);
 
+//	util_str.c
+int		is_alpha(char c);
+int		is_dollar(char c);
+char	*ft_joinfree1(char **s1, char **s2);
+char	*ft_joinfree2(char **s1, char **s2);
+char	*str_append1(char *s1, char *s2);
+char	*str_append2(char *s1, char *s2);
+void	free_split(char ***split);
+
 #endif
