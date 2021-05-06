@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_split_syn.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/05 11:29:37 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/06 10:14:12 by jimkwon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static char *get_word(char *s, int len)
@@ -140,7 +128,7 @@ char        **ft_split_syn(char const *s, char c)
 
     ptr = (char *)s;
 	len = count_len((char *)s, c, 0);
-    printf("%d\n", len);
+    //printf("%d\n", len);
     if ((word = (char**)malloc(sizeof(char *) * (len + 1))) == NULL)
         return (NULL);
     ans = word;
@@ -160,16 +148,16 @@ char        **ft_split_syn(char const *s, char c)
     *word = NULL;
     return (ans);
 }
-int main()
-{
-    char *s;
-    char **line;
-    int i;
-	//s = "word1 \"";
-    s = "\"word1\"a n   d  \'word2\' ";
-	//s = "\"aa\"\'bb\'";
-    line = ft_split_syn(s, ' ');
-    for (int i = 0; line[i] != NULL; i++)
-        printf("%s\n", line[i]);
-    return 0;
-}
+// int main()
+// {
+//     char *s;
+//     char **line;
+//     int i;
+// 	//s = "word1 \"";
+//     s = "\"word1\"a n   d  \'word2\' ";
+// 	//s = "\"aa\"\'bb\'";
+//     line = ft_split_syn(s, ' ');
+//     for (int i = 0; line[i] != NULL; i++)
+//         printf("%s\n", line[i]);
+//     return 0;
+// }
