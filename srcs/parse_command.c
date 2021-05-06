@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parse_command.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/30 13:26:54 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/05 06:02:36 by jimkwon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char  *parse_command(char *line_piece, char *str)
@@ -57,7 +45,7 @@ char  *parse_command(char *line_piece, char *str)
 	// else if (ft_strchr("<>|;", command[0]) != NULL)
 	// 	parse_token(split_line, i);	
 	else
-		printf("%s: command not found\n", command);
+		other_command(command_line, len);
 	return (pipe_arg);
 	printf("%s\n", str);
 }

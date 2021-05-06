@@ -6,10 +6,14 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/parse_line.c \
 		  ./srcs/parse_token.c \
 		  ./srcs/parse_command.c \
-		  ./srcs/exec_pwd.c \
-		  ./srcs/exec_export.c \
+		  ./srcs/ft_pwd.c \
+		  ./srcs/ft_export.c \
 		  ./srcs/init_env.c \
-		  ./srcs/util_list.c 
+		  ./srcs/util_list.c \
+		  ./srcs/ft_echo.c \
+		  ./srcs/other_command.c \
+		  ./srcs/re_direction.c \
+		  ./srcs/util_str.c \
 
 
 OBJS	= $(SRCS:.c=.o)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_export.c                                      :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/03 15:50:57 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/04 21:37:59 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ char	*exec_export(char **command_line, int len)
 	t_env	*idx;
 
 	str = ft_strdup("");
-	if (command_line[1] == NULL)
+	if (command_line[1] == NULL)		// export 단독일 때 환경변수 출력
 	{
 		idx = env;		// 임시 변수를 사용하지 않으면 한번밖에 사용할 수 없음
 		while (idx)
 		{
 			str = ft_strjoin(str, "declare -x ");
-			str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
+			str = ft_strjoin(str, idx->key);
 			if (idx->if_value)
 			{
 				str = ft_strjoin(str, "=");
@@ -38,13 +38,13 @@ char	*exec_export(char **command_line, int len)
 			idx = idx->next; 
 		}
 	}
-	else
+	else		// 환경변수를 추가할 때
 	{
 		temp = (t_env *)malloc(sizeof(t_env) * (len));
 		i = 1;
 		while (command_line[i])
 		{
-			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
+			if (is_alpha(command_line[i][0]) || is_dollar(command_line[i][0]))
 			{
 				if (ft_listfind(&env, extract_env(find_key(command_line[i]))))
 					temp = ft_listfind(&env, extract_env(find_key(command_line[i])));
@@ -53,22 +53,20 @@ char	*exec_export(char **command_line, int len)
 					(*temp).key = extract_env(find_key(command_line[i]));
 					ft_listadd_back(&env, temp);
 				}
-				if (ft_strchr(command_line[i], '=') != 0)
+				if (ft_strchr(command_line[i], '='))
 				{
 					(*temp).if_value = 1;
 					(*temp).value = extract_env(find_value(command_line[i]));
 				}
 				else
 					(*temp).if_value = 0;
-
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 			{
-				str = ft_strjoin(str, "export: ");
-				str = ft_strjoin(str, &command_line[i][0]);
-				str = ft_strjoin(str, ": not a valid identifier\n");
+				str = str_append(str, "export: ");
+				str = str_append(str, &command_line[i][0]);
+				str = str_append(str, ": not a valid identifier\n");
 			}
-
 			i++;
 			temp++;
 		}
@@ -141,7 +139,7 @@ char	*extract_env(char *str)
 
 	if (*str != '$')
 		return (str);
-	else if (str[0] == '$' && str[1] == '\0')
+	else if (is_dollar(str[0]) && !str[1])
 	{
 		return (str);
 	}
@@ -152,3 +150,5 @@ char	*extract_env(char *str)
 		ret = ft_strdup("");
 	return (ret);
 }
+
+

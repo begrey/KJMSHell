@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/05 11:30:12 by jimkwon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -19,6 +7,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
+# include <sys/wait.h>
 # include "../libft/libft.h"
 
 typedef struct s_env
@@ -30,7 +19,7 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-t_env *env;		// 리스트 구조체를 key, value, prev 등 수정해야 하고 리스트 함수도 다시 만들어야 함
+t_env *env;
 
 //  ft_split_syn.c
 char        **ft_split_syn(char const *s, char c);
@@ -73,5 +62,8 @@ t_env	*ft_listnew(void *key, void *value);
 void	ft_listadd_back(t_env **lst, t_env *new);
 t_env	*ft_listlast(t_env *lst);
 t_env	*ft_listfind(t_env **lst, char *s);
+
+//	other_command.c
+char	*other_command(char **command_line, int len);
 
 #endif
