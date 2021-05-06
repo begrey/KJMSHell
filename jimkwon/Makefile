@@ -7,7 +7,7 @@ SRCS		= ./srcs/main.c \
 			  ./srcs/parse_line.c \
 			  ./srcs/parse_token.c \
 			  ./srcs/parse_command.c \
-			  ./srcs/echo.c \
+			  ./srcs/ft_echo.c \
 
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -f
