@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 11:29:37 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/05 12:09:08 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/06 09:58:04 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ char        **ft_split_syn(char const *s, char c)
 //     char **line;
 //     int i;
 // 	//s = "word1 \"";
-//     s = "word1   \'word \"\"   2\'   \\  \"w   o  r\"\'d   3\'";
+//     s = "\"word1\"a n   d  \'word2\' ";
 // 	//s = "\"aa\"\'bb\'";
 //     line = ft_split_syn(s, ' ');
 //     for (int i = 0; line[i] != NULL; i++)

@@ -14,7 +14,6 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/ft_echo.c \
 		  ./srcs/ft_split_syn.c \
 		  ./srcs/other_command.c \
-		  ./srcs/ft_split_syn.c \
 
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -rf
