@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pwd.c                                         :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 11:21:53 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/03 12:15:28 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 11:26:58 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char	*exec_pwd(void)
 	char	*buf;
 
 	buf = NULL;
-	current_path = getcwd(buf, 100);
+	current_path = getcwd(buf, 1);
+//	free(current_path);		????
 	return (current_path);
 }
 
@@ -27,9 +28,7 @@ char	*exec_cd(char **command_line)
 	int		check;
 	char	*str;
 
-	str = NULL;
-	if (!str)
-		str = ft_strdup("");
+	str = ft_strdup("");
 	check = 0;
 	check = chdir(command_line[1]);
 	if (check == 0)
@@ -38,9 +37,9 @@ char	*exec_cd(char **command_line)
 	}
 	else
 	{
-		str = ft_strjoin(str, "cd: ");
-		str = ft_strjoin(str, command_line[1]);
-		str = ft_strjoin(str, ": No such file or directory\n");
+		str = str_append1(str, "cd: ");
+		str = str_append1(str, command_line[1]);
+		str = str_append1(str, ": No such file or directory\n");
 	}
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/04 21:37:59 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 09:52:43 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ char	*exec_export(char **command_line, int len)
 		idx = env;		// 임시 변수를 사용하지 않으면 한번밖에 사용할 수 없음
 		while (idx)
 		{
-			str = ft_strjoin(str, "declare -x ");
-			str = ft_strjoin(str, idx->key);
+			str = str_append1(str, "declare -x ");
+			str = str_append1(str, idx->key);
 			if (idx->if_value)
 			{
-				str = ft_strjoin(str, "=");
-				str = ft_strjoin(str, "\"");
-				str = ft_strjoin(str, idx->value);
-				str = ft_strjoin(str, "\"");
+				str = str_append1(str, "=");
+				str = str_append1(str, "\"");
+				str = str_append1(str, idx->value);
+				str = str_append1(str, "\"");
 			}
-			str = ft_strjoin(str, "\n");
+			str = str_append1(str, "\n");
 			idx = idx->next; 
 		}
 	}
@@ -63,12 +63,11 @@ char	*exec_export(char **command_line, int len)
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 			{
-				str = str_append(str, "export: ");
-				str = str_append(str, &command_line[i][0]);
-				str = str_append(str, ": not a valid identifier\n");
+				str = str_append1(str, "export: ");
+				str = str_append2(str, &command_line[i][0]);
+				str = str_append1(str, ": not a valid identifier\n");
 			}
 			i++;
-			temp++;
 		}
 	}
 	return (str);
@@ -92,10 +91,10 @@ char	*exec_env(char **command_line, int len)
 		{
 			if (idx->if_value)
 			{
-				str = ft_strjoin(str, idx->key);
-				str = ft_strjoin(str, "=");
-				str = ft_strjoin(str, idx->value);
-				str = ft_strjoin(str, "\n");
+				str = str_append1(str, idx->key);
+				str = str_append1(str, "=");
+				str = str_append1(str, idx->value);
+				str = str_append1(str, "\n");
 			}
 			idx = idx->next; 
 		}

@@ -10,9 +10,11 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/ft_export.c \
 		  ./srcs/init_env.c \
 		  ./srcs/util_list.c \
+		  ./srcs/util_str.c \
 		  ./srcs/ft_echo.c \
 		  ./srcs/ft_split_syn.c \
 		  ./srcs/other_command.c \
+		  ./srcs/ft_split_syn.c \
 
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -rf

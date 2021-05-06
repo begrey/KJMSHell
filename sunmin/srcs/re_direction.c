@@ -6,13 +6,13 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 15:10:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/04 15:25:39 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/05 11:24:23 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-char	**check_string(char **command_line)
+char	**check_string(char **command_line)		// 재귀함수 사용
 {
 	char	**result;
 	char	check[4096];
