@@ -8,13 +8,33 @@ void	split_pipes(char *command_line)
 
 	i = 0;
 	pipe_line = ft_split(command_line, '|');
+
+//	while(pipe_line[i] != NULL)		원본
+//	{
+//		str = parse_command(pipe_line[i], str);
+//		i++;
+//	}
+
+
+//	int	strout;
+
 	while(pipe_line[i] != NULL)
 	{
-		str = parse_command(pipe_line[i], str);
+		str = redir_command(pipe_line[i], str);
 		i++;
 	}
-	if (str)		// 있어야 아무 명령어나 입력했을 때 세그폴트 안 뜸
-		write(1, str, ft_strlen(str));
+/*
+	while (redir)
+	{
+		if (strout = open(""))
+		{
+
+		}
+		else
+*/
+		if (str)
+			write(fd, str, ft_strlen(str));
+//	}
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -39,6 +59,7 @@ int main(int argc, char *argv[], char *envp[])
 			split_pipes(command_line[i]);
 			i++;
 		}
+		dup2(temp_fd, 1);
 		write(1, "KJMSHell(•ө•) >> ", 22);
 		free(line);										// 메모리 누수 때문에 추가
 	}

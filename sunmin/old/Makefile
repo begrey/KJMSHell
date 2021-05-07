@@ -10,10 +10,11 @@ SRCS	= ./srcs/main.c	\
 		  ./srcs/ft_export.c \
 		  ./srcs/init_env.c \
 		  ./srcs/util_list.c \
-		  ./srcs/util_str.c \
 		  ./srcs/ft_echo.c \
-		  ./srcs/ft_split_syn.c \
 		  ./srcs/other_command.c \
+		  ./srcs/re_direction.c \
+		  ./srcs/util_str.c \
+
 
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -rf
@@ -31,7 +32,7 @@ ${LIBFT} :
 	cp ./libft/$(LIBFT) .
 
 clean	:
-	make clean -C ./libft
+	make fclean -C ./libft
 	$(RM) $(OBJS) $(LIBFT)
 
 fclean 	: clean
