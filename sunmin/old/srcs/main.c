@@ -59,7 +59,7 @@ int main(int argc, char *argv[], char *envp[])
 			split_pipes(command_line[i]);
 			i++;
 		}
-		dup2(temp_fd, 1);
+		dup2(temp_fd, 1);	// 이걸 안해주면 리다이렉션 폴더에 "KJMSHell(OoO)"가 같이 담김
 		write(1, "KJMSHell(•ө•) >> ", 22);
 		free(line);										// 메모리 누수 때문에 추가
 	}
