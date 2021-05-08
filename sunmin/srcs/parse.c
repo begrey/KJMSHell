@@ -10,8 +10,8 @@ void make_list(t_line **line, char *s_line, char lvl)
 	while (split_line[i] != NULL)
 	{
 		if (!(split_line[i][0] == '<' || split_line[i][0] == '>'))
-		ft_listadd_back(&(*line), ft_listnew(split_line[i]));
-		i++;		
+			ft_listadd_back(&(*line), ft_listnew(split_line[i]));
+		i++;
 	}
 }
 
@@ -21,6 +21,7 @@ void split_arg(t_line **line, char *arg_line) // echo c
 
 	arg_list = NULL;
 	make_list(&arg_list, arg_line, ' ');
+	ft_exec(&arg_list);
 	(*line)->line = arg_list;
 }
 
@@ -63,17 +64,31 @@ void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
 	}
 }
 
-int main()
+int main(int argc, char *argv[], char *envp[])
 {
-	char *input = "echo hi | everyone ; pwd | grep ; ls";
-	t_line *line;
-	t_line *down;
-	t_line *right;
-	t_line *right_;
+	char	*input_line;
+//	char *input = "echo hi | everyone ; pwd | grep ; ls";
+	t_line	*line;
+	t_line	*down;
+	t_line	*right;
+	t_line	*right_;
 	int	lvl;
 
-	lvl = 1;
-	line = ft_listnew(input);
-	split_semi(&line);
-	down = line;
+	if (argc != 1)
+	{
+		write(1, "cannot excute binary file\n", 26);
+		return (0);
+	}
+	init_env(envp);
+	write(1, "KJMSHell(OoO) >> ", 22);
+	while ((parse_line(&input_line)) > 0)
+	{
+		lvl = 1;
+		line = ft_listnew(input_line);
+		split_semi(&line);
+		down = line;
+		write(1, "KJMSHell(OoO) >> ", 22);
+		free(line);
+	}
+	return (0);
 }
