@@ -82,5 +82,8 @@ void		exec_env(t_line **command_line);
 void		exec_unset(t_line **command_line);
 char		*extract_env(char *str);
 
+//		exec_other_command.c
+void		other_command(t_line **comand_line);
+
 
 #endif

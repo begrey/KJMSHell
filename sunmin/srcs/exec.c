@@ -17,6 +17,5 @@ void		ft_exec(t_line **command_line)
 	else if (ft_strcmp((*command_line)->arg, "exit") == 0)
 		;
 	else
-		;
-//		other_command(command_line);
+		other_command(command_line);
 }
