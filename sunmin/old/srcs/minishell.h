@@ -20,7 +20,6 @@ typedef struct s_env
 	char			*key;
 	char			*value;
 	int				if_value;
-	struct s_env	*prev;
 	struct s_env	*next;
 }				t_env;
 
