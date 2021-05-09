@@ -8,20 +8,39 @@ t_env	*ft_envnew(void *key, void *value)
 		return (0);
 	new->key = key;
 	new->value = value;
+	if (new->value)
+	{
+		new->if_value = 1;
+	}
 	return (new);
 }
 
 void	ft_envadd_back(t_env **lst, t_env *new)
 {
 	t_env	*last;
+	t_env	*temp;
 
-	if (lst == NULL || new == NULL)
+	temp = *lst;
+	if (temp == NULL)
+	{
+		*lst = new;
+		new->next = NULL;
+		return ;
+	}
+	temp = *lst;
+	last = ft_envlast(temp);
+	last->next = new;
+	new->next = (NULL);		// 없으면 터짐
+
+
+/*	if (lst == NULL || new == NULL)
 		return ;
 	if (*lst == NULL)
 		*lst = new;
 	last = ft_envlast(*lst);
 	last->next = new;
 	new->next = (NULL);
+	*/
 }
 
 t_env	*ft_envlast(t_env *lst)

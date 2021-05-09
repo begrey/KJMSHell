@@ -15,7 +15,7 @@ void		ft_exec(t_line **command_line)
 	else if (ft_strcmp((*command_line)->arg, "env") == 0)
 		exec_env(command_line);
 	else if (ft_strcmp((*command_line)->arg, "exit") == 0)
-		;
+		exit(0);		// exit함수도 추가해야 함
 	else
 		other_command(command_line);
 }

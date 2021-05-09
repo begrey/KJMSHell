@@ -72,6 +72,7 @@ int main(int argc, char *argv[], char *envp[])
 	t_line	*down;
 	t_line	*right;
 	t_line	*right_;
+	t_env	*head = NULL;
 	int	lvl;
 
 	if (argc != 1)
@@ -80,14 +81,14 @@ int main(int argc, char *argv[], char *envp[])
 		return (0);
 	}
 	init_env(envp);
-	write(1, "KJMSHell(OoO) >> ", 22);
+	write(1, "KJMSHell(OoO) >> ", 17);		 // 3번째 인자 22로 하면 터집니다..
 	while ((parse_line(&input_line)) > 0)
 	{
 		lvl = 1;
 		line = ft_listnew(input_line);
 		split_semi(&line);
 		down = line;
-		write(1, "KJMSHell(OoO) >> ", 22);
+		write(1, "KJMSHell(OoO) >> ", 17);
 		free(line);
 	}
 	return (0);

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	other_command(t_line **command_line)
+void	other_command(t_line **command_line)		// /bin/ls 이런 식으로 명령어가 들어올 때도 실행되도록 해야 함
 {
 	int		i;
 	char	*path;
@@ -11,15 +11,22 @@ void	other_command(t_line **command_line)
 	char	*single_line;
 	t_line	*temp;
 
+
 	temp = *command_line;
 
+
+	printf("aa %s\n", (*command_line)->arg);
+	printf("bb %s\n", (*command_line)->next->arg);
 	single_line = ft_strdup("");
 	while (temp)
 	{
-		single_line = str_append2(single_line, temp->arg);
-		temp = temp->next;
+		single_line = str_append2(single_line, (temp)->arg);
+		printf("s %s\n", single_line);
+		temp = (temp)->next;
 	}
 
+	printf("cc %s\n", (*command_line)->arg);
+	printf("dd %s\n", (*command_line)->next->arg);
 	status = NULL;
 	pid = fork();
 	if (pid == 0)
