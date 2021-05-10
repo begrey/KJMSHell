@@ -70,12 +70,9 @@ int main(int argc, char *argv[], char *envp[])
 //	char *input = "echo hi | everyone ; pwd | grep ; ls";
 	t_line	*line;
 	t_line	*down;
-	t_line	*right;
-	t_line	*right_;
-	t_env	*head = NULL;
 	int	lvl;
 
-	if (argc != 1)
+	if (argc != 1 || argv[1])
 	{
 		write(1, "cannot excute binary file\n", 26);
 		return (0);
