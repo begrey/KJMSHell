@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <fcntl.h>
 #include <unistd.h>
 #include "../../libft/libft.h"
 
@@ -11,7 +11,6 @@ typedef struct s_env
 {
 	char				*key;
 	char				*value;
-	int					if_value;
 	struct s_env		*next;
 }				t_env;
 
@@ -25,8 +24,7 @@ typedef	struct	s_redirc
 typedef struct s_line
 {
 	char				*arg;
-	struct s_redirc		*si; //리다이렉션들
-	struct s_redirc		*so; //리다이렉션들
+//	struct s_redirc		**stream; //리다이렉션들
 	struct s_line		*line; //parsing 단계별 line
 	struct s_line		*prev;
 	struct s_line		*next;
@@ -34,8 +32,12 @@ typedef struct s_line
 
 //		전역변수
 t_env	*env;
-
-
+char	**stream;
+int		fd1;
+int		fd_temp;
+int		*pipe2;
+int		temp_stdin;
+int		temp_stdout;
 
 //		ft_listadd_back.c
 void		ft_listadd_back(t_line **lst, t_line *new);
@@ -75,6 +77,11 @@ t_env		*ft_envlast(t_env *lst);
 //		util_envlist2.c
 char		*find_key(const char *str);
 char		*find_value(const char *str);
+
+//		util_redirection.c
+void		set_redirection(t_line **line, char *redir_line);
+void		go_redir(char *redir_stream);
+
 
 //		init_env.c
 int			init_env(char *envp[]);

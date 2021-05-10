@@ -4,4 +4,4 @@ SANI = -fsanitize=address
 
 all :
 	rm -rf a.out
-	gcc $(C_FLAGS) srcs/*.c libft.a
+	gcc srcs/*.c libft.a

@@ -4,18 +4,30 @@
 
 int		ft_strlen(char *s);
 
-int		main(int argc, char *argv[], char *envp[])
+void	ft_printf(char *s)
+{
+	printf("%s\n", s);
+}
+
+void	dupdup(int argc, char *argv[])
 {
 	int		fd1;
 	int		fd2;
 
-	fd1 = open("./1.txt", O_RDWR);
+	fd1 = open("./1.txt", O_RDWR | O_CREAT, 00777);
 
 	dup2(fd1, 1);
 	if (argc == 2)
 		write(1, argv[1], ft_strlen(argv[1]));
 	if (argc == 3)
 		write(fd1, argv[2], ft_strlen(argv[2]));
+}
+
+int		main(int argc, char *argv[], char *envp[])
+{
+	dupdup(argc, argv);
+	printf("1234\n");
+	ft_printf("asdf\n");
 	return (0);
 }
 

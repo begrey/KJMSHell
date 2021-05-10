@@ -8,5 +8,6 @@ t_line		*ft_listnew(char *content)
 		return (NULL);
 	lst->arg = content;
 	lst->next = NULL;
+	lst->prev = NULL;		// prev 추가
 	return (lst);
 }
