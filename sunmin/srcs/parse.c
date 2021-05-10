@@ -25,7 +25,52 @@ void split_arg(t_line **line, char *arg_line) // echo c
 	(*line)->line = arg_list;
 }
 
+void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
+{									//redir_line 으로 echo >aa >bb c 들어옴
+	t_line		*redir_list;
+	t_line		*temp;
+	int			i;
 
+	i = 0;
+	redir_list = NULL;
+	make_list(&redir_list, redir_line, '>');
+	(*line)->line = redir_list;
+	temp = redir_list;
+	set_redirection(line, redir_line);	// temp->arg에는 echo c 만 들어있게 됨
+///	set_quote();
+	while (*((*line)->stream))		// stream배열 만큼 (redirection 개수 만큼)
+	{
+//		go_redir((*line)->stream);		// 리다이렉션 배열에서 맞는 fd로 dup2
+		split_arg((&temp), temp->arg);
+		temp = temp->next;
+		((*line)->stream)++;
+	}
+//	back_redir((*line)->stream);		// 다시 fd 0,1 맞춰줌
+}
+
+//	/*	리다이렉션 기능 추가
+void split_pipe(t_line **line, char *pipe_line) // echo >aa >bb c | pwd
+{
+	t_line *pipe_list;
+	t_line *temp;
+	int i;
+
+	i = 0;
+	pipe_list = NULL;
+	make_list(&pipe_list, pipe_line, '|');
+	(*line)->line = pipe_list; 
+	temp = pipe_list;
+	while(temp != NULL)
+	{
+		split_redirection((&temp), temp->arg);
+		temp = temp->next;
+		i++;
+	}
+}
+//	*/
+
+
+	/*		원본
 void split_pipe(t_line **line, char *pipe_line) // echo >a >b c | pwd
 {
 	t_line *pipe_list;
@@ -44,6 +89,7 @@ void split_pipe(t_line **line, char *pipe_line) // echo >a >b c | pwd
 		i++;
 	}
 }
+	*/
 
 void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
 {

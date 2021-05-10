@@ -32,7 +32,7 @@ void	exec_export(t_line **command_line)
 		{
 			str = str_append1(str, "declare -x ");
 			str = str_append1(str, idx->key);
-			if (idx->if_value)
+			if (idx->value)
 			{
 				str = str_append1(str, "=");
 				str = str_append1(str, "\"");
@@ -62,11 +62,8 @@ void	exec_export(t_line **command_line)
 				}
 				if (ft_strchr((*command_line)->arg, '='))
 				{
-					(*temp).if_value = 1;
 					(*temp).value = extract_env(find_value((*command_line)->arg));
 				}
-				else
-					(*temp).if_value = 0;
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 			{
@@ -109,7 +106,7 @@ void		exec_env(t_line **command_line)
 		idx = env;
 		while (idx)
 		{
-			if (idx->if_value)
+			if (idx->value)
 			{
 				str = str_append1(str, idx->key);
 				str = str_append1(str, "=");

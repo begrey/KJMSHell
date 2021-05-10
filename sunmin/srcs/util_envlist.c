@@ -8,10 +8,6 @@ t_env	*ft_envnew(void *key, void *value)
 		return (0);
 	new->key = key;
 	new->value = value;
-	if (new->value)
-	{
-		new->if_value = 1;
-	}
 	return (new);
 }
 
