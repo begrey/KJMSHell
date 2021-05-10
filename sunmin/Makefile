@@ -1,4 +1,6 @@
-C_FLAGS = -fsanitize=address
+C_FLAGS = -Wall -Wextra -Werror
+
+SANI = -fsanitize=address
 
 all :
 	rm -rf a.out

@@ -32,7 +32,10 @@ typedef struct s_line
 	struct s_line		*next;
 }				t_line;
 
+//		전역변수
 t_env	*env;
+
+
 
 //		ft_listadd_back.c
 void		ft_listadd_back(t_line **lst, t_line *new);
@@ -51,9 +54,9 @@ int			parse_line(char **line);
 
 //		ft_pwd.c
 void		exec_pwd(void);
-void	exec_cd(t_line **command_line);
+void		exec_cd(t_line **command_line);
 
-//		ft_exec.c
+//		exec.c
 void		ft_exec(t_line **command_line);
 
 //		util_str.c
@@ -76,13 +79,13 @@ char		*find_value(const char *str);
 //		init_env.c
 int			init_env(char *envp[]);
 
-//		exec_export.c
+//		ft_export.c
 void		exec_export(t_line **command_line);
 void		exec_env(t_line **command_line);
 void		exec_unset(t_line **command_line);
 char		*extract_env(char *str);
 
-//		exec_other_command.c
+//		ft_other_command.c
 void		other_command(t_line **comand_line);
 
 

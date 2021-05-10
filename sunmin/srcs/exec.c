@@ -7,7 +7,7 @@ void		ft_exec(t_line **command_line)
 	else if (ft_strcmp((*command_line)->arg, "cd") == 0)
 		exec_cd(command_line);
 	else if (ft_strcmp((*command_line)->arg, "echo") == 0)
-		;
+		ft_echo(command_line);
 	else if (ft_strcmp((*command_line)->arg, "export") == 0)
 		exec_export(command_line);
 	else if (ft_strcmp((*command_line)->arg, "unset") == 0)

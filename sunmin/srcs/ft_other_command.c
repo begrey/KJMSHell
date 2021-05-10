@@ -15,18 +15,12 @@ void	other_command(t_line **command_line)		// /bin/ls 이런 식으로 명령어
 	temp = *command_line;
 
 
-	printf("aa %s\n", (*command_line)->arg);
-	printf("bb %s\n", (*command_line)->next->arg);
 	single_line = ft_strdup("");
 	while (temp)
 	{
 		single_line = str_append2(single_line, (temp)->arg);
-		printf("s %s\n", single_line);
 		temp = (temp)->next;
 	}
-
-	printf("cc %s\n", (*command_line)->arg);
-	printf("dd %s\n", (*command_line)->next->arg);
 	status = NULL;
 	pid = fork();
 	if (pid == 0)
@@ -42,7 +36,6 @@ void	other_command(t_line **command_line)		// /bin/ls 이런 식으로 명령어
 			execve(new_path, &single_line, NULL);
 			i++;
 		}
-		printf("%s: command not found\n", (*command_line)->arg);
 	}
 	else
 	{
