@@ -28,6 +28,9 @@ void	set_redirection(t_line **line, char *redir_line)	//echo >aa >bb hi
 
 void	go_redir(char *redir_stream)
 {
+	int		fd1;
+	int		fd_temp;
+
 	dup2(1, fd_temp);
 	fd1 = 1;
 	if (redir_stream)

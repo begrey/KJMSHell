@@ -55,13 +55,13 @@ void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
 	while (*stream)
 	{
 //		go_redir(*(*line)->stream);		// 리다이렉션 배열에서 맞는 fd로 dup2
-		go_redir(*stream);		// 테스트용
+//		go_redir(*stream, fd1);		// 테스트용
 		split_arg((&temp), temp->arg);
 		temp = temp->next;
 		stream++;			// 테스트용
 //		((*line)->stream)++;
 	}
-	dup2(fd_temp, 1);
+//	dup2(fd_temp, 1);
 //	back_redir(*(*line)->stream);		// 다시 fd 0,1 맞춰줌
 }
 
@@ -71,30 +71,31 @@ void	send_pipe(t_line *last)		// 재귀 호출로 분기하고 다음으로 보�
 	int		*status;
 	int		state;
 
+int		fd1;		// 파이프 때문에 일단 선언해 놓은 변수들
+int		fd_temp;
+int		*pipe2;
+int		temp_stdin;
+int		temp_stdout;
+
+	pid = 0;
 	pipe2 = (int *)malloc(sizeof(int) * 2);
 	state = pipe(pipe2);
 
-	printf("%s\n", last->arg);
 	if (last->prev)
 	{
 		pid = fork();
-		if (pid != 0)		// 부모
-		{
-//			dup2(temp_stdin, 0);
-//			dup2(0, pipe2[1]);
-			waitpid(pid, status, 0);
-		}
+		printf("generate %d\n", pid);
+		if (pid != 0)
+			wait(status);
 		else
 		{
-//			dup2(temp_stdout, 1);		// 자식의 출력
-//			dup2(1, pipe2[0]);
-			last = last->prev;
-			send_pipe(last);
+			send_pipe(last->prev);
+			split_arg((&last), last->arg);
+			exit(0);
 		}
 	}
-	split_arg((&last), last->arg);
-//	dup2(0, temp_stdin);
-//	dup2(1, temp_stdout);
+	else
+		split_arg((&last), last->arg);
 }
 
 void split_pipe(t_line **line, char *pipe_line) // echo >aa >bb c | pwd
