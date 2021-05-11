@@ -8,7 +8,17 @@
 # include <stdio.h>
 # include <math.h>
 # include <sys/wait.h>
+# include <sys/types.h>
+# include <signal.h>
+# include <termios.h>
+# include <termcap.h>
 # include "../libft/libft.h"
+
+# define BACKSPACE 127
+# define U_ARROW 4283163 // 65 0 0 
+# define D_ARROW 4348699
+# define R_ARROW 4414235
+# define L_ARROW 4479771
 
 typedef struct s_env
 {

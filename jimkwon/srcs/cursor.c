@@ -1,4 +1,14 @@
-#include "minishell.h"
+#include <termios.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <termcap.h>
+
+# define BACKSPACE 127
+# define U_ARROW 4283163 // 65 0 0 
+# define D_ARROW 4348699
+# define R_ARROW 4414235
+# define L_ARROW 4479771
 
 int	nbr_length(int n)
 {
@@ -29,7 +39,7 @@ void	get_cursor_position(int *col, int *rows)
 	{
 		if (buf[i] >= '0' && buf[i] <= '9')
 		{
-			//printf("%d ", buf[i]);
+			printf("%d ", buf[i]);
 			if (a == 0)
 				*rows = atoi(&buf[i]) - 1;
 			else
@@ -74,50 +84,9 @@ void	delete_end(int *col, int *row, char *cm, char *ce)
 	tputs(ce, 1, putchar_tc);
 }
 
-int ft_strcmp(char *dest, char *src) {
-	int i = 0;
-	while (dest[i] != '\0' || src[i] != '\0') {
-		if (dest[i] > src[i])
-			return dest[i] - src[i];
-		else if (dest[i] < src[i])
-			return dest[i] - src[i];
-		i++;
-	}
-	return 0;      
-}
-
-char *append(char *line, char c)
+int		main(void)
 {
-	char *str; //이어붙인 문자열
-	int i;
-
-	i = 0;
-	if(!(str = (char *)malloc(sizeof(char) * (ft_strlen(line) + 2))))
-			return NULL;
-	while(line[i] != '\0')
-	{
-		str[i] = line[i];
-		i++;
-	}
-	str[i] = c;
-	i++;
-	str[i] = 0;
-	free(line);
-	return (str);
-}
-/*
-buff
-buff[0] = 65
-[1] = 66
-[2] = 67
-[3] = 13
-0 0 0 \NULL
-a  b c \n
-*/
-
-int parse_line(char **line)
-{
-// 터미널 세팅 설정 
+	// 터미널 세팅 설정 
 	struct termios term;
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ICANON;
@@ -156,7 +125,6 @@ int parse_line(char **line)
 		{
 			col++;
 			ch = (char)c;
-			write(1, &ch, 1);
 			if (ch == '\n')
 				return (1);
 			*line = append(*line, ch);
@@ -165,5 +133,4 @@ int parse_line(char **line)
 		}
 		c = 0; //flush buffer
 	}
-	return (-1);
 }

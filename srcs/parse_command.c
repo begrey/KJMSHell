@@ -39,7 +39,7 @@ char  *parse_command(char *line_piece, char *str)
 	}
 	else if (ft_strcmp(command, "exit") == 0)
 	{
-		write(1, "exit\n", 5);
+		write(1, "exit!!\n", 7);
 		exit(0);
 	}
 	// else if (ft_strchr("<>|;", command[0]) != NULL)

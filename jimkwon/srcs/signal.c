@@ -13,13 +13,18 @@ void signalHandler(int sig){
                 printf("signal SIGTSTP : %d\n", sig);
 				exit(0);
         }
+        if(sig==SIGQUIT){
+                printf("signal SIGQUIT : %d\n", sig);
+				exit(0);
+        }
 }
 int main(){
 		char *str;
 
         signal(SIGINT, signalHandler);
         signal(SIGTSTP, signalHandler);
-        printf("input Ctrl+C or Ctrl+Z \n");
+        signal(SIGQUIT, signalHandler);
+        printf("input Ctrl+C or Ctrl+Z or Ctrl+\\ \n");
         while(1){
 			fgets(str,sizeof(str),stdin);
 			if (feof(stdin)){
