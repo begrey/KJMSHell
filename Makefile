@@ -18,12 +18,12 @@ SRCS	= ./srcs/main.c	\
 OBJS	= $(SRCS:.c=.o)
 RM		= rm -rf
 CC		= gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror 
 
 all : $(NAME)
 
 $(NAME) : ${LIBFT} $(OBJS)
-	$(CC) $(CFLAGS) -o ${NAME} ${OBJS} ${LIBFT}
+	$(CC) -lncurses $(CFLAGS) -o ${NAME} ${OBJS} ${LIBFT}
 
 ${LIBFT} :
 	make -C ./libft
