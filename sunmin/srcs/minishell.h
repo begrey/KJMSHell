@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <signal.h>
 #include "../../libft/libft.h"
 
 typedef struct s_env
@@ -33,11 +34,7 @@ typedef struct s_line
 //		전역변수
 t_env	*env;
 char	**stream;
-int		fd1;
-int		fd_temp;
-int		*pipe2;
-int		temp_stdin;
-int		temp_stdout;
+
 
 //		ft_listadd_back.c
 void		ft_listadd_back(t_line **lst, t_line *new);
