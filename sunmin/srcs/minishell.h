@@ -6,6 +6,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <signal.h>
+#include <errno.h>
 #include "../../libft/libft.h"
 
 typedef struct s_env
@@ -32,6 +33,7 @@ typedef struct s_line
 }				t_line;
 
 //		전역변수
+int		ft_errno;
 t_env	*env;
 char	**stream;
 
