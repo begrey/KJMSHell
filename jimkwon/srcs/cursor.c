@@ -103,11 +103,8 @@ int		main(void)
 	int c = 0;
 	int row;
 	int col;
-	char ch;
 
-	if (!(*line = malloc(1)))
-		return (-1);
-	(*line)[0] = 0;
+write(1, "shell>>", 7);
 	while (read(0, &c, sizeof(c)) > 0)
 	{
 		get_cursor_position(&col, &row);
@@ -124,12 +121,7 @@ int		main(void)
 		else
 		{
 			col++;
-			ch = (char)c;
-			if (ch == '\n')
-				return (1);
-			*line = append(*line, ch);
-			if (!*line)
-				return (0);
+			write(0, &c, 1);
 		}
 		c = 0; //flush buffer
 	}

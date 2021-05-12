@@ -40,7 +40,7 @@ char	*ft_echo(char *args);
 //	parse_line.c
 int		ft_strcmp(char *dest, char *src);
 char	*append(char *line, char c);
-int		parse_line(char **line);
+int		parse_line(char **line, t_list *history);
 
 //	parse_token.c
 void	parse_token(char **line, int i);

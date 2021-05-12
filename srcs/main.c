@@ -35,7 +35,10 @@ int main(int argc, char **argv, char **envp)
 	char	**command_line;
 	int		i;
 	int		read;
+	t_list	*history;
+	t_list	*temp;
 
+	history = NULL;
 	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
 	{
 		write(1, "cannot excute binary file\n", 26);
@@ -46,8 +49,14 @@ int main(int argc, char **argv, char **envp)
     signal(SIGTSTP, signalHandler);
     signal(SIGQUIT, signalHandler);
 	write(1, "KJMSHell(oOo) >> ", 17);
-	while((read = parse_line(&line)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
+
+	while((read = parse_line(&line, history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
 	{
+		//히스토리 리스트 추가
+		if (history == NULL)
+			history = ft_lstnew(line);
+		else
+			ft_lstadd_back(&history, ft_lstnew(line));
 		i = 0;
 		command_line = ft_split(line, ';');
 		while(command_line[i] != NULL)
@@ -55,6 +64,8 @@ int main(int argc, char **argv, char **envp)
 			split_pipes(command_line[i]);
 			i++;
 		}
+		//temp = ft_lstlast(history);  히스토리 출력부분
+		//printf("history: %s\n", temp->content);
 		write(1, "KJMSHell(oOo) >> ", 17);
 	}
 	if (read == 0)

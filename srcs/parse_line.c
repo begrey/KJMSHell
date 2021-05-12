@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-int	nbr_length(int n)
+int	num_len(int n)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (n <= 0)
 		i++;
 	while (n != 0)
@@ -16,12 +17,14 @@ int	nbr_length(int n)
 
 void	get_cursor_position(int *col, int *rows)
 {
-	int		a = 0;
-	int		i = 1;
+	int		a;
+	int		i;
 	char	buf[255];
 	int		ret;
 	int		temp;
 
+	a = 0;
+	i = 1;
 	write(0, "\033[6n", 4);  //report cursor location
 	ret = read(0, buf, 254);
 	buf[ret] = '\0';
@@ -29,16 +32,15 @@ void	get_cursor_position(int *col, int *rows)
 	{
 		if (buf[i] >= '0' && buf[i] <= '9')
 		{
-			//printf("%d ", buf[i]);
 			if (a == 0)
 				*rows = atoi(&buf[i]) - 1;
 			else
 			{
-				temp = atoi(&buf[i]);
+				temp = atoi(&buf[i]) - 1;
 				*col = temp - 1;
 			}
 			a++;
-			i += nbr_length(temp) - 1;
+			i += num_len(temp) - 1;
 		}
 		i++;
 	}
@@ -54,7 +56,7 @@ void	move_cursor_left(int *col, int *row, char *cm)
 {
 	if (*col == 0)
 		return ;
-	--(*col);
+	(*col) -= 1;
 	tputs(tgoto(cm, *col, *row), 1, putchar_tc);
 
 }
@@ -105,17 +107,8 @@ char *append(char *line, char c)
 	free(line);
 	return (str);
 }
-/*
-buff
-buff[0] = 65
-[1] = 66
-[2] = 67
-[3] = 13
-0 0 0 \NULL
-a  b c \n
-*/
 
-int parse_line(char **line)
+int parse_line(char **line, t_list *history)
 {
 // 터미널 세팅 설정 
 	struct termios term;
@@ -131,11 +124,12 @@ int parse_line(char **line)
 	char *cm = tgetstr("cm", NULL); //cursor motion
 	char *ce = tgetstr("ce", NULL); //clear line from cursor
 	
-	int c = 0;
+	int c;
 	int row;
 	int col;
 	char ch;
 
+	c = 0;
 	if (!(*line = malloc(1)))
 		return (-1);
 	(*line)[0] = 0;
