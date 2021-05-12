@@ -83,7 +83,7 @@ int		temp_stdout;
 
 	if (last->prev)
 	{
-		pid = fork();
+		pid = fork();					// dup2를 하고 close함수를 활용하자
 		printf("generate %d\n", pid);
 		if (pid != 0)
 			wait(status);
@@ -169,6 +169,10 @@ int main(int argc, char *argv[], char *envp[])
 	write(1, "KJMSHell(OoO) >> ", 17);		 // 3번째 인자 22로 하면 터집니다..
 	while ((parse_line(&input_line)) > 0)
 	{
+		if (input_line[0] == '$' && input_line[1] == '?')
+		{
+			printf("ft_errno %d\n", ft_errno);
+		}
 		lvl = 1;
 		line = ft_listnew(input_line);
 		split_semi(&line);
