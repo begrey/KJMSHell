@@ -36,7 +36,7 @@ int main(int argc, char **argv, char **envp)
 	int		i;
 	int		read;
 	t_list	*history;
-	t_list	*temp;
+	//t_list	*temp;
 
 	history = NULL;
 	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
@@ -48,8 +48,8 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, signalHandler);
     signal(SIGTSTP, signalHandler);
     signal(SIGQUIT, signalHandler);
-	write(1, "KJMSHell(oOo) >> ", 17);
-
+	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
+	//printf("%d\n", (int)ft_strlen("(｡☌ᴗ☌｡)"));
 	while((read = parse_line(&line, history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
 	{
 		//히스토리 리스트 추가
@@ -66,16 +66,13 @@ int main(int argc, char **argv, char **envp)
 		}
 		//temp = ft_lstlast(history);  히스토리 출력부분
 		//printf("history: %s\n", temp->content);
-		write(1, "KJMSHell(oOo) >> ", 17);
+		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 	}
 	if (read == 0)
 		exit(0);
 	else
 		write(1, "parseError!\n", 12);
 	return (0);
-
-
-	//
 	//printf("%s\n", argv[0]);
 	argc = 1;
 	argv = NULL;

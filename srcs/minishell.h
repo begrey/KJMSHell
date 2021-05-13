@@ -20,6 +20,15 @@
 # define R_ARROW 4414235
 # define L_ARROW 4479771
 
+typedef struct	s_cursor
+{
+	char			*cm; //cursor motion
+	char			*ce; //cursor erase
+	char			*prev_his; // 이전 명령어
+	int				row;
+	int				col;
+}				t_cursor;
+
 typedef struct s_env
 {
 	char			*key;

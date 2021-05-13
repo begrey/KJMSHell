@@ -15,7 +15,7 @@ int	num_len(int n)
 	return (i);
 }
 
-void	get_cursor_position(int *col, int *rows)
+void	get_cursor_position(t_cursor *cursor)
 {
 	int		a;
 	int		i;
@@ -33,11 +33,11 @@ void	get_cursor_position(int *col, int *rows)
 		if (buf[i] >= '0' && buf[i] <= '9')
 		{
 			if (a == 0)
-				*rows = atoi(&buf[i]) - 1;
+				cursor->row = atoi(&buf[i]) - 1;
 			else
 			{
 				temp = atoi(&buf[i]) - 1;
-				*col = temp - 1;
+				cursor->col = temp - 1;
 			}
 			a++;
 			i += num_len(temp) - 1;
@@ -52,28 +52,28 @@ int		putchar_tc(int tc)
 	return (0);
 }
 
-void	move_cursor_left(int *col, int *row, char *cm)
+void	move_cursor_left(t_cursor *cursor)
 {
-	if (*col == 0)
+	if (cursor->col == 17)
 		return ;
-	(*col) -= 1;
-	tputs(tgoto(cm, *col, *row), 1, putchar_tc);
+	(cursor->col) -= 1;
+	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 
 }
 
-void	move_cursor_right(int *col, int *row, char *cm)
+void	move_cursor_right(t_cursor *cursor)
 {
-	++(*col);
-	tputs(tgoto(cm, *col, *row), 1, putchar_tc);
-
+	++(cursor->col);
+	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
+	//printf("why?\n");
 }
 
-void	delete_end(int *col, int *row, char *cm, char *ce)
+void	delete_end(t_cursor *cursor)
 {
-	if (*col != 0)
-		--(*col);
-	tputs(tgoto(cm, *col, *row), 1, putchar_tc);
-	tputs(ce, 1, putchar_tc);
+	if (cursor->col != 0)
+		--(cursor->col);
+	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
+	tputs(cursor->ce, 1, putchar_tc);
 }
 
 int ft_strcmp(char *dest, char *src) {
@@ -108,6 +108,49 @@ char *append(char *line, char c)
 	return (str);
 }
 
+void delete_line(t_cursor *cursor)
+{
+	int len;
+
+	get_cursor_position(cursor);
+	len = cursor->col - 19;
+	//cursor->col =  cursor->col - len + 1;
+	if (cursor->col < 0)
+		cursor->col = 0;
+	tputs(tgoto(cursor->cm, cursor->col - len, cursor->row), 1, putchar_tc);
+	tputs(cursor->ce, 1, putchar_tc);
+}
+
+int find_history(t_list *history, char **line, int cnt, t_cursor *cursor)
+{
+	t_list	*temp;
+	int		len;
+	int		i;
+
+	if (cnt <= 0)
+		cnt = 1; // down_arrow 최소값 조정
+	else if (cnt >= ft_lstsize(history)) // up_arrow가 기존 히스토리 길이보다 큰 경우 최대값으로 조정
+		cnt = ft_lstsize(history);
+	temp = history;
+	i = 1;
+	len = ft_lstsize(history) - cnt + 1; // 맨 뒤부터 첫번쨰, cnt가 2고 사이즈가 5면 4번째 출력
+	while (temp != NULL && i != len)
+	{
+		temp = temp->next;
+		i++;
+	}
+	// if (temp == NULL)
+	// {
+	// 	write(1, "NULL", 4);
+	// 	return (i);
+	// }
+	delete_line(cursor);
+	write(1, temp->content, ft_strlen(temp->content));
+	cursor->prev_his = temp->content;
+	*line = temp->content;
+	return (cnt);
+}
+
 int parse_line(char **line, t_list *history)
 {
 // 터미널 세팅 설정 
@@ -121,34 +164,39 @@ int parse_line(char **line, t_list *history)
 
 	// termcap 초기화 
 	tgetent(NULL, "xterm");
-	char *cm = tgetstr("cm", NULL); //cursor motion
-	char *ce = tgetstr("ce", NULL); //clear line from cursor
+	t_cursor cursor;
+
+	cursor.cm = tgetstr("cm", NULL); //cursor motion
+	cursor.ce = tgetstr("ce", NULL); //clear line from cursor
+	cursor.prev_his = 0;
 	
 	int c;
-	int row;
-	int col;
 	char ch;
+	int h_cnt; //history count
 
 	c = 0;
+	h_cnt = 0;
 	if (!(*line = malloc(1)))
 		return (-1);
 	(*line)[0] = 0;
+	get_cursor_position(&cursor);
+	//col += 5;
 	while (read(0, &c, sizeof(c)) > 0)
 	{
-		get_cursor_position(&col, &row);
-		if (c == L_ARROW)
-			move_cursor_left(&col, &row, cm);
-		else if (c == R_ARROW)
-			move_cursor_right(&col, &row, cm);
-		else if (c == U_ARROW)
-			printf("UP_ARROW\n");
+		//printf("%d\n", h_cnt);
+		// if (c == L_ARROW)
+		// 	move_cursor_left(&col, &row, cm);
+		// else if (c == R_ARROW)
+		// 	move_cursor_right(&col, &row, cm);
+		if (c == U_ARROW)
+			h_cnt = find_history(history, line, h_cnt + 1, &cursor);
 		else if (c == D_ARROW)
-			printf("DOWN_ARROW\n");
+			h_cnt = find_history(history, line, h_cnt - 1, &cursor);
 		else if (c == BACKSPACE)
-			delete_end(&col, &row, cm, ce);
+			delete_end(&cursor);
 		else
 		{
-			col++;
+			cursor.col++;
 			ch = (char)c;
 			write(1, &ch, 1);
 			if (ch == '\n')
@@ -158,6 +206,7 @@ int parse_line(char **line, t_list *history)
 				return (0);
 		}
 		c = 0; //flush buffer
+		get_cursor_position(&cursor);
 	}
 	return (-1);
 }

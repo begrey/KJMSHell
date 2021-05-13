@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/06 09:24:12 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/13 15:50:00 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char	*other_command(char **command_line, int len)
 			i++;
 		}
 		printf("%s: command not found\n", command_line[0]);
+		exit(0);
 	}
 	else
 	{
