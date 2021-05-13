@@ -27,6 +27,7 @@ typedef	struct	s_redirc
 typedef struct s_line
 {
 	char				*arg;
+	int					token;
 //	struct s_redirc		**stream; //리다이렉션들
 	struct s_line		*line; //parsing 단계별 line
 	struct s_line		*prev;
