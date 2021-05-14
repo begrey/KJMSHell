@@ -47,7 +47,6 @@ char        **ft_split_syn(char const *s, char c);
 char	*ft_echo(char *args);
 
 //	parse_line.c
-int		ft_strcmp(char *dest, char *src);
 char	*append(char *line, char c);
 int		parse_line(char **line, t_list *history);
 
@@ -93,5 +92,6 @@ char	*ft_joinfree2(char **s1, char **s2);
 char	*str_append1(char *s1, char *s2);
 char	*str_append2(char *s1, char *s2);
 void	free_split(char ***split);
+int		ft_strcmp(char *dest, char *src);
 
 #endif

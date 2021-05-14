@@ -52,45 +52,41 @@ int		putchar_tc(int tc)
 	return (0);
 }
 
-void	move_cursor_left(t_cursor *cursor)
-{
-	if (cursor->col == 17)
-		return ;
-	(cursor->col) -= 1;
-	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
-
-}
-
-void	move_cursor_right(t_cursor *cursor)
-{
-	++(cursor->col);
-	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
-	//printf("why?\n");
-}
-
 void	delete_end(t_cursor *cursor)
 {
-	if (cursor->col != 0)
-		--(cursor->col);
+	get_cursor_position(cursor);
+	if (cursor->col < 20)
+		return ;
+	--(cursor->col);
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
 }
+char *remove_c(char *line)
+{
+	char *str; //끝 문자 제거할 문자열
+	int i;
 
-int ft_strcmp(char *dest, char *src) {
-	int i = 0;
-	while (dest[i] != '\0' || src[i] != '\0') {
-		if (dest[i] > src[i])
-			return dest[i] - src[i];
-		else if (dest[i] < src[i])
-			return dest[i] - src[i];
+	i = 0;
+	if (ft_strlen(line) == 0)
+	{
+		free(line);
+		return (ft_strdup(""));
+	}
+	if(!(str = (char *)malloc(sizeof(char) * ft_strlen(line))))
+			return NULL;
+	while(i != (int)ft_strlen(line) - 1)
+	{
+		str[i] = line[i];
 		i++;
 	}
-	return 0;      
+	str[i] = 0;
+	free(line);
+	return (str);
 }
 
 char *append(char *line, char c)
 {
-	char *str; //이어붙인 문자열
+	char *str; //이어붙일 문자열
 	int i;
 
 	i = 0;
@@ -114,11 +110,30 @@ void delete_line(t_cursor *cursor)
 
 	get_cursor_position(cursor);
 	len = cursor->col - 19;
-	//cursor->col =  cursor->col - len + 1;
 	if (cursor->col < 0)
 		cursor->col = 0;
 	tputs(tgoto(cursor->cm, cursor->col - len, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
+}
+
+void	renew_history(t_list **history, char *line, int cnt) //히스토리 갱신
+{
+	t_list	*temp;
+	int		len;
+	int		i;
+
+	temp = *history;
+	i = 1;
+	len = ft_lstsize(*history) - cnt + 1; // 맨 뒤부터 첫번쨰, cnt가 2고 사이즈가 5면 4번째 출력
+	//temp->content = line;
+	while (temp != NULL && i != len && cnt != 0)
+	{
+		temp = temp->next;
+		i++;
+	}
+	temp->content = line;
+	if (i == -1)
+		printf("%s\n", line);
 }
 
 int find_history(t_list *history, char **line, int cnt, t_cursor *cursor)
@@ -127,8 +142,14 @@ int find_history(t_list *history, char **line, int cnt, t_cursor *cursor)
 	int		len;
 	int		i;
 
+	if (history == NULL)
+		return (0);
 	if (cnt <= 0)
-		cnt = 1; // down_arrow 최소값 조정
+	{
+		(*line) = ft_strdup("");
+		delete_line(cursor);
+		return (0); // down_arrow 최소값 조정
+	}
 	else if (cnt >= ft_lstsize(history)) // up_arrow가 기존 히스토리 길이보다 큰 경우 최대값으로 조정
 		cnt = ft_lstsize(history);
 	temp = history;
@@ -139,11 +160,6 @@ int find_history(t_list *history, char **line, int cnt, t_cursor *cursor)
 		temp = temp->next;
 		i++;
 	}
-	// if (temp == NULL)
-	// {
-	// 	write(1, "NULL", 4);
-	// 	return (i);
-	// }
 	delete_line(cursor);
 	write(1, temp->content, ft_strlen(temp->content));
 	cursor->prev_his = temp->content;
@@ -180,33 +196,33 @@ int parse_line(char **line, t_list *history)
 		return (-1);
 	(*line)[0] = 0;
 	get_cursor_position(&cursor);
-	//col += 5;
+	cursor.col = 19;
 	while (read(0, &c, sizeof(c)) > 0)
 	{
-		//printf("%d\n", h_cnt);
-		// if (c == L_ARROW)
-		// 	move_cursor_left(&col, &row, cm);
-		// else if (c == R_ARROW)
-		// 	move_cursor_right(&col, &row, cm);
 		if (c == U_ARROW)
 			h_cnt = find_history(history, line, h_cnt + 1, &cursor);
 		else if (c == D_ARROW)
 			h_cnt = find_history(history, line, h_cnt - 1, &cursor);
 		else if (c == BACKSPACE)
-			delete_end(&cursor);
-		else
 		{
-			cursor.col++;
+			delete_end(&cursor);
+			*line = remove_c(*line);
+			//renew_history(history, *line, h_cnt);
+		}
+		else if (c != L_ARROW && c != R_ARROW)
+		{
 			ch = (char)c;
-			write(1, &ch, 1);
-			if (ch == '\n')
+			write(1, &c, 1);
+			if ((char)c == '\n')
 				return (1);
-			*line = append(*line, ch);
+			*line = append(*line, (char)c);
 			if (!*line)
 				return (0);
+			if (history != NULL)
+				renew_history(&history, *line, h_cnt);
+			cursor.col++;
 		}
 		c = 0; //flush buffer
-		get_cursor_position(&cursor);
 	}
 	return (-1);
 }

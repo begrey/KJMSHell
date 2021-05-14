@@ -38,6 +38,7 @@ int main(int argc, char **argv, char **envp)
 	t_list	*history;
 	//t_list	*temp;
 
+	//history = ft_lstnew("");
 	history = NULL;
 	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
 	{
