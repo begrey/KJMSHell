@@ -1,8 +1,17 @@
-
-// 기존 스플릿 처럼 개수 다 세고 나누는 것이 아니라, 세면서 나누는 방식으로 구조를 짤 것
-
-
 #include "minishell.h"
+
+static void	free_split(char **split)
+{
+	int		i;
+
+	i = 0;
+	while(split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
 
 static	int	is_space(const char c)
 {
@@ -44,12 +53,10 @@ static int	get_word_num(const char *str)
 	char	*s;
 	char	flag;
 	int		word_num;
-	int		len;
 	int		split_point;
 
 	split = NULL;
 	s = (char *)str;
-	len = 0;
 	while (is_space(*s))
 		s++;
 	if (*s)
@@ -61,7 +68,6 @@ static int	get_word_num(const char *str)
 	}									
 	flag = '\0';
 	split_point = 0;
-
 
 	while (*s)
 	{
@@ -80,40 +86,24 @@ static int	get_word_num(const char *str)
 			}
 		}
 		if (split_point != word_num)
-		{
 			split_point = word_num;
-		}
 		s++;
 	}
 	return (word_num);
 }
 
-static char	**new_string(const char **split, int word_num)
-{
-	char	**new_split;
-
-
-	return new_split;
-}
-
 int		*get_word_len(const char *str)
 {
-	char	**split;
 	char	*s;
 	char	flag;
 	int		word_num;
-	int		word_num2;		//malloc 용
 	int		len;
 	int		split_point;
 	int		*word_len;
 	int		*word_len2;
 
-	word_num2 = get_word_num(str);
-	word_len = (int *)malloc(sizeof(int) * word_num2);
+	word_len = (int *)malloc(sizeof(int) * get_word_num(str));
 	word_len2 = word_len;
-	split = (char **)malloc(sizeof(char *) * (word_num2 + 1));
-	split[word_num2] = NULL;
-	split = NULL;
 	s = (char *)str;
 	len = 0;						// 변수 초기화
 	while (is_space(*s))
@@ -132,11 +122,7 @@ int		*get_word_len(const char *str)
 	while (*s)			// 개수 체크하면서 스플릿
 	{
 		if (split_point != word_num)
-		{
-//			split = new_string(split, word_num);
 			split_point = word_num;
-		}
-
 		flag = flag_check(*s, flag);
 		if (!flag)
 		{
@@ -159,8 +145,6 @@ int		*get_word_len(const char *str)
 	}
 	if (len)
 		*word_len2 = len;
-	if (flag)
-		printf("syntax error\n");
 	return (word_len);
 }
 
@@ -170,7 +154,7 @@ char	**ft_split_quote(const char *str)
 	char	*s;
 	char	flag;
 	int		word_num;
-	int		word_num2;		//malloc 용
+	int		word_num2;
 	int		len;
 	int		split_point;
 	int		*word_len;
@@ -201,8 +185,6 @@ char	**ft_split_quote(const char *str)
 	}									
 	flag = '\0';
 	split_point = 0;
-
-
 	while (*s)			// 개수 체크하면서 스플릿
 	{
 		if (split_point != word_num)
@@ -224,22 +206,27 @@ char	**ft_split_quote(const char *str)
 				}
 			}
 		}
-		split[word_num - 1][len] = *s;	//	 넣기만 하면 됨
-//		printf("| %c |  | %c | w_n : %d, len :%d\n", *s, flag, word_num, len);
+		split[word_num - 1][len] = *s;
 		s++;
 		len++;
 	}
 	if (flag)
+	{
+		free(word_len);
+		free_split(split);
 		printf("syntax error\n");
+		exit(0);
+	}
 	char	*temp;
 	i = 0;
 	while (split[i])
 	{
 		temp = split[i];
-		split[i] = ft_strtrim(temp, " ");
+		split[i] = ft_strtrim(temp, " ");	// 앞뒤 공백 제거
 		free(temp);
 		i++;
 	}
+	free(word_len);
 	return (split);
 }
 
@@ -251,7 +238,7 @@ int		main(void)
 
 	str = ft_strdup("a ;;\"abc\";;\"abc\" dd");
 //	str = ft_strdup("a    abc a\"a\" \'\"aa\' \' ");
-//	str = ft_strdup("echo  \"\'d\'\"a   b\"   c \'  \"\'  \'  d");
+//	str = ft_strdup("a");
 	printf("input :%s\n", str);
 	split = ft_split_quote(str);
 
@@ -261,6 +248,10 @@ int		main(void)
 		printf("split[%d] :%s\n", i, split[i]);
 		i++;
 	}
+//	system("leaks a.out");
+//	while (1)
+//		;
+
 	return (0);
 }
 */

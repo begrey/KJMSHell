@@ -1,23 +1,22 @@
+/*
+
 #include "minishell.h"
 
-void	make_env(t_line **line, char *split_line)
-{
-	;	// 생각보다 어려움
-}
-
-void make_list(t_line **line, char *s_line)
+void make_list(t_line **line, char *s_line, char lvl)
 {
 	char **split_line;
 	int i;
 
 	i = 0;
+//	split_line = ft_split_syn(s_line, lvl);
 	split_line = ft_split_quote(s_line);
 	while (split_line[i] != NULL)
 	{
-		ft_listadd_back(&(*line), ft_listnew(split_line[i]));
+//		if (!(split_line[i][0] == '<' || split_line[i][0] == '>'))
+		// 리다이렉션은 스플릿 하고 처리
+			ft_listadd_back(&(*line), ft_listnew(split_line[i]));
 		i++;
 	}
-	make_env(line, split_line);
 }
 
 void split_arg(t_line **line, char *arg_line) // echo c
@@ -25,6 +24,7 @@ void split_arg(t_line **line, char *arg_line) // echo c
 	t_line *arg_list;
 
 	arg_list = NULL;
+	make_list(&arg_list, arg_line, ' ');
 	ft_exec(&arg_list);
 	(*line)->line = arg_list;
 }
@@ -37,6 +37,7 @@ void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
 
 	i = 0;
 	redir_list = NULL;
+	make_list(&redir_list, redir_line, '>');
 	(*line)->line = redir_list;
 	temp = redir_list;
 //	set_redirection(line, redir_line);	// temp->arg에는 echo c 만 들어있게 됨
@@ -107,10 +108,33 @@ void split_pipe(t_line **line, char *pipe_line) // echo >aa >bb c | pwd
 	pid_t	pid;
 
 	pipe_list = NULL;
+	make_list(&pipe_list, pipe_line, '|');
 	(*line)->line = pipe_list; 
 	temp = pipe_list;
 	send_pipe(ft_listlast(temp));		// pipe함수 사용
 }
+
+
+	/*		원본
+void split_pipe(t_line **line, char *pipe_line) // echo >a >b c | pwd
+{
+	t_line *pipe_list;
+	t_line *temp;
+	int i;
+
+	i = 0;
+	pipe_list = NULL;
+	make_list(&pipe_list, pipe_line, '|');
+	(*line)->line = pipe_list; 
+	temp = pipe_list;
+	while(temp != NULL)
+	{
+		split_arg((&temp), temp->arg);
+		temp = temp->next;
+		i++;
+	}
+}
+	*/
 
 void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
 {
@@ -120,6 +144,7 @@ void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
 
 	i = 0;
 	semi_list = NULL;
+	make_list(&semi_list, (*line)->arg, ';');
 	(*line)->line = semi_list;
 	temp = semi_list;
 	while(temp != NULL)
@@ -151,13 +176,14 @@ int main(int argc, char *argv[], char *envp[])
 		{
 			printf("ft_errno %d\n", ft_errno);
 		}
-//		lvl = 1;
+		lvl = 1;
 		line = ft_listnew(input_line);
-//		split_semi(&line);
-		make_list(&line, input_line);
-//		down = line;
+		split_semi(&line);
+		down = line;
 		write(1, "KJMSHell(OoO) >> ", 17);
 		free(line);
 	}
 	return (0);
 }
+
+*/
