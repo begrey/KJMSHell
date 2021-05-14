@@ -232,12 +232,19 @@ static char	**ft_split_quote(const char *str)
 	}
 	if (flag)
 		printf("syntax error\n");
+	char	*temp;
+	i = 0;
+	while (split[i])
+	{
+		temp = split[i];
+		split[i] = ft_strtrim(temp, " ");
+		free(temp);
+		i++;
+	}
 	return (split);
 }
 
-#include "minishell.h"
-
-
+/*
 int		main(void)
 {
 	char	*str;
@@ -256,6 +263,8 @@ int		main(void)
 	}
 	return (0);
 }
+*/
+
 
 //			echo		;'222'    ; echo    "$USER"			// ft_split_quote에서
 //			echo		;'222'	  ; echo	"sunmin"
