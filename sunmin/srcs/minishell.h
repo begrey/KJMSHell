@@ -68,6 +68,7 @@ char		*str_append1(char *s1, char *s2);
 char		*str_append2(char *s1, char *s2);
 int			is_alpha(char c);
 int			is_dollar(char c);
+char	*str_appendchar(char *s1, char c);
 
 //		util_envlist.c
 t_env		*ft_envnew(void *key, void *value);

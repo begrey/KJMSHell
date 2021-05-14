@@ -30,6 +30,23 @@ char	*str_append1(char *s1, char *s2)
 	return (str);
 }
 
+char	*ft_joinfreechar(char **s1, char *s2)
+{
+	char	*str;
+	
+	str = ft_strjoin(*s1, s2);
+	free(*s1);
+	return (str);
+}
+
+char	*str_appendchar(char *s1, char c)
+{
+	char	*str;
+
+	str = ft_joinfreechar(&s1, &c);
+	return (str);
+}
+
 char	*ft_joinfree2(char **s1, char **s2)
 {
 	char	*str;
