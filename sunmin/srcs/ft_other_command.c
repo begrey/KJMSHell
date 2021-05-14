@@ -36,6 +36,20 @@ void	other_command(t_line **command_line)		// /bin/ls 이런 식으로 명령어
 			execve(new_path, &single_line, NULL);
 			i++;
 		}
+		if (errno)
+		{
+			char *str = strerror(errno);
+			int	failure;
+			failure = 0;
+			if (errno == 2)
+			{
+				failure = 127;
+			}
+			else
+				failure = 1;
+			printf("%s\n", str);
+			exit(127);
+		}
 	}
 	else
 	{
