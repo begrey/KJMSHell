@@ -6,7 +6,8 @@ void make_list(t_line **line, char *s_line, char lvl)
 	int i;
 
 	i = 0;
-	split_line = ft_split_syn(s_line, lvl);
+//	split_line = ft_split_syn(s_line, lvl);
+	split_line = ft_split_quote(s_line);
 	while (split_line[i] != NULL)
 	{
 //		if (!(split_line[i][0] == '<' || split_line[i][0] == '>'))

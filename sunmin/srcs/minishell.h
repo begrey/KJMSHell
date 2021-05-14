@@ -97,5 +97,7 @@ char		*extract_env(char *str);
 //		ft_other_command.c
 void		other_command(t_line **comand_line);
 
+//		ft_split_quote.c
+char		**ft_split_quote(const char *str);
 
 #endif

@@ -164,7 +164,7 @@ int		*get_word_len(const char *str)
 	return (word_len);
 }
 
-static char	**ft_split_quote(const char *str)
+char	**ft_split_quote(const char *str)
 {
 	char	**split;
 	char	*s;
@@ -186,7 +186,6 @@ static char	**ft_split_quote(const char *str)
 	{
 		split[i] = (char *)malloc(sizeof(char) * (word_len[i] + 1));
 		split[i][word_len[i]] = '\0';
-		printf("wd_len[%d] %d\n", i, word_len[i]);
 		i++;
 	}
 	s = (char *)str;
@@ -250,7 +249,8 @@ int		main(void)
 	char	*str;
 	char	**split;
 
-	str = ft_strdup("a    abc a\"a\" \'\"aa\' \' ");
+	str = ft_strdup("a ;;\"abc\";;\"abc\" dd");
+//	str = ft_strdup("a    abc a\"a\" \'\"aa\' \' ");
 //	str = ft_strdup("echo  \"\'d\'\"a   b\"   c \'  \"\'  \'  d");
 	printf("input :%s\n", str);
 	split = ft_split_quote(str);
