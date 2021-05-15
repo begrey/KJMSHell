@@ -17,7 +17,18 @@ void make_list(t_line **line, char *s_line)
 		ft_listadd_back(&(*line), ft_listnew(split_line[i]));
 		i++;
 	}
-	make_env(line, split_line);
+
+
+	i = 0;
+	while (split_line[i])
+	{
+		split_line[i] = convert_env(split_line[i]);
+		printf("line[%d] :%s\n", i, split_line[i]);
+		i++;
+	}
+//
+
+//	make_env(line, split_line);
 }
 
 void split_arg(t_line **line, char *arg_line) // echo c

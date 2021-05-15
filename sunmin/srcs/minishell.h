@@ -66,6 +66,7 @@ void		ft_exec(t_line **command_line);
 int			ft_strcmp(char *dest, char *src);
 char		*str_append1(char *s1, char *s2);
 char		*str_append2(char *s1, char *s2);
+char		*str_append3(char *s1, char c);
 int			is_alpha(char c);
 int			is_dollar(char c);
 char	*str_appendchar(char *s1, char c);
@@ -99,5 +100,9 @@ void		other_command(t_line **comand_line);
 
 //		ft_split_quote.c
 char		**ft_split_quote(const char *str);
+int			is_space(const char c);		//  나중에 util로 빼기
+
+//		convert_env.c
+char		*convert_env(const char *str);
 
 #endif

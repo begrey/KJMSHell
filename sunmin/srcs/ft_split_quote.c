@@ -13,7 +13,7 @@ static void	free_split(char **split)
 	free(split);
 }
 
-static	int	is_space(const char c)
+int	is_space(const char c)		//  나중에 util로 빼기
 {
 	if (c == ' ' || (c >= 9 && c<= 13))
 		return (1);

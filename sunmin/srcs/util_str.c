@@ -65,6 +65,28 @@ char	*str_append2(char *s1, char *s2)
 	return (str);
 }
 
+char	*str_append3(char *s1, char c)
+{
+	char	*s;
+	char	*str;
+	int		new_len;
+	int		i;
+
+	s = (char *)s1;
+	new_len = ft_strlen(s1) + 1;
+	str = (char *)malloc(sizeof(char) * (new_len + 1));
+	str[new_len] = '\0';
+	i = 0;
+	while (s[i])
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = c;
+
+	return (str);
+}
+
 void	free_split(char ***split)
 {
 	int		i;
