@@ -1,4 +1,5 @@
 파싱 현황
+
 	0. 개행 전까지 한 줄 받아옴		(o)
 	1. 따옴표 처리					(o) split_quote.c
 	2. 환경 변수 처리				(o)	convert_env.c
