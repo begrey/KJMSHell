@@ -101,6 +101,8 @@ void		other_command(t_line **comand_line);
 //		ft_split_quote.c
 char		**ft_split_quote(const char *str);
 int			is_space(const char c);		//  나중에 util로 빼기
+char		flag_check(const char c, char flag); // util
+int			is_quote(const char c);		// util로 빼기
 
 //		convert_env.c
 char		*convert_env(const char *str);
