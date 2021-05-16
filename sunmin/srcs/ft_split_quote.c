@@ -20,14 +20,14 @@ int	is_space(const char c)		//  나중에 util로 빼기
 	return (0);
 }
 
-static	int	is_quote(const char c)
+int	is_quote(const char c)
 {
 	if (c == '\'' || c == '\"')
 		return (1);
 	return (0);
 }
 
-static char	flag_check(const char c, char flag)
+char	flag_check(const char c, char flag)
 {
 	if (!flag)
 	{
