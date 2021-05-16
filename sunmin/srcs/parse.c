@@ -1,34 +1,36 @@
 #include "minishell.h"
 
-void	make_env(t_line **line, char *split_line)
-{
-	;	// 생각보다 어려움
-}
 
-void make_list(t_line **line, char *s_line)
+
+void	make_list(t_line **line, char *s_line)
 {
 	char **split_line;
 	int i;
 
-	i = 0;
 	split_line = ft_split_quote(s_line);
-	while (split_line[i] != NULL)
-	{
-		ft_listadd_back(&(*line), ft_listnew(split_line[i]));
-		i++;
-	}
-
-
 	i = 0;
-	while (split_line[i])
+	while (split_line[i])				// 환경변수 변환
 	{
 		split_line[i] = convert_env(split_line[i]);
 		printf("line[%d] :%s\n", i, split_line[i]);
 		i++;
 	}
-//
+	
+	i = 0;
+	while (split_line[i])		// 제대로 담았음
+	{
+		ft_listadd_back(&(*line), ft_listnew(split_line[i]));		// 여기서 리스트 분할까지 하면 좋을거 같아서 방법 생각중
+		i++;
+	}
 
-//	make_env(line, split_line);
+/*
+	while (*line)			// 토큰 분할하는 함수
+	{
+		
+		*line = (*line)->next;
+	}
+*/
+
 }
 
 void split_arg(t_line **line, char *arg_line) // echo c
@@ -155,7 +157,7 @@ int main(int argc, char *argv[], char *envp[])
 		return (0);
 	}
 	init_env(envp);
-	write(1, "KJMSHell(OoO) >> ", 17);		 // 3번째 인자 22로 하면 터집니다..
+	write(1, "KJMSHell(OoO) >> ", 17);
 	while ((parse_line(&input_line)) > 0)
 	{
 		if (input_line[0] == '$' && input_line[1] == '?')
@@ -163,7 +165,7 @@ int main(int argc, char *argv[], char *envp[])
 			printf("ft_errno %d\n", ft_errno);
 		}
 //		lvl = 1;
-		line = ft_listnew(input_line);
+//		line = ft_listnew(input_line);
 //		split_semi(&line);
 		make_list(&line, input_line);
 //		down = line;
