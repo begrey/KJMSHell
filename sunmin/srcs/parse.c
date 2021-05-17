@@ -1,5 +1,30 @@
 #include "minishell.h"
 
+/*
+void	parse_redirection(t_line **list)
+{
+	while (*list)
+	{
+		if ((*list)->arg[0] == '>' || (*list)->arg[0] == '<')
+		{
+			if ((*list)->arg[0] == '>')
+			{
+				*list = (*list)->next;
+			}
+			else
+			{
+
+			}
+		}
+		else
+		{
+;
+		}
+		*list = (*list)->next;
+	}
+}
+*/
+
 int		is_token(char c)
 {
 	if (c == ';' || c == '|' || c == '>' || c == '<')		// <, >는 따로 처리해야 할 듯
@@ -90,7 +115,7 @@ char	**ft_token_split(char *arg)
 		{
 			j = 0;
 			word_num = where_token(s);// - next_split;	//// 수정 필요
-			split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
+		split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
 			split_token[i][word_num] = '\0';
 			while (j < word_num)
 			{
