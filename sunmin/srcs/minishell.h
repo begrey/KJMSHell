@@ -107,4 +107,7 @@ int			is_quote(const char c);		// util로 빼기
 //		convert_env.c
 char		*convert_env(const char *str);
 
+//		redir_syn_check.c
+int			redir_syn_check(t_line **line);
+
 #endif
