@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/14 13:02:42 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/17 15:57:12 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ char	*other_command(char **command_line, int len)
 	char	**split_path;
 	char	*new_path;
 	pid_t	pid;
-	int		*status;
+	int		status;
 
-	status = NULL;
+	status = 0;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -45,7 +45,9 @@ char	*other_command(char **command_line, int len)
 	}
 	else
 	{
-		waitpid(pid, status, 0);
+		waitpid(pid, &status, 0);
+		//printf("errno: %s\n", strerror(errno));
+		printf("dd %d\n", status);
 	}
 	return NULL;
 

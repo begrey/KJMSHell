@@ -10,8 +10,10 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <string.h>
 # include <termios.h>
 # include <termcap.h>
+# include <errno.h>
 # include "../libft/libft.h"
 
 # define BACKSPACE 127
