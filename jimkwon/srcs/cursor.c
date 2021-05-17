@@ -10,6 +10,35 @@
 # define R_ARROW 4414235
 # define L_ARROW 4479771
 
+int ft_strlen(char *str)
+{
+	int i = 0;
+
+	while (str[i] != '\0')
+		i++;
+	return i;
+}
+
+char *append(char *line, char c)
+{
+	char *str; //이어붙인 문자열
+	int i;
+
+	i = 0;
+	if(!(str = (char *)malloc(sizeof(char) * (ft_strlen(line) + 2))))
+			return NULL;
+	while(line[i] != '\0')
+	{
+		str[i] = line[i];
+		i++;
+	}
+	str[i] = c;
+	i++;
+	str[i] = 0;
+	free(line);
+	return (str);
+}
+
 int	nbr_length(int n)
 {
 	int	i = 0;
@@ -84,8 +113,14 @@ void	delete_end(int *col, int *row, char *cm, char *ce)
 	tputs(ce, 1, putchar_tc);
 }
 
-int		main(void)
+int		parse_line(char **line)
 {
+	int c;
+	int row;
+	int col;
+	char ch;
+	int h_cnt; //history count
+
 	// 터미널 세팅 설정 
 	struct termios term;
 	tcgetattr(STDIN_FILENO, &term);
@@ -99,32 +134,28 @@ int		main(void)
 	tgetent(NULL, "xterm");
 	char *cm = tgetstr("cm", NULL); //cursor motion
 	char *ce = tgetstr("ce", NULL); //clear line from cursor
-	
-	int c = 0;
-	int row;
-	int col;
-	char ch;
 
+	c = 0;
+	h_cnt = 0;
 	if (!(*line = malloc(1)))
 		return (-1);
 	(*line)[0] = 0;
+	get_cursor_position(&col, &row);
+	//col += 5;
 	while (read(0, &c, sizeof(c)) > 0)
 	{
-		get_cursor_position(&col, &row);
+		//printf("%d\n", h_cnt);
 		if (c == L_ARROW)
 			move_cursor_left(&col, &row, cm);
-		else if (c == R_ARROW)
+		else if (c == R_ARROW && col < (17 + ft_strlen(*line)))
 			move_cursor_right(&col, &row, cm);
-		else if (c == U_ARROW)
-			printf("UP_ARROW\n");
-		else if (c == D_ARROW)
-			printf("DOWN_ARROW\n");
 		else if (c == BACKSPACE)
 			delete_end(&col, &row, cm, ce);
 		else
 		{
 			col++;
 			ch = (char)c;
+			write(1, &ch, 1);
 			if (ch == '\n')
 				return (1);
 			*line = append(*line, ch);
@@ -132,5 +163,31 @@ int		main(void)
 				return (0);
 		}
 		c = 0; //flush buffer
+		get_cursor_position(&col, &row);
 	}
+	return (-1);
+}
+
+int		main(void)
+{
+	char	*line;
+	//char	*p_line;
+	char	**command_line;
+	int		i;
+	int		read;
+	
+	write(1, "KJMSHell(oOo) >> ", 17);
+
+	while((read = parse_line(&line)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
+	{
+		write(1, line, ft_strlen(line));
+		write(1, "\n", 1);
+		write(1, "KJMSHell(oOo) >> ", 17);
+	}
+	if (read == 0)
+		exit(0);
+	else
+		write(1, "parseError!\n", 12);
+	return (0);
+
 }
