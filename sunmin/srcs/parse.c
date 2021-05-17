@@ -1,19 +1,156 @@
 #include "minishell.h"
 
-void make_list(t_line **line, char *s_line, char lvl)
+int		is_token(char c)
+{
+	if (c == ';' || c == '|' || c == '>' || c =='<')
+		return (1);
+	return (0);
+}
+
+int		where_token(char **str)	// is_token_quote와 구조 비슷
+{
+	char		*s;
+	char		flag;
+	int			ret;
+	int			i;
+
+	i = 0;
+	s = (char *str);
+	ret = 0;
+	flag = 0;
+	while (s[i])
+	{
+		flag = flag_check(s[i], flag);
+		if (!flag)
+		{
+			if (is_token(s[i]))
+				return ([i]);		// 토큰 위치 리턴
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+int		is_token_quote(const char *str)
+{
+	char		*s;
+	char		flag;
+	int			ret;
+
+	ret = 0;
+	flag = 0;
+	s = (char *)str;
+	while (*s)
+	{
+		flag = flag_check(*s, flag);	// 함수이름 바꿔야함
+		if (!flag)			// quote 가 없을 때는 토큰 취급
+		{
+			if (is_token(*s))
+				ret++;
+		}
+		s++;
+		if (*s && !is_space(*s)) // 공백 빼고 들어오는 거면 !is_space 조건 없어도 됨
+		ret++;
+	}
+	return (ret);		// 나눠야 할 문자열 개수 (token개수와 같거나 +1)
+}
+
+char	**ft_token_split(char *arg)
+{
+	char	*s;
+	char	**split_token;
+	int		next_split;
+	int		split_num;
+	int		word_num;
+	int		i;
+	int		j;
+
+	s = (char *)arg;
+	next_split = &s;
+	split_num = is_token_quote(arg);
+	split_token = (char **)malloc(sizeof(char *) * (split_num + 1));
+	split_token[split_num] = NULL;
+	i = 0;
+	next_split = where_token(s[i]);	////// 수정 필요 // 개수 받아오는 것과 다음 포인터 반환하는 것이 잘 안됨
+	while (next_split)
+	{
+		j = 0;
+		word_num = where_token(s) - next_split;	//// 수정 필요
+		split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
+		split_token[i][word_num] = '\0';
+		while (j < word_num)
+		{
+			split_token[i][j] = *s;
+			j++;
+			s++;
+		}
+		next_split = where_token(s);	//// 수정 필요
+		i++;
+	}
+	return (split_token);
+}
+
+void	list_split_addback(t_line **lst, char *arg)		//arg로는 >a;|as";|>"er 같은 값이 들어옴
+{
+
+	int		token_num;
+	int		i;
+	char	**split_token;		// 토큰 기준으로 스플릿
+
+	i = 0;
+
+	// 토큰 기준으로 스플릿하기만하면 됨
+
+	split_token = ft_token_split(arg);
+
+
+	// 나눠놓은 문자열 붙이기
+	while (i < token_num + 1)
+	{
+		ft_listadd_back(lst, ft_listnew(split_token[i]));
+		i++;
+	}
+
+}
+
+void	make_list(t_line **line, char *s_line)
 {
 	char **split_line;
 	int i;
 
+	split_line = ft_split_quote(s_line);
 	i = 0;
-	split_line = ft_split_syn(s_line, lvl);
-	while (split_line[i] != NULL)
+	while (split_line[i])				// 환경변수 변환
 	{
-//		if (!(split_line[i][0] == '<' || split_line[i][0] == '>'))
-		// 리다이렉션은 스플릿 하고 처리
-			ft_listadd_back(&(*line), ft_listnew(split_line[i]));
+		split_line[i] = convert_env(split_line[i]);
+		printf("line[%d] :%s\n", i, split_line[i]);
 		i++;
 	}
+	printf("-----------\n");
+	i = 0;
+	while (split_line[i])		// 제대로 담았음
+	{
+		if (is_token_quote(split_line[i]))				// 토큰 있으면 나눠 붙이기
+			list_split_addback(&(*line), split_line[i]);
+		else				// 토큰 없으면 그냥 붙이기
+			ft_listadd_back(&(*line), ft_listnew(split_line[i]));		// 여기서 리스트 분할까지 하면 좋을거 같아서 방법 생각중	// 그리고 왜 &(*line)?? 물어보고 그냥 line 쓰기
+		i++;
+	}
+	printf("list test \n\n");
+	while (*line)		// 출력 테스트
+	{
+		printf("%s\n", (*line)->arg);
+		*line = (*line)->next;
+	}
+
+/*
+	while (*line)			// 토큰 분할하는 함수
+	{
+		
+		*line = (*line)->next;
+	}
+*/
+
 }
 
 void split_arg(t_line **line, char *arg_line) // echo c
@@ -21,7 +158,6 @@ void split_arg(t_line **line, char *arg_line) // echo c
 	t_line *arg_list;
 
 	arg_list = NULL;
-	make_list(&arg_list, arg_line, ' ');
 	ft_exec(&arg_list);
 	(*line)->line = arg_list;
 }
@@ -34,7 +170,6 @@ void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
 
 	i = 0;
 	redir_list = NULL;
-	make_list(&redir_list, redir_line, '>');
 	(*line)->line = redir_list;
 	temp = redir_list;
 //	set_redirection(line, redir_line);	// temp->arg에는 echo c 만 들어있게 됨
@@ -55,13 +190,13 @@ void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
 	while (*stream)
 	{
 //		go_redir(*(*line)->stream);		// 리다이렉션 배열에서 맞는 fd로 dup2
-		go_redir(*stream);		// 테스트용
+//		go_redir(*stream, fd1);		// 테스트용
 		split_arg((&temp), temp->arg);
 		temp = temp->next;
 		stream++;			// 테스트용
 //		((*line)->stream)++;
 	}
-	dup2(fd_temp, 1);
+//	dup2(fd_temp, 1);
 //	back_redir(*(*line)->stream);		// 다시 fd 0,1 맞춰줌
 }
 
@@ -71,30 +206,31 @@ void	send_pipe(t_line *last)		// 재귀 호출로 분기하고 다음으로 보�
 	int		*status;
 	int		state;
 
+int		fd1;		// 파이프 때문에 일단 선언해 놓은 변수들
+int		fd_temp;
+int		*pipe2;
+int		temp_stdin;
+int		temp_stdout;
+
+	pid = 0;
 	pipe2 = (int *)malloc(sizeof(int) * 2);
 	state = pipe(pipe2);
 
-	printf("%s\n", last->arg);
 	if (last->prev)
 	{
-		pid = fork();
-		if (pid != 0)		// 부모
-		{
-//			dup2(temp_stdin, 0);
-//			dup2(0, pipe2[1]);
-			waitpid(pid, status, 0);
-		}
+		pid = fork();					// dup2를 하고 close함수를 활용하자
+		printf("generate %d\n", pid);
+		if (pid != 0)
+			wait(status);
 		else
 		{
-//			dup2(temp_stdout, 1);		// 자식의 출력
-//			dup2(1, pipe2[0]);
-			last = last->prev;
-			send_pipe(last);
+			send_pipe(last->prev);
+			split_arg((&last), last->arg);
+			exit(0);
 		}
 	}
-	split_arg((&last), last->arg);
-//	dup2(0, temp_stdin);
-//	dup2(1, temp_stdout);
+	else
+		split_arg((&last), last->arg);
 }
 
 void split_pipe(t_line **line, char *pipe_line) // echo >aa >bb c | pwd
@@ -104,33 +240,10 @@ void split_pipe(t_line **line, char *pipe_line) // echo >aa >bb c | pwd
 	pid_t	pid;
 
 	pipe_list = NULL;
-	make_list(&pipe_list, pipe_line, '|');
 	(*line)->line = pipe_list; 
 	temp = pipe_list;
 	send_pipe(ft_listlast(temp));		// pipe함수 사용
 }
-
-
-	/*		원본
-void split_pipe(t_line **line, char *pipe_line) // echo >a >b c | pwd
-{
-	t_line *pipe_list;
-	t_line *temp;
-	int i;
-
-	i = 0;
-	pipe_list = NULL;
-	make_list(&pipe_list, pipe_line, '|');
-	(*line)->line = pipe_list; 
-	temp = pipe_list;
-	while(temp != NULL)
-	{
-		split_arg((&temp), temp->arg);
-		temp = temp->next;
-		i++;
-	}
-}
-	*/
 
 void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
 {
@@ -140,7 +253,6 @@ void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
 
 	i = 0;
 	semi_list = NULL;
-	make_list(&semi_list, (*line)->arg, ';');
 	(*line)->line = semi_list;
 	temp = semi_list;
 	while(temp != NULL)
@@ -165,13 +277,18 @@ int main(int argc, char *argv[], char *envp[])
 		return (0);
 	}
 	init_env(envp);
-	write(1, "KJMSHell(OoO) >> ", 17);		 // 3번째 인자 22로 하면 터집니다..
+	write(1, "KJMSHell(OoO) >> ", 17);
 	while ((parse_line(&input_line)) > 0)
 	{
-		lvl = 1;
-		line = ft_listnew(input_line);
-		split_semi(&line);
-		down = line;
+		if (input_line[0] == '$' && input_line[1] == '?')
+		{
+			printf("ft_errno %d\n", ft_errno);
+		}
+//		lvl = 1;
+//		line = ft_listnew(input_line);
+//		split_semi(&line);
+		make_list(&line, input_line);
+//		down = line;
 		write(1, "KJMSHell(OoO) >> ", 17);
 		free(line);
 	}

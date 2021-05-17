@@ -2,9 +2,12 @@
 # define MINISHELL_H
 
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <signal.h>
+#include <errno.h>
 #include "../../libft/libft.h"
 
 typedef struct s_env
@@ -24,6 +27,7 @@ typedef	struct	s_redirc
 typedef struct s_line
 {
 	char				*arg;
+	int					token;
 //	struct s_redirc		**stream; //리다이렉션들
 	struct s_line		*line; //parsing 단계별 line
 	struct s_line		*prev;
@@ -31,13 +35,10 @@ typedef struct s_line
 }				t_line;
 
 //		전역변수
+int		ft_errno;
 t_env	*env;
 char	**stream;
-int		fd1;
-int		fd_temp;
-int		*pipe2;
-int		temp_stdin;
-int		temp_stdout;
+
 
 //		ft_listadd_back.c
 void		ft_listadd_back(t_line **lst, t_line *new);
@@ -65,8 +66,10 @@ void		ft_exec(t_line **command_line);
 int			ft_strcmp(char *dest, char *src);
 char		*str_append1(char *s1, char *s2);
 char		*str_append2(char *s1, char *s2);
+char		*str_append3(char *s1, char c);
 int			is_alpha(char c);
 int			is_dollar(char c);
+char	*str_appendchar(char *s1, char c);
 
 //		util_envlist.c
 t_env		*ft_envnew(void *key, void *value);
@@ -95,5 +98,13 @@ char		*extract_env(char *str);
 //		ft_other_command.c
 void		other_command(t_line **comand_line);
 
+//		ft_split_quote.c
+char		**ft_split_quote(const char *str);
+int			is_space(const char c);		//  나중에 util로 빼기
+char		flag_check(const char c, char flag); // util
+int			is_quote(const char c);		// util로 빼기
+
+//		convert_env.c
+char		*convert_env(const char *str);
 
 #endif

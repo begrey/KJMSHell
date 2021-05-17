@@ -30,6 +30,23 @@ char	*str_append1(char *s1, char *s2)
 	return (str);
 }
 
+char	*ft_joinfreechar(char **s1, char *s2)
+{
+	char	*str;
+	
+	str = ft_strjoin(*s1, s2);
+	free(*s1);
+	return (str);
+}
+
+char	*str_appendchar(char *s1, char c)
+{
+	char	*str;
+
+	str = ft_joinfreechar(&s1, &c);
+	return (str);
+}
+
 char	*ft_joinfree2(char **s1, char **s2)
 {
 	char	*str;
@@ -45,6 +62,28 @@ char	*str_append2(char *s1, char *s2)
 	char	*str;
 
 	str = ft_joinfree2(&s1, &s2);
+	return (str);
+}
+
+char	*str_append3(char *s1, char c)
+{
+	char	*s;
+	char	*str;
+	int		new_len;
+	int		i;
+
+	s = (char *)s1;
+	new_len = ft_strlen(s1) + 1;
+	str = (char *)malloc(sizeof(char) * (new_len + 1));
+	str[new_len] = '\0';
+	i = 0;
+	while (s[i])
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = c;
+
 	return (str);
 }
 
