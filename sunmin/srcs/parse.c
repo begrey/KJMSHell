@@ -2,34 +2,12 @@
 
 int		is_token(char c)
 {
-	if (c == ';' || c == '|' || c == '>' || c =='<')
+	if (c == ';' || c == '|' || c == '>' || c == '<')		// <, >는 따로 처리해야 할 듯
 		return (1);
 	return (0);
 }
 
-int		where_token(char **str)	// is_token_quote와 구조 비슷
-{
-	char		*s;
-	char		flag;
-	int			ret;
-	int			i;
 
-	i = 0;
-	s = (char *str);
-	ret = 0;
-	flag = 0;
-	while (s[i])
-	{
-		flag = flag_check(s[i], flag);
-		if (!flag)
-		{
-			if (is_token(s[i]))
-				return ([i]);		// 토큰 위치 리턴
-		}
-		i++;
-	}
-	return (NULL);
-}
 
 int		is_token_quote(const char *str)
 {
@@ -40,8 +18,12 @@ int		is_token_quote(const char *str)
 	ret = 0;
 	flag = 0;
 	s = (char *)str;
-	while (*s)
+
+
+	while (*s && *(s + 1))
 	{
+		if (is_token(*(s + 1)))
+			ret++;
 		flag = flag_check(*s, flag);	// 함수이름 바꿔야함
 		if (!flag)			// quote 가 없을 때는 토큰 취급
 		{
@@ -49,10 +31,34 @@ int		is_token_quote(const char *str)
 				ret++;
 		}
 		s++;
-		if (*s && !is_space(*s)) // 공백 빼고 들어오는 거면 !is_space 조건 없어도 됨
-		ret++;
 	}
-	return (ret);		// 나눠야 할 문자열 개수 (token개수와 같거나 +1)
+	if (*s)
+		ret++;
+	return (ret);
+}
+
+int		where_token(char *str)	// is_token_quote와 구조 비슷	// 토큰의 인덱스 반환
+{
+	char		*s;
+	char		flag;
+	int			ret;
+	int			i;
+
+	i = 0;
+	s = (char *)str;
+	ret = 0;
+	flag = 0;
+	while (s[i])
+	{
+		flag = flag_check(s[i], flag);
+		if (!flag)
+		{
+			if (is_token(s[i]))
+				return (i);
+		}
+		i++;
+	}
+	return (i);
 }
 
 char	**ft_token_split(char *arg)
@@ -66,25 +72,34 @@ char	**ft_token_split(char *arg)
 	int		j;
 
 	s = (char *)arg;
-	next_split = &s;
 	split_num = is_token_quote(arg);
 	split_token = (char **)malloc(sizeof(char *) * (split_num + 1));
 	split_token[split_num] = NULL;
 	i = 0;
-	next_split = where_token(s[i]);	////// 수정 필요 // 개수 받아오는 것과 다음 포인터 반환하는 것이 잘 안됨
-	while (next_split)
+	next_split = where_token(s);	////// 수정 필요 // 개수 받아오는 것과 다음 포인터 반환하는 것이 잘 안됨
+	while (i < split_num)
 	{
-		j = 0;
-		word_num = where_token(s) - next_split;	//// 수정 필요
-		split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
-		split_token[i][word_num] = '\0';
-		while (j < word_num)
+		if (is_token(*s))
 		{
-			split_token[i][j] = *s;
-			j++;
+			split_token[i] = (char *)malloc(sizeof(char) * (2));
+			split_token[i][0] = *s;
+			split_token[i][1] = '\0';
 			s++;
 		}
-		next_split = where_token(s);	//// 수정 필요
+		else
+		{
+			j = 0;
+			word_num = where_token(s);// - next_split;	//// 수정 필요
+			split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
+			split_token[i][word_num] = '\0';
+			while (j < word_num)
+			{
+				split_token[i][j] = *s;
+				j++;
+				s++;
+			}
+		}
+		next_split = where_token(s + next_split + 1);	//// 수정 필요
 		i++;
 	}
 	return (split_token);
@@ -93,19 +108,14 @@ char	**ft_token_split(char *arg)
 void	list_split_addback(t_line **lst, char *arg)		//arg로는 >a;|as";|>"er 같은 값이 들어옴
 {
 
-	int		token_num;
 	int		i;
 	char	**split_token;		// 토큰 기준으로 스플릿
 
 	i = 0;
-
 	// 토큰 기준으로 스플릿하기만하면 됨
-
 	split_token = ft_token_split(arg);
-
-
 	// 나눠놓은 문자열 붙이기
-	while (i < token_num + 1)
+	while (split_token[i])
 	{
 		ft_listadd_back(lst, ft_listnew(split_token[i]));
 		i++;
@@ -128,12 +138,12 @@ void	make_list(t_line **line, char *s_line)
 	}
 	printf("-----------\n");
 	i = 0;
-	while (split_line[i])		// 제대로 담았음
+	while (split_line[i])
 	{
-		if (is_token_quote(split_line[i]))				// 토큰 있으면 나눠 붙이기
-			list_split_addback(&(*line), split_line[i]);
-		else				// 토큰 없으면 그냥 붙이기
-			ft_listadd_back(&(*line), ft_listnew(split_line[i]));		// 여기서 리스트 분할까지 하면 좋을거 같아서 방법 생각중	// 그리고 왜 &(*line)?? 물어보고 그냥 line 쓰기
+		if (is_token_quote(split_line[i]))
+			list_split_addback(line, split_line[i]);
+		else
+			ft_listadd_back(line, ft_listnew(split_line[i]));
 		i++;
 	}
 	printf("list test \n\n");
