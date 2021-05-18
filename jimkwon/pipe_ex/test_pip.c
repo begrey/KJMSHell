@@ -34,24 +34,34 @@ void exec_command(char *command, int pipefd[2], int flags) {
 }
 
 
-int main() {
-        int pipefd1[2], pipefd2[2];
+int main() { // pwd -> | -> ls -> | -> cat -> | -> pwd
+        int pipefd1[2];
+        int pipefd2[2];
+        //int pipefd3[2];
         pipe(pipefd1);
         pipe(pipefd2);
+        //pipe(pipefd3);
 
-        exec_command("/bin/pwd", pipefd1, STDOUT_PIPE);
+        exec_command("/bin/cat", pipefd1, STDOUT_PIPE); //처음
         close(pipefd1[WRITE]);
-        exec_command("/usr/bin/wc", pipefd2, STDIN_PIPE);
-        close(pipefd2[READ]);
+
 
         int temp_pipefd[] = {pipefd1[READ], pipefd2[WRITE]};
-        exec_command("/bin/ls", temp_pipefd, STDIN_PIPE | STDOUT_PIPE);
-        //printf("%d %d %d\n", STDOUT_PIPE, STDIN_PIPE, STDIN_PIPE | STDOUT_PIPE);
         close(pipefd1[READ]);
+        exec_command("/usr/bin/wc", temp_pipefd, STDIN_PIPE | STDOUT_PIPE); //중간
         close(pipefd2[WRITE]);
 
-        int wstatus;
-        while (wait(&wstatus) > 0);
-		printf("$$%d\n", STDIN_PIPE | STDOUT_PIPE);
+        exec_command("/usr/bin/wc", pipefd1, STDIN_PIPE); //마지막
+        close(pipefd2[READ]);
+
+        // temp_pipefd[0] = pipefd2[READ];
+        // temp_pipefd[1] = pipefd3[WRITE];
+        // exec_command("/usr/bin/wc", temp_pipefd, STDIN_PIPE | STDOUT_PIPE); //중간 2
+        // close(pipefd2[READ]);
+        // close(pipefd3[WRITE]);
+        int status;
+        while (wait(&status) > 0);
+
         return 0;
+        
 }

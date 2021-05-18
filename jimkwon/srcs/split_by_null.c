@@ -78,19 +78,19 @@ int main()
 	//pwd -> | ls -> | -> pwd -> ; -> echo -> abc
 	ft_listadd_back(&list, ft_listnew("pwd"));
 	ft_listadd_back(&list, ft_listnew("ls"));
-	ft_listadd_back(&list, ft_listnew("|"));
+	ft_listadd_back(&list, ft_listnew("a"));
 	ft_listadd_back(&list, ft_listnew("ls"));
-	ft_listadd_back(&list, ft_listnew("|"));
+	ft_listadd_back(&list, ft_listnew("a"));
 	ft_listadd_back(&list, ft_listnew("pwd"));
 	ft_listadd_back(&list, ft_listnew("pwd"));
-	ft_listadd_back(&list, ft_listnew(";"));
+	ft_listadd_back(&list, ft_listnew("aa"));
 	ft_listadd_back(&list, ft_listnew("echo"));
 	ft_listadd_back(&list, ft_listnew("abc"));
 	temp = list;
 	iter = list;
 	while (temp != NULL)
 	{
-		i = ft_split_list_token(temp, ';');
+		i = ft_split_list_token(temp, '|');
 		//printf("arg : %s  i : %d\n", temp->arg, i);
 		temp = ft_list_null_term(temp, i);
 		ft_listiter(iter);

@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/27 10:38:51 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/18 08:53:56 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/18 15:03:01 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <math.h>
 # include <termios.h>
 # include <termcap.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "../libft/libft.h"
 
 # define BACKSPACE 127
@@ -34,7 +36,13 @@ typedef	struct	s_redirc
 	int				type;
 	char			*f_name;
 
-}				t_redirc;			
+}				t_redirc;		
+
+typedef struct		s_pipe
+{
+	int				fd[2]; //pipe용 fd
+	struct s_pipe	*next;
+}					t_pipe;	
 
 typedef struct s_line
 {
@@ -45,6 +53,15 @@ typedef struct s_line
 	struct s_line		*prev;
 	struct s_line		*next;
 }				t_line;
+
+//		ft_pipeadd_back.c
+void		ft_pipeadd_back(t_pipe **lst, t_pipe *new);
+
+//		ft_pipelast.c
+t_pipe		*ft_pipelast(t_pipe *lst);
+
+//		ft_pipenew.c
+t_pipe		*ft_pipenew(int *fd);
 
 //		ft_listadd_back.c
 void		ft_listadd_back(t_line **lst, t_line *new);
