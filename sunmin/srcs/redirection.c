@@ -175,14 +175,14 @@ int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문
 
 
 	temp = line;
-//	while (*line)
+//	while (*line)		// 출력
 //	{
 //		printf("ee %s\n", (*line)->arg);
 //		*line = (*line)->next;
 //	}
 	re_num = redir_num(temp);		//  개수 체크	// 포인터가 넘어감		// ㅠㅠ	// 템프로 보냈는데 라인이 왜넘어냐고
 	printf("rr %d\n", re_num);
-	while (*line)
+	while (*line)			// 출력
 	{
 		printf("ss %s\n", (*line)->arg);
 		*line = (*line)->next;
