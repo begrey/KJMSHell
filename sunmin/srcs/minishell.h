@@ -27,9 +27,6 @@ typedef	struct	s_redirc
 typedef struct s_line
 {
 	char				*arg;
-	int					token;
-//	struct s_redirc		**stream; //리다이렉션들
-	struct s_line		*line; //parsing 단계별 line
 	struct s_line		*prev;
 	struct s_line		*next;
 }				t_line;
@@ -106,5 +103,8 @@ int			is_quote(const char c);		// util로 빼기
 
 //		convert_env.c
 char		*convert_env(const char *str);
+
+//		redir_syn_check.c
+int			redir_syn_check(t_line **line);
 
 #endif

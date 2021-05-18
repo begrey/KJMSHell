@@ -148,7 +148,7 @@ int		*get_word_len(const char *str)
 	return (word_len);
 }
 
-char	**ft_split_quote(const char *str)
+char		**ft_split_quote(const char *str)
 {
 	char	**split;
 	char	*s;
@@ -181,7 +181,7 @@ char	**ft_split_quote(const char *str)
 	else
 	{
 		word_num = 0;
-		return (NULL);		// 2차원 빈문자열 반환해야
+		return NULL;		// 2차원 빈문자열 반환해야
 	}									
 	flag = '\0';
 	split_point = 0;
@@ -215,21 +215,11 @@ char	**ft_split_quote(const char *str)
 		free(word_len);
 		free_split(split);
 		printf("syntax error\n");
-		exit(0);
-	}
-	char	*temp;
-	i = 0;
-	while (split[i])
-	{
-		temp = split[i];
-		split[i] = ft_strtrim(temp, " ");	// 앞뒤 공백 제거
-		free(temp);
-		i++;
+		exit (0);
 	}
 	free(word_len);
 	return (split);
 }
-
 /*
 int		main(void)
 {
