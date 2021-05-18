@@ -110,4 +110,7 @@ int			redir_syn_check(t_line **line);
 //		split_by_null.c
 void		split_by_semi(t_line **line);
 
+//		redirection.c
+int			ft_redirection(t_line **line);
+
 #endif
