@@ -109,7 +109,7 @@ void	list_split_addback(t_line **lst, char *arg)		//arg로는 >a;|as";|>"er 같�
 
 	i = 0;
 	// 토큰 기준으로 스플릿하기만하면 됨
-	split_token = ft_token_split(arg);
+	split_token = ft_token_split(arg);		// |     | 이런거는 중간에 빈 리스트 나오게 됨
 	// 나눠놓은 문자열 붙이기
 	while (split_token[i])
 	{
@@ -125,6 +125,15 @@ int		make_list(t_line **line, char *s_line)
 	int i;
 
 	split_line = ft_split_quote(s_line);
+	
+	int k  = 0;
+	while (split_line[k])
+	{
+		split_line[k] = ft_strtrim(split_line[k], " ");
+		k++;
+	}
+
+
 	i = 0;
 	while (split_line[i])				// 환경변수 변환
 	{
@@ -143,13 +152,15 @@ int		make_list(t_line **line, char *s_line)
 		i++;
 	}
 	printf("list test \n\n");
-/*
-	while ((*line))		// 출력 테스트
+///*
+	t_line *lane;		// 출력 테스트
+	lane = *line;
+	while ((lane))
 	{
-		printf("%s\n", (*line)->arg);
-		*line = (*line)->next;
+		printf("%s\n", (lane)->arg);
+		lane = lane->next;
 	}
-*/
+//*/
 	if ((redir_syn_check(line)) == -1)		// 잘 됩니다
 		return (-1);
 
