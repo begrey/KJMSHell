@@ -19,21 +19,16 @@ int		is_token_quote(const char *str)
 	flag = 0;
 	s = (char *)str;
 
-
-	while (*s && *(s + 1))
+	if (*s && !is_token(*s))
+		ret = 1;
+	while (*s)
 	{
-		if (is_token(*(s + 1)))
+		if (is_token(*s))
 			ret++;
-		flag = flag_check(*s, flag);	// 함수이름 바꿔야함
-		if (!flag)			// quote 가 없을 때는 토큰 취급
-		{
-			if (is_token(*s))
-				ret++;
-		}
+		if (is_token(*s) && !is_token(*(s + 1)) && *(s + 1))
+			ret++;
 		s++;
 	}
-	if (*s)
-		ret++;
 	return (ret);
 }
 
@@ -75,6 +70,7 @@ char	**ft_token_split(char *arg)
 	split_num = is_token_quote(arg);
 	split_token = (char **)malloc(sizeof(char *) * (split_num + 1));
 	split_token[split_num] = NULL;
+
 	i = 0;
 	next_split = where_token(s);	////// 수정 필요 // 개수 받아오는 것과 다음 포인터 반환하는 것이 잘 안됨
 	while (i < split_num)
@@ -90,7 +86,7 @@ char	**ft_token_split(char *arg)
 		{
 			j = 0;
 			word_num = where_token(s);// - next_split;	//// 수정 필요
-		split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
+			split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
 			split_token[i][word_num] = '\0';
 			while (j < word_num)
 			{
@@ -147,21 +143,16 @@ int		make_list(t_line **line, char *s_line)
 		i++;
 	}
 	printf("list test \n\n");
-	while (*line)		// 출력 테스트
+/*
+	while ((*line))		// 출력 테스트
 	{
 		printf("%s\n", (*line)->arg);
 		*line = (*line)->next;
 	}
-	if ((redir_syn_check(line)) == -1)			// 하나도 안됨........
+*/
+	if ((redir_syn_check(line)) == -1)		// 잘 됩니다
 		return (-1);
 
-/*
-	while (*line)			// 토큰 분할하는 함수
-	{
-		
-		*line = (*line)->next;
-	}
-*/
 	return (0);
 }
 
@@ -299,7 +290,11 @@ int main(int argc, char *argv[], char *envp[])
 //		lvl = 1;
 //		line = ft_listnew(input_line);
 //		split_semi(&line);
-		make_list(&line, input_line);
+		if ((make_list(&line, input_line)) == -1)
+		{
+			;
+		}
+		// else 일때 ; 리스트 파싱하는 부분으로
 //		down = line;
 		write(1, "KJMSHell(OoO) >> ", 17);
 		free(line);
