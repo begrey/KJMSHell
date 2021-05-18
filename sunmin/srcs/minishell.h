@@ -107,4 +107,7 @@ char		*convert_env(const char *str);
 //		redir_syn_check.c
 int			redir_syn_check(t_line **line);
 
+//		split_by_null.c
+void		split_by_semi(t_line **line);
+
 #endif

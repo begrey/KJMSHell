@@ -138,10 +138,10 @@ int		make_list(t_line **line, char *s_line)
 	while (split_line[i])				// 환경변수 변환
 	{
 		split_line[i] = convert_env(split_line[i]);
-		printf("line[%d] :%s\n", i, split_line[i]);
+//		printf("line[%d] :%s\n", i, split_line[i]);
 		i++;
 	}
-	printf("-----------\n");
+//	printf("-----------\n");
 	i = 0;
 	while (split_line[i])
 	{
@@ -151,19 +151,24 @@ int		make_list(t_line **line, char *s_line)
 			ft_listadd_back(line, ft_listnew(split_line[i]));
 		i++;
 	}
-	printf("list test \n\n");
+	printf("list test \n");
+
 ///*
 	t_line *lane;		// 출력 테스트
 	lane = *line;
 	while ((lane))
 	{
-		printf("%s\n", (lane)->arg);
+		printf("cc %s\n", (lane)->arg);
 		lane = lane->next;
 	}
+
+
 //*/
 	if ((redir_syn_check(line)) == -1)		// 잘 됩니다
 		return (-1);
-
+//	token_syntax(line?);	// 파이프가 처음에 오면 에러 반환하는 함수도 만들어야
+	printf("\n split_by_null test \n\n");
+	split_by_semi(line);	// 이 함수 안에서 실행
 	return (0);
 }
 
@@ -173,7 +178,7 @@ void split_arg(t_line **line, char *arg_line) // echo c
 
 	arg_list = NULL;
 	ft_exec(&arg_list);
-	(*line)->line = arg_list;
+//	(*line)->line = arg_list;
 }
 
 void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
@@ -184,7 +189,7 @@ void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
 
 	i = 0;
 	redir_list = NULL;
-	(*line)->line = redir_list;
+//	(*line)->line = redir_list;
 	temp = redir_list;
 //	set_redirection(line, redir_line);	// temp->arg에는 echo c 만 들어있게 됨
 ///	set_quote();
@@ -254,7 +259,7 @@ void split_pipe(t_line **line, char *pipe_line) // echo >aa >bb c | pwd
 	pid_t	pid;
 
 	pipe_list = NULL;
-	(*line)->line = pipe_list; 
+//	(*line)->line = pipe_list; 
 	temp = pipe_list;
 	send_pipe(ft_listlast(temp));		// pipe함수 사용
 }
@@ -267,7 +272,7 @@ void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
 
 	i = 0;
 	semi_list = NULL;
-	(*line)->line = semi_list;
+//	(*line)->line = semi_list;
 	temp = semi_list;
 	while(temp != NULL)
 	{
