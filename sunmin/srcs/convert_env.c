@@ -113,7 +113,7 @@ static int		get_new_len(const char *str)
 			new_len++;
 		}
 	}
-	printf("n_l %d\n", new_len);
+//	printf("n_l %d\n", new_len);
 	return (new_len);
 }
 
