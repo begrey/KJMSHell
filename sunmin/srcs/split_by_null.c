@@ -10,7 +10,6 @@ int ft_listiter(t_line *lst)
 	while (temp != NULL)
 	{
 		i++;
-		printf("%s -> \n", temp->arg);
 		temp = temp->next;
 	}
 	return (i);
@@ -61,7 +60,6 @@ void ft_move_temp(t_line **temp, int i)
 {
 	while (temp != NULL && i != 0)
 	{
-		printf("%s  ->  \n", (*temp)->arg);
 		*temp = (*temp)->next;
 		i--;
 	}
@@ -78,12 +76,10 @@ void	split_by_pipe(t_line **line)
 	while (temp != NULL)
 	{
 		i = ft_split_list_token(temp, '|');
-		printf("pipe arg : %s  i : %d\n", temp->arg, i);
 		temp = ft_list_null_term(temp, i);
 		ft_listiter(iter);
 		ft_redirection(&iter);	//		나중에 구현할 함수
 		iter = temp;
-		printf("\n");
 	}
 }
 
@@ -98,12 +94,10 @@ void	split_by_semi(t_line **line)
 	while (temp != NULL)
 	{
 		i = ft_split_list_token(temp, ';');
-		printf("semi arg : %s  i : %d\n", temp->arg, i);
 		temp = ft_list_null_term(temp, i);
 		ft_listiter(iter);
 		split_by_pipe(&iter);
 		iter = temp;
-		printf("\n");
 	}
 }
 
