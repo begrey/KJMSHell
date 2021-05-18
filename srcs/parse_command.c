@@ -14,9 +14,9 @@ char  *parse_command(char *line_piece, char *str)
 	len = 0;
 	while (command_line[len])
 		len++;
-	if (ft_strcmp(command, "echo") == 0)
-		pipe_arg = ft_echo(line_piece + 5);
-	else if (ft_strcmp(command, "cd") == 0)
+	// if (ft_strcmp(command, "echo") == 0)
+	// 	pipe_arg = ft_echo(line_piece + 5);
+	if (ft_strcmp(command, "cd") == 0)
 	{
 		pipe_arg = exec_cd(command_line);
 	}

@@ -61,3 +61,15 @@ void	free_split(char ***split)
 	}
 	free(*split);
 }
+
+int ft_strcmp(char *dest, char *src) {
+	int i = 0;
+	while (dest[i] != '\0' || src[i] != '\0') {
+		if (dest[i] > src[i])
+			return dest[i] - src[i];
+		else if (dest[i] < src[i])
+			return dest[i] - src[i];
+		i++;
+	}
+	return 0;      
+}

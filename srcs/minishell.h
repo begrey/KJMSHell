@@ -10,8 +10,10 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <signal.h>
+# include <string.h>
 # include <termios.h>
 # include <termcap.h>
+# include <errno.h>
 # include "../libft/libft.h"
 
 # define BACKSPACE 127
@@ -19,6 +21,15 @@
 # define D_ARROW 4348699
 # define R_ARROW 4414235
 # define L_ARROW 4479771
+
+typedef struct	s_cursor
+{
+	char			*cm; //cursor motion
+	char			*ce; //cursor erase
+	char			*prev_his; // 이전 명령어
+	int				row;
+	int				col;
+}				t_cursor;
 
 typedef struct s_env
 {
@@ -38,9 +49,8 @@ char        **ft_split_syn(char const *s, char c);
 char	*ft_echo(char *args);
 
 //	parse_line.c
-int		ft_strcmp(char *dest, char *src);
 char	*append(char *line, char c);
-int		parse_line(char **line);
+int		parse_line(char **line, t_list *history);
 
 //	parse_token.c
 void	parse_token(char **line, int i);
@@ -84,5 +94,6 @@ char	*ft_joinfree2(char **s1, char **s2);
 char	*str_append1(char *s1, char *s2);
 char	*str_append2(char *s1, char *s2);
 void	free_split(char ***split);
+int		ft_strcmp(char *dest, char *src);
 
 #endif
