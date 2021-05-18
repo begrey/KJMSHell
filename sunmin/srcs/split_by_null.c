@@ -81,7 +81,7 @@ void	split_by_pipe(t_line **line)
 		printf("pipe arg : %s  i : %d\n", temp->arg, i);
 		temp = ft_list_null_term(temp, i);
 		ft_listiter(iter);
-//		pipe_split(iter)		나중에 구현할 함수
+		ft_redirection(&iter);	//		나중에 구현할 함수
 		iter = temp;
 		printf("\n");
 	}
