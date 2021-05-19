@@ -9,8 +9,8 @@ int		is_token(char c)
 
 
 
-int		is_token_quote(const char *str)
-{
+int		is_token_quote(const char *str)		// "안에 >가 있으면 문제 생김		">dd" 같은 거
+{											// 완전 잘못 짬
 	char		*s;
 	char		flag;
 	int			ret;
@@ -23,10 +23,14 @@ int		is_token_quote(const char *str)
 		ret = 1;
 	while (*s)
 	{
-		if (is_token(*s))
-			ret++;
-		if (is_token(*s) && !is_token(*(s + 1)) && *(s + 1))
-			ret++;
+		flag = flag_check(*s, flag);
+		if (!flag)
+		{
+			if (is_token(*s))
+				ret++;
+			if (is_token(*s) && !is_token(*(s + 1)) && *(s + 1))
+				ret++;
+		}
 		s++;
 	}
 	return (ret);
@@ -56,7 +60,7 @@ int		where_token(char *str)	// is_token_quote와 구조 비슷	// 토큰의 인�
 	return (i);
 }
 
-char	**ft_token_split(char *arg)
+char	**ft_token_split(char *arg)	//  >> 일때 리스트에 >>가 들어가도록 수정해야 함
 {
 	char	*s;
 	char	**split_token;
@@ -72,7 +76,7 @@ char	**ft_token_split(char *arg)
 	split_token[split_num] = NULL;
 
 	i = 0;
-	next_split = where_token(s);	////// 수정 필요 // 개수 받아오는 것과 다음 포인터 반환하는 것이 잘 안됨
+	next_split = where_token(s);
 	while (i < split_num)
 	{
 		if (is_token(*s))
@@ -110,6 +114,7 @@ void	list_split_addback(t_line **lst, char *arg)		//arg로는 >a;|as";|>"er 같�
 	i = 0;
 	// 토큰 기준으로 스플릿하기만하면 됨
 	split_token = ft_token_split(arg);		// |     | 이런거는 중간에 빈 리스트 나오게 됨
+	
 	// 나눠놓은 문자열 붙이기
 	while (split_token[i])
 	{
@@ -125,7 +130,7 @@ int		make_list(t_line **line, char *s_line)
 	int i;
 
 	split_line = ft_split_quote(s_line);
-	
+
 	int k  = 0;
 	while (split_line[k])
 	{
@@ -133,26 +138,26 @@ int		make_list(t_line **line, char *s_line)
 		k++;
 	}
 
-
 	i = 0;
 	while (split_line[i])				// 환경변수 변환
 	{
 		split_line[i] = convert_env(split_line[i]);
-//		printf("line[%d] :%s\n", i, split_line[i]);
 		i++;
 	}
-//	printf("-----------\n");
+
+
+
 	i = 0;
 	while (split_line[i])
 	{
 		if (is_token_quote(split_line[i]))
-			list_split_addback(line, split_line[i]);		// 2차원 포인터 동적할당 개수가 다름
+			list_split_addback(line, split_line[i]);
 		else
 			ft_listadd_back(line, ft_listnew(split_line[i]));
 		i++;
 	}
 
-	if ((redir_syn_check(line)) == -1)		// 잘 됩니다
+	if ((redir_syn_check(line)) == -1)		// 잘 됩니다	// >>로 바꿔서 다시 만들어야
 		return (-1);
 //	token_syntax(line?);	// 파이프가 처음에 오면 에러 반환하는 함수도 만들어야
 	split_by_semi(line);	// 이 함수 안에서 실행

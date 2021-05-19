@@ -78,7 +78,7 @@ void	split_by_pipe(t_line **line)
 		i = ft_split_list_token(temp, '|');
 		temp = ft_list_null_term(temp, i);
 		ft_listiter(iter);
-		ft_redirection(&iter);	//		나중에 구현할 함수
+		ft_redirection(&iter);
 		iter = temp;
 	}
 }
