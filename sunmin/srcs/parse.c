@@ -2,15 +2,15 @@
 
 int		is_token(char c)
 {
-	if (c == ';' || c == '|' || c == '>' || c == '<')		// <, >는 따로 처리해야 할 듯
+	if (c == ';' || c == '|' || c == '>' || c == '<')
 		return (1);
 	return (0);
 }
 
 
 
-int		is_token_quote(const char *str)		// "안에 >가 있으면 문제 생김		">dd" 같은 거
-{											// 완전 잘못 짬
+int		is_token_quote(const char *str)
+{
 	char		*s;
 	char		flag;
 	int			ret;
@@ -89,7 +89,7 @@ char	**ft_token_split(char *arg)	//  >> 일때 리스트에 >>가 들어가도�
 		else
 		{
 			j = 0;
-			word_num = where_token(s);// - next_split;	//// 수정 필요
+			word_num = where_token(s);
 			split_token[i] = (char *)malloc(sizeof(char) * (word_num + 1));
 			split_token[i][word_num] = '\0';
 			while (j < word_num)
@@ -99,23 +99,21 @@ char	**ft_token_split(char *arg)	//  >> 일때 리스트에 >>가 들어가도�
 				s++;
 			}
 		}
-		next_split = where_token(s + next_split + 1);	//// 수정 필요
+		next_split = where_token(s + next_split + 1);
 		i++;
 	}
 	return (split_token);
 }
 
-void	list_split_addback(t_line **lst, char *arg)		//arg로는 >a;|as";|>"er 같은 값이 들어옴
+void	list_split_addback(t_line **lst, char *arg)
 {
 
 	int		i;
 	char	**split_token;		// 토큰 기준으로 스플릿
 
 	i = 0;
-	// 토큰 기준으로 스플릿하기만하면 됨
-	split_token = ft_token_split(arg);		// |     | 이런거는 중간에 빈 리스트 나오게 됨
+	split_token = ft_token_split(arg);
 	
-	// 나눠놓은 문자열 붙이기
 	while (split_token[i])
 	{
 		ft_listadd_back(lst, ft_listnew(split_token[i]));
@@ -157,121 +155,12 @@ int		make_list(t_line **line, char *s_line)
 		i++;
 	}
 
+
 	if ((redir_syn_check(line)) == -1)		// 잘 됩니다	// >>로 바꿔서 다시 만들어야
 		return (-1);
 //	token_syntax(line?);	// 파이프가 처음에 오면 에러 반환하는 함수도 만들어야
 	split_by_semi(line);	// 이 함수 안에서 실행
 	return (0);
-}
-
-void split_arg(t_line **line, char *arg_line) // echo c
-{
-	t_line *arg_list;
-
-	arg_list = NULL;
-	ft_exec(&arg_list);
-//	(*line)->line = arg_list;
-}
-
-void	split_redirection(t_line **line, char *redir_line)		// sunmin 만듦
-{									//redir_line 으로 echo >aa >bb c 들어옴
-	t_line		*redir_list;
-	t_line		*temp;
-	int			i;
-
-	i = 0;
-	redir_list = NULL;
-//	(*line)->line = redir_list;
-	temp = redir_list;
-//	set_redirection(line, redir_line);	// temp->arg에는 echo c 만 들어있게 됨
-///	set_quote();
-//	while (*((*line)->stream))		// stream배열 만큼 (redirection 개수 만큼)
-	if (ft_strchr(redir_line, '>'))
-	{
-		stream = (char **)malloc(sizeof(char *) * 2);
-		stream[0] = ft_strdup("bb");
-		stream[1] = NULL;
-	}
-	else
-	{
-		stream = (char **)malloc(sizeof(char *) * 2);
-		stream[0] = (char *)1;
-		stream[1] = NULL;
-	}
-	while (*stream)
-	{
-//		go_redir(*(*line)->stream);		// 리다이렉션 배열에서 맞는 fd로 dup2
-//		go_redir(*stream, fd1);		// 테스트용
-		split_arg((&temp), temp->arg);
-		temp = temp->next;
-		stream++;			// 테스트용
-//		((*line)->stream)++;
-	}
-//	dup2(fd_temp, 1);
-//	back_redir(*(*line)->stream);		// 다시 fd 0,1 맞춰줌
-}
-
-void	send_pipe(t_line *last)		// 재귀 호출로 분기하고 다음으로 보냄
-{
-	pid_t	pid;
-	int		*status;
-	int		state;
-
-int		fd1;		// 파이프 때문에 일단 선언해 놓은 변수들
-int		fd_temp;
-int		*pipe2;
-int		temp_stdin;
-int		temp_stdout;
-
-	pid = 0;
-	pipe2 = (int *)malloc(sizeof(int) * 2);
-	state = pipe(pipe2);
-
-	if (last->prev)
-	{
-		pid = fork();					// dup2를 하고 close함수를 활용하자
-		printf("generate %d\n", pid);
-		if (pid != 0)
-			wait(status);
-		else
-		{
-			send_pipe(last->prev);
-			split_arg((&last), last->arg);
-			exit(0);
-		}
-	}
-	else
-		split_arg((&last), last->arg);
-}
-
-void split_pipe(t_line **line, char *pipe_line) // echo >aa >bb c | pwd
-{
-	t_line *pipe_list;
-	t_line *temp;
-	pid_t	pid;
-
-	pipe_list = NULL;
-//	(*line)->line = pipe_list; 
-	temp = pipe_list;
-	send_pipe(ft_listlast(temp));		// pipe함수 사용
-}
-
-void  split_semi(t_line **line) // echo >a >b >c | pwd ; ls
-{
-	t_line *semi_list;
-	t_line *temp;
-	int	i;
-
-	i = 0;
-	semi_list = NULL;
-//	(*line)->line = semi_list;
-	temp = semi_list;
-	while(temp != NULL)
-	{
-		split_pipe((&temp), temp->arg);
-		temp = temp->next;
-		i++;
-	}
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -295,15 +184,10 @@ int main(int argc, char *argv[], char *envp[])
 		{
 			printf("ft_errno %d\n", ft_errno);
 		}
-//		lvl = 1;
-//		line = ft_listnew(input_line);
-//		split_semi(&line);
 		if ((make_list(&line, input_line)) == -1)
 		{
 			;
 		}
-		// else 일때 ; 리스트 파싱하는 부분으로
-//		down = line;
 		write(1, "KJMSHell(OoO) >> ", 17);
 		free(line);
 	}
