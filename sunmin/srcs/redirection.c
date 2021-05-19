@@ -9,7 +9,6 @@ int		is_redir(char c)
 
 int		put_redir(t_line **line, char ***re_name, int **re_type, int num)
 {
-	printf("put_redir start\n");
 	t_line	**temp;
 	int		flag;
 	int		type;
@@ -21,21 +20,24 @@ int		put_redir(t_line **line, char ***re_name, int **re_type, int num)
 		type = 0;
 		if (is_redir((*temp)->arg[0]))
 		{
-			type = 1;
-			*temp = (*temp)->next;
-			if (is_redir((*temp)->arg[0]))
-			{
-				type = 2;
+			if ((*temp)->arg[0] == '<')
+				type = 3;
+			else
+			{	
+				type = 1;
 				*temp = (*temp)->next;
+				if (is_redir((*temp)->arg[0]))
+				{
+					type = 2;
+					*temp = (*temp)->next;
+				}
 			}
 
 			flag = 0;
-			printf("bbbarg %s\n", (*temp)->arg);
 			while (*temp && !is_redir((*temp)->arg[0]))
 			{
 				if (flag == 0)
 				{
-					printf("aaaaaaaaaaarg %s\n", (*temp)->arg);
 					(*re_type)[i] = type;
 					(*re_name)[i] = ft_strdup((*temp)->arg);
 				}
@@ -46,12 +48,6 @@ int		put_redir(t_line **line, char ***re_name, int **re_type, int num)
 		}
 		if (*temp && !is_redir((*temp)->arg[0]))
 			*temp = (*temp)->next;
-	}
-	int k = 0;
-	while (k < num)
-	{
-		printf("num = %d, type = %d, name = %s\n", k, (*re_type)[k], (*re_name)[k]);
-		k++;
 	}
 	return (0);
 }
@@ -82,24 +78,30 @@ int		redir_num(t_line **line)		// 구조체 안에 redir 정보 넣는 것 까�
 
 void	ft_list_delredir(t_line **line)
 {
-	t_line	**temp;
-	t_line	*prev;
-
-	temp = line;
-	if (is_redir((*temp)->arg[0]))		// 처음부터 > 일때
+	t_line	*temp;
+	if (is_redir((*line)->arg[0]))
 	{
-		prev = *temp;
-		*line = (*temp)->next;
-		free(prev);
+		(*line) = (*line)->next;
+		(*line)->prev = NULL;
 	}
-	while (*temp)
+	temp = *line;
+	while (temp)
 	{
-		prev = *temp;
-		if (is_redir((*temp)->next->arg[0]))
+		if (is_redir(temp->arg[0]))
 		{
-			(*temp)->next = (*temp)->next->next;
+			temp->prev->next = temp->next;
+			temp->next->prev = temp->prev;
+			temp = temp->next;
+			if (is_redir(temp->arg[0]))
+			{
+				temp->prev->next = temp->next;
+				temp->next->prev = temp->prev;
+				temp = temp->next;
+			}
+			temp->prev->next = temp->next;
+			temp->next->prev = temp->prev;
 		}
-		*temp = (*temp)->next;
+		temp = temp->next;
 	}
 }
 
@@ -171,60 +173,58 @@ int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문
 	int		i;
 	char	**re_name;
 	int		*re_type;
-	t_line	**temp;
+	t_line	*temp;
 
 
-	temp = line;
+	temp = *line;
 //	while (*line)		// 출력
 //	{
 //		printf("ee %s\n", (*line)->arg);
 //		*line = (*line)->next;
 //	}
-	re_num = redir_num(temp);		//  개수 체크	// 포인터가 넘어감		// ㅠㅠ	// 템프로 보냈는데 라인이 왜넘어냐고
-	printf("rr %d\n", re_num);
-	while (*line)			// 출력
-	{
-		printf("ss %s\n", (*line)->arg);
-		*line = (*line)->next;
-	}
-	printf("%d\n", re_num);
+	re_num = redir_num(&temp);		//  개수 체크
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
-	put_redir(line, &re_name, &re_type, re_num);
+	put_redir(&temp, &re_name, &re_type, re_num);
 
 
+	temp = *line;
 	// 리다이렉션 구조체 삭제(ing)
 	ft_list_delredir(line);
-
 	// 리스트에서 quote 제거(ing)
-	while (*line)
+	while (temp)
 	{
-		(*line)->arg = ft_del_quote((*line)->arg);
-		*line = (*line)->next;
+		(temp)->arg = ft_del_quote((temp)->arg);
+		temp = (temp)->next;
 	}
 
-	// 리다이렉션 만들기	// dup2 사용
 
+	// 리다이렉션 만들기	// dup2 사용
+/*
 	// 리다이렉션을 먼저 실행해서 <> 모두 확인
 	i = 0;
 	while (i < re_num)
 	{
-		if (re_type == 1)		// >
+		if (re_type[i] == 1)		// >
 		{
-			open(re_name[i], RDWR | O_TRUNC, 00777);
+			;
+//			open(re_name[i], RDWR | O_CREAT | O_TRUNC, 00777);
 		}
-		else if (re_type == 2)	// >>
+		else if (re_type[i] == 2)	// >>
 		{
-			open(re_name[i], RDWR | O_APPEND, 00777);
+			;
+//			open(re_name[i], RDWR | O_CREAT | O_APPEND, 00777);
 		}
-		else if (re_type == 3)	//	<
+		else if (re_type[i] == 3)	//	<
 		{
-			if (!(read()))
-			{
+	//		if (!(open(re_name[i], O_RONLY, 00777)))
+	//		{
+				printf("no file read\n");
 				break;
-			}
+	//		}
 		}
 	}
+	int j;
 	i = 0;
 	while (re_name[i])
 	{
@@ -232,11 +232,28 @@ int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문
 			j = i;
 		i++;
 	}
-	dup2(1, re_name[j]);		// 마지막 리다이렉션만 write로 사용
+//	dup2(0, re_name[j]);
+	i = 0;
+	while (re_name[i])
+	{
+		if (re_type[i] == 1 || re_type[i] == 2)
+			j = i;
+		i++;
+	}
+//	dup2(1, re_name[j]);		// 마지막 리다이렉션만 write로 사용
+	// open 을 다시 해서 fd를 받아와야 함
 	//exec(line);		// 실행부로 넘김
+*/
+//	while (*line)
+//	{
+//		printf("dd %s\n", (*line)->arg);
+//		*line = (*line)->next;
+//	}
+
+//	ft_exec(line);
 	return (0);
 }
-
+/*
 int		main(void)
 {
 	char *str;
@@ -251,3 +268,4 @@ int		main(void)
 	printf("after %s\n", after);
 	return (0);
 }
+*/
