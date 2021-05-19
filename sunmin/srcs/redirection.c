@@ -79,25 +79,29 @@ int		redir_num(t_line **line)		// 구조체 안에 redir 정보 넣는 것 까�
 void	ft_list_delredir(t_line **line)
 {
 	t_line	*temp;
-	t_line	*prev;
-
-	temp = *line;
-	printf("%p\n", temp);
-	if (is_redir((temp)->arg[0]))		// 처음부터 > 일때
+	if (is_redir((*line)->arg[0]))
 	{
-		prev = temp;
-		temp = (temp)->next;
-		free(prev);
+		(*line) = (*line)->next;
+		(*line)->prev = NULL;
 	}
-	printf("1\n");
+	temp = *line;
 	while (temp)
 	{
-		prev = temp;
-		if (is_redir((temp)->next->arg[0]) && (temp)->next)
+		if (is_redir(temp->arg[0]))
 		{
-			(temp)->next = (temp)->next->next;
+			temp->prev->next = temp->next;
+			temp->next->prev = temp->prev;
+			temp = temp->next;
+			if (is_redir(temp->arg[0]))
+			{
+				temp->prev->next = temp->next;
+				temp->next->prev = temp->prev;
+				temp = temp->next;
+			}
+			temp->prev->next = temp->next;
+			temp->next->prev = temp->prev;
 		}
-		temp = (temp)->next;
+		temp = temp->next;
 	}
 }
 
@@ -181,30 +185,22 @@ int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문
 	re_num = redir_num(&temp);		//  개수 체크
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
-	put_redir(line, &re_name, &re_type, re_num);
+	put_redir(&temp, &re_name, &re_type, re_num);
 
 
-	printf("%p\n", *line);		/// 여기서부터 다시 하면 됨 /////////////// 5/19(수) // 포인터 복사 잘 하기
 	temp = *line;
 	// 리다이렉션 구조체 삭제(ing)
-	ft_list_delredir(&temp);
-
-	printf("1\n");
-	while (*line)			// 출력
-	{
-		printf("ss %s\n", (*line)->arg);
-		*line = (*line)->next;
-	}
-	printf("2\n");
+	ft_list_delredir(line);
 	// 리스트에서 quote 제거(ing)
-	while (*line)
+	while (temp)
 	{
-		(*line)->arg = ft_del_quote((*line)->arg);
-		*line = (*line)->next;
+		(temp)->arg = ft_del_quote((temp)->arg);
+		temp = (temp)->next;
 	}
+
 
 	// 리다이렉션 만들기	// dup2 사용
-
+/*
 	// 리다이렉션을 먼저 실행해서 <> 모두 확인
 	i = 0;
 	while (i < re_num)
@@ -247,6 +243,14 @@ int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문
 //	dup2(1, re_name[j]);		// 마지막 리다이렉션만 write로 사용
 	// open 을 다시 해서 fd를 받아와야 함
 	//exec(line);		// 실행부로 넘김
+*/
+//	while (*line)
+//	{
+//		printf("dd %s\n", (*line)->arg);
+//		*line = (*line)->next;
+//	}
+
+//	ft_exec(line);
 	return (0);
 }
 /*

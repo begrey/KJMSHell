@@ -2,7 +2,7 @@
 
 void		ft_exec(t_line **command_line)
 {
-	fork();
+//	fork();
 	if (ft_strcmp((*command_line)->arg, "pwd") == 0)
 		exec_pwd();
 	else if (ft_strcmp((*command_line)->arg, "cd") == 0)
