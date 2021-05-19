@@ -151,23 +151,10 @@ int		make_list(t_line **line, char *s_line)
 			ft_listadd_back(line, ft_listnew(split_line[i]));
 		i++;
 	}
-	printf("list test \n");
 
-///*
-	t_line *lane;		// 출력 테스트
-	lane = *line;
-	while ((lane))
-	{
-		printf("cc %s\n", (lane)->arg);
-		lane = lane->next;
-	}
-
-
-//*/
 	if ((redir_syn_check(line)) == -1)		// 잘 됩니다
 		return (-1);
 //	token_syntax(line?);	// 파이프가 처음에 오면 에러 반환하는 함수도 만들어야
-	printf("\n split_by_null test \n\n");
 	split_by_semi(line);	// 이 함수 안에서 실행
 	return (0);
 }
