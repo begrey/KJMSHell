@@ -1,21 +1,5 @@
 #include "minishell.h"
 
-void	split_pipes(char *command_line)
-{
-	char **pipe_line;
-	char *str;
-	int i;
-
-	i = 0;
-	pipe_line = ft_split(command_line, '|');
-	while(pipe_line[i] != NULL)
-	{
-		str = parse_command(pipe_line[i], str);
-		i++;
-	}
-	if (str)		// 있어야 아무 명령어나 입력했을 때 세그폴트 안 뜸
-		write(1, str, ft_strlen(str));
-}
 void signalHandler(int sig){
         if(sig==SIGINT){ //ctrl-c
                 printf("signal SIGINT : %d\n", sig);
@@ -31,14 +15,10 @@ void signalHandler(int sig){
 int main(int argc, char **argv, char **envp)
 {
 	char	*line;
-	//char	*p_line;
-	char	**command_line;
-	int		i;
 	int		read;
 	t_list	*history;
-	//t_list	*temp;
+	t_line	*list;
 
-	//history = ft_lstnew("");
 	history = NULL;
 	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
 	{
@@ -54,22 +34,10 @@ int main(int argc, char **argv, char **envp)
 	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(line));
-		i = 0;
-		command_line = ft_split(line, ';');
-		while(command_line[i] != NULL)
-		{
-			split_pipes(command_line[i]);
-			i++;
-		}
+		if ((make_list(&list, line)) == -1)
+			printf("syntax error!\n") //syntax 에러 처리부분
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 	}
-	if (read == 0)
-		exit(0);
-	else
-		write(1, "parseError!\n", 12);
 	return (0);
-	argc = 1;
 	argv = NULL;
-	envp = NULL;
 }
-
