@@ -6,27 +6,17 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/19 14:02:03 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/19 09:30:37 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-void	make_argv(char	**argv, t_line *line)
-{
-	int	i;
+// 결과값 str을 리턴받아서 이어붙이는 식인데, 다른 명령어들도 그런 식으로 되어있지 않으면 구조를 바꾸어야 함 
 
-	i = 0;
-	while (line != NULL)
-	{
-		*argv[i] = line->arg;
-		line = line->next;
-		i++;
-	}
-}
-
-char	*other_command(t_line *line)
+char	*other_command(char **command_line, int len)
 {
+//	c_l = "ls abc" len = "2"
 	int		i;
 	char	*str;
 	char	*path;
@@ -34,10 +24,7 @@ char	*other_command(t_line *line)
 	char	*new_path;
 	pid_t	pid;
 	int		status;
-	char	**argv;
-	char	**const envp;
 
-	envp[] = {NULL};
 	status = 0;
 	pid = fork();
 	if (pid == 0)
