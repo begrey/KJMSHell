@@ -40,7 +40,21 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-t_env *env;
+typedef struct s_line
+{
+	char				*arg;
+	struct s_line		*prev;
+	struct s_line		*next;
+}				t_line;
+
+//		ft_listadd_back.c
+void		ft_listadd_back(t_line **lst, t_line *new);
+
+//		ft_listlast.c
+t_line		*ft_listlast(t_line *lst);
+
+//		ft_listnew.c
+t_line		*ft_listnew(char *content);
 
 //  ft_split_syn.c
 char        **ft_split_syn(char const *s, char c);
@@ -78,10 +92,10 @@ char	*find_key(const char *str);
 char	*find_value(const char *str);
 
 //	util_list.c
-t_env	*ft_listnew(void *key, void *value);
-void	ft_listadd_back(t_env **lst, t_env *new);
-t_env	*ft_listlast(t_env *lst);
-t_env	*ft_listfind(t_env **lst, char *s);
+// t_env	*ft_listnew(void *key, void *value);
+// void	ft_listadd_back(t_env **lst, t_env *new);
+// t_env	*ft_listlast(t_env *lst);
+// t_env	*ft_listfind(t_env **lst, char *s);
 
 //	other_command.c
 char	*other_command(char **command_line, int len);

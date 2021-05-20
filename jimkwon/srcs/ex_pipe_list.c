@@ -72,6 +72,8 @@ int main()
 	t_line *list;
 	t_line *temp;
 	t_line *iter;
+	t_line *new_list;
+	t_line *new_temp;
 	int i;
 
 	list = NULL;
@@ -88,13 +90,25 @@ int main()
 	ft_listadd_back(&list, ft_listnew("abc"));
 	temp = list;
 	iter = list;
+	new_list = NULL;
+	ft_listadd_back(&new_list, ft_listnew("1"));
+	ft_listadd_back(&new_list, ft_listnew("2"));
+	ft_listadd_back(&new_list, ft_listnew("3"));
+	new_temp = new_list;
 	while (temp != NULL)
 	{
 		i = ft_split_list_token(temp, '|');
-		//printf("arg : %s  i : %d\n", temp->arg, i);
 		temp = ft_list_null_term(temp, i);
-		ft_listiter(iter);
+		new_list = iter;
+		ft_listiter(new_list);
+		new_list = new_list->next;
 		iter = temp;
 		printf("\n");
 	}
+	ft_listiter(new_list);
+	// while (new_temp != NULL)
+	// {
+	// 	ft_listiter(new_temp);
+	// 	new_temp = new_temp->next;
+	// }
 }
