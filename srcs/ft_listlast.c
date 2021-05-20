@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-t_pipe		*ft_pipelast(t_pipe *lst)
+t_line		*ft_listlast(t_line *lst)
 {
-	t_pipe	*temp;
+	t_line	*temp;
 
 	if (!lst)
 		return (NULL);
