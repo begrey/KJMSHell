@@ -164,6 +164,17 @@ int			token_syn_check(t_line **line);
 
 //		parse.c
 int			is_token(char *s);
+int			make_list(t_line **line, char *s_line);
+
+//		util_str.c
+int			ft_strcmp(char *dest, char *src);
+char		*str_append1(char *s1, char *s2);
+char		*str_append2(char *s1, char *s2);
+char		*str_append3(char *s1, char c);
+int			is_alpha(char c);
+int			is_dollar(char c);
+char	*str_appendchar(char *s1, char c);
+
 
 #endif
 
