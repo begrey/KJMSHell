@@ -78,33 +78,39 @@ int		redir_num(t_line **line)		// 구조체 안에 redir 정보 넣는 것 까�
 	return (num);
 }
 
-void	ft_list_delredir(t_line **line)
+void	ft_list_delredir(t_line **line)		// >a만 올 때 세그폴트
 {
 	t_line	*temp;
-	if (is_redir((*line)->arg[0]))
+
+	temp = *line;
+	if (which_redir((temp)->arg))
 	{
-		(*line) = (*line)->next;
-		(*line)->prev = NULL;
+		(temp) = (temp)->next;
+		(temp)->prev = NULL;
 	}
 	temp = *line;
+
 	while (temp)
 	{
-		if (is_redir(temp->arg[0]))
+		if (which_redir(temp->arg))
 		{
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
 			temp = temp->next;
-			if (is_redir(temp->arg[0]))
-			{
-				temp->prev->next = temp->next;
-				temp->next->prev = temp->prev;
-				temp = temp->next;
-			}
 			temp->prev->next = temp->next;
-			temp->next->prev = temp->prev;
+			if (temp->next)
+					temp->next->prev = temp->prev;
 		}
 		temp = temp->next;
 	}
+	//
+	temp = *line;
+	while (temp)
+	{
+		printf("%s\n", temp->arg);
+		temp = temp->next;
+	}
+	//
 }
 
 int		check_num_delquote(char *str)		// 잘됨
@@ -168,37 +174,22 @@ char	*ft_del_quote(char *str)
 }
 
 
-int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문에 정상적인 값만 들어온다고 가정
+int		ft_redirection(t_line **line)
 {
-
-	// 리다이렉션 >   > 일때 >, > 를 2개의 리스트로 만드는 것이 아니라 >> 하나의 리스트로 만들어야 함
 	int		re_num;
 	int		i;
 	char	**re_name;
 	int		*re_type;
 	t_line	*temp;
 
-
-
-
 	temp = *line;
-//	while (*line)		// 출력
-//	{
-//		printf("ee %s\n", (*line)->arg);
-//		*line = (*line)->next;
-//	}
 	re_num = redir_num(&temp);		//  개수 체크
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
 	put_redir(line, &re_name, &re_type, re_num);
 
-
-
-
-	// 리다이렉션 구조체 삭제(ing)
-	ft_list_delredir(line);		// echo >a ">b" "cc" d 하면 중간에 빈 리스트 생김
-
-
+	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트
+	ft_list_delredir(line);
 
 	// 리스트에서 quote 제거(ing)
 	while (temp)
@@ -208,38 +199,50 @@ int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문
 	}
 
 
+	//
+	temp = *line;
+	while (temp)
+	{
+		printf("print %s\n", temp->arg);
+		temp = temp->next;
+	}
+	//
 
 	// 리다이렉션 만들기	// dup2 사용
 	// 리다이렉션을 먼저 실행해서 <> 모두 확인
 	
-
-/*
+	int		fd_wr;
+	int		fd_op;
 	i = 0;
 	while (i < re_num)
 	{
 		if (re_type[i] == 1)		// >
 		{
-			open(re_name[i], O_RDWR | O_CREAT | O_TRUNC, 00777);
+			fd_wr = open(re_name[i], O_RDWR | O_CREAT | O_TRUNC, 00777);
 		}
 		else if (re_type[i] == 2)	// >>
 		{
-			open(re_name[i], O_RDWR | O_CREAT | O_APPEND, 00777);
+			fd_wr = open(re_name[i], O_RDWR | O_CREAT | O_APPEND, 00777);
 		}
 		else if (re_type[i] == 3)	//	<
 		{
-			if (!(open(re_name[i], O_RDONLY, 00777)))
+			if (!(fd_op = open(re_name[i], O_RDONLY, 00777)))
 			{
-				printf("4\n");
 				printf("no file read\n");
-				break;		// break가 아니라 포크해서 해야하나
+				return(-1);		// break가 아니라 포크해서 해야하나
 			}
 			else
+				;
 		}
 		i++;
 	}
-*/
 
-/*
+	// < 처리
+	// fd
+	// 포크	dup2 ,0, fd
+
+
+
 	int j;
 	i = 0;
 	while (re_name[i])
@@ -248,20 +251,12 @@ int		ft_redirection(t_line **line)		// 앞에서 syntax 체크 다 했기 때문
 			j = i;
 		i++;
 	}
-//	dup2(0, re_name[j]);
-	i = 0;
-	while (re_name[i])
-	{
-		if (re_type[i] == 1 || re_type[i] == 2)
-			j = i;
-		i++;
-	}
 
-*/
 
-	// 포크 해야함
+	exit(0);
+
+
 //	dup2(1, re_name[j]);		// 마지막 리다이렉션만 write로 사용
-	// open 을 다시 해서 fd를 받아와야 함
 	//exec(line);		// 실행부로 넘김
 
 //	while (*line)
