@@ -96,4 +96,58 @@ char	*str_append2(char *s1, char *s2);
 void	free_split(char ***split);
 int		ft_strcmp(char *dest, char *src);
 
+
+
+
+// sunmin 추가
+
+
+//		ft_listadd_back.c
+void		ft_listadd_back(t_line **lst, t_line *new);
+
+//		ft_listlast.c
+t_line		*ft_listlast(t_line *lst);
+
+//		ft_listnew.c
+t_line		*ft_listnew(char *content);
+
+//		exec.c
+void		ft_exec(t_line **command_line);
+
+//		util_envlist.c
+t_env		*ft_envnew(void *key, void *value);
+void		ft_envadd_back(t_env **lst, t_env *new);
+t_env		*ft_envfind(t_env **lst, char *s);
+t_env		*ft_envlast(t_env *lst);
+
+//		util_envlist2.c
+char		*find_key(const char *str);
+char		*find_value(const char *str);
+
+//		init_env.c
+int			init_env(char *envp[]);
+
+//		ft_other_command.c
+void		other_command(t_line **comand_line);
+
+//		ft_split_quote.c
+char		**ft_split_quote(const char *str);
+int			is_space(const char c);		//  나중에 util로 빼기
+char		flag_check(const char c, char flag); // util
+int			is_quote(const char c);		// util로 빼기
+
+//		convert_env.c
+char		*convert_env(const char *str);
+
+//		redir_syn_check.c
+int			redir_syn_check(t_line **line);
+
+//		split_by_null.c
+void		split_by_semi(t_line **line);
+
+//		redirection.c
+int			ft_redirection(t_line **line);
+
 #endif
+
+
