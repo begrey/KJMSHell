@@ -21,7 +21,7 @@ void dup_pipe(char *command, int pipefd[2], int flags, t_line *list)
         // char *const argv[] = {command, NULL};
         // char *const envp[] = {NULL};
         // execve(command, argv, envp);
-        ft_redirection()
+        ft_redirection(&list);
 }
 
 void pipe_exec(t_pipe *pip, t_line *list) //list는 파이프 기준으로 split된 배열 리스트들

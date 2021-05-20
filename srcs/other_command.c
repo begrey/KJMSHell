@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/20 13:30:49 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/20 16:34:15 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void		other_command(t_line *line)
 	char	**argv;
 	char	*path_slash;
 
-	//path = ft_split(extract_env("$PATH"), ':');
-	path = ft_split("/Users/jimkwon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
+	path = ft_split(extract_env("$PATH"), ':');
+	//path = ft_split("/Users/jimkwon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
 	i = 0;
 	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음
 	{  //ft_strncmp 를 이용해 환경변수 PATH부분과 앞이 똑같으면 그대로 실행, 아니면 직접 붙여주기
@@ -65,16 +65,16 @@ void		other_command(t_line *line)
 	printf("%s: command not found\n", line->arg);
 	exit(1);
 }
-int main()
-{
-	t_line *list;
+// int main()
+// {
+// 	t_line *list;
 
-	list = NULL;
-	ft_listadd_back(&list, ft_listnew("echo"));
-	ft_listadd_back(&list, ft_listnew("hi"));
-	ft_listadd_back(&list, ft_listnew("everyone"));
-	//char	**argv = make_list_argv(list);
-	other_command(list);
-	//char *const argv[] = {"/bin/echo", "hi", NULL};
-	//execve("/bin/echo", argv, NULL);
-}	
+// 	list = NULL;
+// 	ft_listadd_back(&list, ft_listnew("echo"));
+// 	ft_listadd_back(&list, ft_listnew("hi"));
+// 	ft_listadd_back(&list, ft_listnew("everyone"));
+// 	//char	**argv = make_list_argv(list);
+// 	other_command(list);
+// 	//char *const argv[] = {"/bin/echo", "hi", NULL};
+// 	//execve("/bin/echo", argv, NULL);
+// }	
