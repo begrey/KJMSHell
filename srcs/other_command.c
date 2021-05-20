@@ -6,52 +6,75 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/17 15:57:12 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/20 13:30:49 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "minishell.h"
 
-// 결과값 str을 리턴받아서 이어붙이는 식인데, 다른 명령어들도 그런 식으로 되어있지 않으면 구조를 바꾸어야 함 
-
-char	*other_command(char **command_line, int len)
+char		**make_list_argv(t_line *line)
 {
-//	c_l = "ls abc" len = "2"
 	int		i;
-	char	*str;
-	char	*path;
-	char	**split_path;
-	char	*new_path;
-	pid_t	pid;
-	int		status;
+	int		len;
+	char	**argv;
+	t_line	*temp;
 
-	status = 0;
-	pid = fork();
-	if (pid == 0)
+	i = 0;
+	len = 0;
+	temp = line;
+	while (temp != NULL)
 	{
-		path = extract_env("$PATH");
-		split_path = ft_split(path, ':');
-		i = 0;
-		while (split_path[i])	// 환경변수에서 PATH경로 찾아서 찾음
-		{
-			new_path = ft_strdup("");
-			new_path = ft_strjoin(split_path[i], "/");
-			new_path = ft_strjoin(new_path, command_line[0]);		// new_path = "/user/bin/ls"
-			execve(new_path, command_line, NULL);
-			i++;
-		}
-		printf("%s: command not found\n", command_line[0]);
-		exit(0);
+		len++;
+		temp = temp->next;
 	}
-	else
+	argv = (char **)malloc(sizeof(char) * (len + 1));
+	while (line != NULL)
 	{
-		waitpid(pid, &status, 0);
-		//printf("errno: %s\n", strerror(errno));
-		printf("dd %d\n", status);
+		argv[i] = line->arg;
+		line = line->next;
+		i++;
 	}
-	return NULL;
-
-	len = 1;
-	command_line = NULL;
-	str = NULL;
+	argv[i] = NULL;
+	return (argv);
 }
+
+void		other_command(t_line *line)
+{
+	int		i;
+	char	**path;
+	char	*new_path;
+	char	**argv;
+	char	*path_slash;
+
+	//path = ft_split(extract_env("$PATH"), ':');
+	path = ft_split("/Users/jimkwon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
+	i = 0;
+	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음
+	{  //ft_strncmp 를 이용해 환경변수 PATH부분과 앞이 똑같으면 그대로 실행, 아니면 직접 붙여주기
+		if ((ft_strncmp(path[i], line->arg, ft_strlen(path[i]))) != 0)
+		{//직접 환경변수 PATH 접합
+			path_slash = ft_strjoin(path[i], "/");
+			new_path = ft_strjoin(path_slash, line->arg);
+		}
+		else
+			new_path = line->arg;
+		argv = make_list_argv(line);
+		execve(new_path, argv, NULL);
+		i++;
+	}
+	printf("%s: command not found\n", line->arg);
+	exit(1);
+}
+int main()
+{
+	t_line *list;
+
+	list = NULL;
+	ft_listadd_back(&list, ft_listnew("echo"));
+	ft_listadd_back(&list, ft_listnew("hi"));
+	ft_listadd_back(&list, ft_listnew("everyone"));
+	//char	**argv = make_list_argv(list);
+	other_command(list);
+	//char *const argv[] = {"/bin/echo", "hi", NULL};
+	//execve("/bin/echo", argv, NULL);
+}	
