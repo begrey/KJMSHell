@@ -112,5 +112,12 @@ void		split_by_semi(t_line **line);
 
 //		redirection.c
 int			ft_redirection(t_line **line);
+int			which_redir(char *s);
+
+//		token_syn_check.c
+int			token_syn_check(t_line **line);
+
+//		parse.c
+int			is_token(char *s);
 
 #endif

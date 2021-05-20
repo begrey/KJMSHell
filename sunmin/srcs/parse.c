@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-int		is_token(char c)
+int		is_token(char *s)
 {
-	if (c == ';' || c == '|' || c == '>' || c == '<')
+	if (*s == ';' || *s == '|' || (*s == '>' && *(s + 1) != '>') || *s == '<')
 		return (1);
+	else if (*s == '>' && *(s + 1) == '>')
+		return (2);
 	return (0);
 }
-
-
 
 int		is_token_quote(const char *str)
 {
@@ -19,16 +19,21 @@ int		is_token_quote(const char *str)
 	flag = 0;
 	s = (char *)str;
 
-	if (*s && !is_token(*s))
+	if (*s && !is_token(s))
 		ret = 1;
 	while (*s)
 	{
 		flag = flag_check(*s, flag);
 		if (!flag)
 		{
-			if (is_token(*s))
+			if (is_token(s) == 1)
 				ret++;
-			if (is_token(*s) && !is_token(*(s + 1)) && *(s + 1))
+			else if (is_token(s) == 2)
+			{
+				ret++;
+				s++;
+			}
+			if (is_token(s) && !is_token(s + 1) && *(s + 1))
 				ret++;
 		}
 		s++;
@@ -52,7 +57,7 @@ int		where_token(char *str)	// is_token_quote와 구조 비슷	// 토큰의 인�
 		flag = flag_check(s[i], flag);
 		if (!flag)
 		{
-			if (is_token(s[i]))
+			if (is_token(&(s[i])))
 				return (i);
 		}
 		i++;
@@ -60,7 +65,7 @@ int		where_token(char *str)	// is_token_quote와 구조 비슷	// 토큰의 인�
 	return (i);
 }
 
-char	**ft_token_split(char *arg)	//  >> 일때 리스트에 >>가 들어가도록 수정해야 함
+char	**ft_token_split(char *arg)
 {
 	char	*s;
 	char	**split_token;
@@ -72,19 +77,31 @@ char	**ft_token_split(char *arg)	//  >> 일때 리스트에 >>가 들어가도�
 
 	s = (char *)arg;
 	split_num = is_token_quote(arg);
+
 	split_token = (char **)malloc(sizeof(char *) * (split_num + 1));
 	split_token[split_num] = NULL;
+
+
+
 
 	i = 0;
 	next_split = where_token(s);
 	while (i < split_num)
 	{
-		if (is_token(*s))
+		if (is_token(s) == 1)
 		{
 			split_token[i] = (char *)malloc(sizeof(char) * (2));
 			split_token[i][0] = *s;
 			split_token[i][1] = '\0';
 			s++;
+		}
+		else if (is_token(s) == 2)
+		{
+			split_token[i] = (char *)malloc(sizeof(char) * (3));
+			split_token[i][0] = '>';
+			split_token[i][1] = '>';
+			split_token[i][2] = '\0';
+			s += 2;
 		}
 		else
 		{
@@ -119,7 +136,6 @@ void	list_split_addback(t_line **lst, char *arg)
 		ft_listadd_back(lst, ft_listnew(split_token[i]));
 		i++;
 	}
-
 }
 
 int		make_list(t_line **line, char *s_line)
@@ -137,13 +153,11 @@ int		make_list(t_line **line, char *s_line)
 	}
 
 	i = 0;
-	while (split_line[i])				// 환경변수 변환
+	while (split_line[i])
 	{
 		split_line[i] = convert_env(split_line[i]);
 		i++;
 	}
-
-
 
 	i = 0;
 	while (split_line[i])
@@ -155,10 +169,10 @@ int		make_list(t_line **line, char *s_line)
 		i++;
 	}
 
-
-	if ((redir_syn_check(line)) == -1)		// 잘 됩니다	// >>로 바꿔서 다시 만들어야
+	if ((redir_syn_check(line)) == -1)		// >>로 바꿔서 다시 만들어야
 		return (-1);
-//	token_syntax(line?);	// 파이프가 처음에 오면 에러 반환하는 함수도 만들어야
+	if ((token_syn_check(line)) == -1)
+		return (-1);;					// 토큰이 처음에 오거나, 연속으로 두개 나오는 경우
 	split_by_semi(line);	// 이 함수 안에서 실행
 	return (0);
 }
