@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_pipe		*ft_pipenew(int *pipe)
+t_pipe		*ft_pipenew()
 {
 	t_pipe	*lst;
 

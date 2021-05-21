@@ -7,15 +7,15 @@ static int	semi_pipe(char *s)
 	return (0);
 }
 
-int		token_syn_check(t_line **line)
+int		token_syn_check(t_line *line)
 {
 	t_line *temp;
 
-	temp = *line;
+	temp = line;
 
-	if (semi_pipe((*line)->arg))		// 처음부터 세미 파이프면 안됨
+	if (semi_pipe((line)->arg))		// 처음부터 세미 파이프면 안됨
 	{
-		printf("syntax error near unexpected token \'%c\'\n", (*line)->arg[0]);
+		printf("syntax error near unexpected token \'%c\'\n", line->arg[0]);
 		return (-1);
 	}
 	while (temp)

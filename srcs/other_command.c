@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/20 16:34:15 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/21 11:38:43 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		other_command(t_line *line)
 		{//직접 환경변수 PATH 접합
 			path_slash = ft_strjoin(path[i], "/");
 			new_path = ft_strjoin(path_slash, line->arg);
-
+		}
 		else
 			new_path = line->arg;
 		argv = make_list_argv(line);

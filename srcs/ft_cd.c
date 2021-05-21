@@ -15,7 +15,6 @@ char		*convert_root_path(t_line *line)
 void		ft_cd(t_line *line)
 {
 	int		check;
-	char	buf[1024];
 	char 	*path;
 
 
@@ -23,7 +22,7 @@ void		ft_cd(t_line *line)
 	if (line == NULL) // cd 만 입력한 경우
 		path = root_path();
 	else if (line->arg[0] == '~') // 루트 디렉토리
-		path = convert_root_path(line->arg);
+		path = convert_root_path(line);
 	else
 		path = line->arg;	
 	check = chdir(path);

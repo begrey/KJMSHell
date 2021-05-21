@@ -19,6 +19,7 @@ int main(int argc, char **argv, char **envp)
 	t_list	*history;
 	t_line	*list;
 
+	list = NULL;
 	history = NULL;
 	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
 	{
@@ -34,7 +35,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(line));
-		if ((make_list(&list, line)) == -1)
+		if ((make_list(list, line)) == -1)
 			printf("syntax error!\n"); //syntax 에러 처리부분
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 	}
