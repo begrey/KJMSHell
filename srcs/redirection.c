@@ -181,14 +181,19 @@ int		ft_redirection(t_line **line)
 	char	**re_name;
 	int		*re_type;
 	t_line	*temp;
+	int		status;
+	pid_t	pid;
+	int		fd_wr;
+	int		fd_op;
+	int		j;
 
 	temp = *line;
-	re_num = redir_num(&temp);		//  개수 체크
+	re_num = redir_num(&temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
 	put_redir(line, &re_name, &re_type, re_num);
 
-	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트
+	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트 (sunmin/maina문 문제일수도)
 	ft_list_delredir(line);
 
 	// 리스트에서 quote 제거(ing)
@@ -199,20 +204,8 @@ int		ft_redirection(t_line **line)
 	}
 
 
-	//
-	temp = *line;
-	while (temp)
-	{
-		printf("print %s\n", temp->arg);
-		temp = temp->next;
-	}
-	//
 
-	// 리다이렉션 만들기	// dup2 사용
-	// 리다이렉션을 먼저 실행해서 <> 모두 확인
-	
-	int		fd_wr;
-	int		fd_op;
+
 	i = 0;
 	while (i < re_num)
 	{
@@ -226,10 +219,10 @@ int		ft_redirection(t_line **line)
 		}
 		else if (re_type[i] == 3)	//	<
 		{
-			if (!(fd_op = open(re_name[i], O_RDONLY, 00777)))
+			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
 				printf("no file read\n");
-				return(-1);		// break가 아니라 포크해서 해야하나
+				return(-1);
 			}
 			else
 				;
@@ -237,50 +230,29 @@ int		ft_redirection(t_line **line)
 		i++;
 	}
 
-	// < 처리
-	// fd
-	// 포크	dup2 ,0, fd
-
-
-
-	int j;
-	i = 0;
-	while (re_name[i])
+	pid = fork();
+	if (pid != 0)
 	{
-		if (re_type[i] == 1 || re_type[i] == 2)
-			j = i;
-		i++;
+		wait(&status);
 	}
-
-
-	exit(0);
-
-
-//	dup2(1, re_name[j]);		// 마지막 리다이렉션만 write로 사용
-	//exec(line);		// 실행부로 넘김
-
-//	while (*line)
-//	{
-//		printf("dd %s\n", (*line)->arg);
-//		*line = (*line)->next;
-//	}
-
-//	ft_exec(line);
-	return (0);
-}
+	else
+	{
+		dup2(fd_wr, 1);
 /*
-int		main(void)
-{
-	char *str;
-	int	num;
-	char	*after;
-
-	str = ft_strdup("ab\'d \'\'f\'d\'\"\'\"dd\"");// abd "(5) 	// ab'd ''f'd'"'"dd" -> abd fd"dd 나와야 함
-	num = check_num_delquote(str);
-	printf ("%s\n", str);
-	printf("qoute del num %d\n", num);
-	after = ft_del_quote(str);
-	printf("after %s\n", after);
+		if ((*line->next) == NULL)
+			ft_exec(line, NULL);
+		else
+		{
+			i = 0;
+			while (re_name[i])
+			{
+				if (re_type[i] == 3)
+					j = i;
+				i++;
+			}
+			ft_exec(line, re_name[j]);
+		}
+*/
+	}
 	return (0);
 }
-*/
