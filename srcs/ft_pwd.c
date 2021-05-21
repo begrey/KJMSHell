@@ -1,12 +1,12 @@
 #include "minishell.h"
 
-void		ft_pwd(t_line *line)
+void		ft_pwd()
 {
 	char	buf[1024];
 
 	if ((getcwd(buf, 1024)) == NULL)
 	{
-		printf("pwd error!\n")
+		printf("pwd error!\n");
 		exit(1);
 	}
 	printf("%s\n", getcwd(buf, 1024));

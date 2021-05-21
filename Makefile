@@ -8,7 +8,7 @@ SRCS		= ./srcs/convert_env.c \
 			  ./srcs/split_by_null.c \
 			  ./srcs/exec_command.c \
 			  ./srcs/ft_pipelast.c \
-			  ./srcs/test_pip.c \
+			  ./srcs/pipe.c \
 			  ./srcs/ft_cd.c \
 			  ./srcs/ft_pipenew.c \
 			  ./srcs/token_syn_check.c \
@@ -22,13 +22,14 @@ SRCS		= ./srcs/convert_env.c \
 			  ./srcs/util_envlist2.c \
 			  ./srcs/ft_listadd_back.c \
 			  ./srcs/ft_split_syn.c \
-			  ./srcs/util_list.c \
 			  ./srcs/ft_listlast.c \
 			  ./srcs/init_env.c \
 			  ./srcs/redir_syn_check.c \
 			  ./srcs/util_str.c \
 			  ./srcs/ft_listnew.c \
 			  ./srcs/redirection.c \
+			  ./srcs/other_command.c \
+			  ./srcs/main.c \
 
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -f
@@ -38,19 +39,19 @@ CFLAGS		= -Wall -Wextra -Werror
 all : $(NAME)
 
 $(NAME) : ${LIBFT} $(OBJS)
-	$(CC) $(CFLAGS) -o ${NAME} ${OBJS} ${LIBFT}
+	$(CC) -lncurses $(CFLAGS) -o ${NAME} ${OBJS} ${LIBFT}
 
 $(LIBFT) :
 	make all -C ./libft
+	make bonus -C ./libft
 	cp ./libft/$(LIBFT) .
 
 fclean : clean
 	$(RM) $(NAME) $(bonus)
-	make fclean -C ./libft
 
 clean :
-	$(RM) $(OBJS)
 	make clean -C ./libft
+	$(RM) $(OBJS)
 
 re : fclean all
 

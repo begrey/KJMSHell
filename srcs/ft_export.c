@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_export.c                                      :+:      :+:    :+:   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/03 15:50:57 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/21 11:05:55 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ char	*exec_export(char **command_line, int len)
 		{
 			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
 			{
-				if (ft_listfind(&env, extract_env(find_key(command_line[i]))))
-					temp = ft_listfind(&env, extract_env(find_key(command_line[i])));
+				if (ft_envfind(&env, extract_env(find_key(command_line[i]))))
+					temp = ft_envfind(&env, extract_env(find_key(command_line[i])));
 				else
 				{
 					(*temp).key = extract_env(find_key(command_line[i]));
-					ft_listadd_back(&env, temp);
+					ft_envadd_back(&env, temp);
 				}
 				if (ft_strchr(command_line[i], '=') != 0)
 				{
@@ -146,7 +146,7 @@ char	*extract_env(char *str)
 		return (str);
 	}
 	s = str + 1;
-	ex = ft_listfind(&env, s);
+	ex = ft_envfind(&env, s);
 	ret = ex->value;
 	if (!ret)
 		ret = ft_strdup("");

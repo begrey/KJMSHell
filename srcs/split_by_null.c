@@ -83,20 +83,20 @@ void ft_move_temp(t_line **temp, int i)
 // 	}
 // }
 
-void	split_by_semi(t_line **line)
+void	split_by_semi(t_line *line)
 {
 	t_line *temp;
 	t_line *iter;
 	int		i;
 
-	temp = *line;
-	iter = *line;
+	temp = line;
+	iter = line;
 	while (temp != NULL)
 	{
 		i = ft_split_list_token(temp, ';');
 		temp = ft_list_null_term(temp, i);
 		ft_listiter(iter);
-		split_by_pipe(&iter);
+		split_by_pipe(iter);
 		iter = temp;
 	}
 }

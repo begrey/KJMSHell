@@ -1,6 +1,6 @@
 #include "minishell.h"
 // car > | -> wc -> | -> wc -> NULL 
-void dup_pipe(t_line *list, int pipefd[2], int flags, t_line *list) 
+void dup_pipe(t_line *list, int pipefd[2], int flags) 
 {
         pid_t cpid = fork();
         if (cpid > 0)
@@ -27,7 +27,6 @@ void dup_pipe(t_line *list, int pipefd[2], int flags, t_line *list)
 void pipe_exec(t_pipe *pip, t_line **list) //list는 파이프 기준으로 split된 배열 리스트들
 {
         t_pipe *pip_temp;
-        t_line *lst_temp;
         int     temp_pipefd[2];
         int     i;
 
@@ -71,7 +70,7 @@ void    split_by_pipe(t_line *list) { // pwd -> | -> ls -> | -> cat -> | -> pwd
         index = 0;
         i = 0;
         //파이프 개수 세서 그만큼 파이프 생성.
-        temp = line;
+        temp = list;
         while (temp != NULL)
         {
                 if (temp->arg[0] == '|')
@@ -85,19 +84,19 @@ void    split_by_pipe(t_line *list) { // pwd -> | -> ls -> | -> cat -> | -> pwd
 	{
 		i = ft_split_list_token(temp, '|');
 		temp = ft_list_null_term(temp, i);
-		ptr_list[index] = iter;
+		arg_list[index] = iter;
 		index++;
 		iter = temp;
 	}
-        ptr_list[index] = NULL;
+        arg_list[index] = NULL;
         //pipe_list 생성
         while (pip != 0)
         {
-                ft_pipeadd_back(&pipe, ft_pipenew(fd));
+                ft_pipeadd_back(&pipe, ft_pipenew());
                 pip--;
         }
         if (pip == 0)
                 ft_redirection(&list);
         else
-                pipe_exec(pipe, ptr_list);
+                pipe_exec(pipe, arg_list);
 }

@@ -44,6 +44,8 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
+t_env *env;
+
 typedef	struct	s_redirc
 {
 	int				type;
@@ -73,15 +75,15 @@ char		*convert_root_path(t_line *line);
 char		*root_path();
 
 //	ft_pwd.c
-void		ft_pwd(t_line *line);
+void		ft_pwd();
 
-//	test_pip.c
-void		dup_pipe(char *command, int pipefd[2], int flags);
-void		pipe_exec(t_pipe *pip, t_line *list);
-		//main.c 바꿀것
+//	pipe.c
+void		dup_pipe(t_line *list, int pipefd[2], int flags);
+void		pipe_exec(t_pipe *pip, t_line **list);
+void		split_by_pipe(t_line *list);
 
 //	exec_command.c
-void		exec_command(t_line *line);
+void		exec_command(t_line *line, char *file_name);
 
 //	other_command.c
 void		other_command(t_line *line);
@@ -107,7 +109,7 @@ t_pipe		*ft_pipelast(t_pipe *lst);
 
 
 //	ft_new.c
-t_pipe		*ft_pipenew(int *pipe);
+t_pipe		*ft_pipenew();
 
 //ft_export.c
 char	*exec_export(char **command_line, int len);
@@ -150,21 +152,23 @@ int			is_quote(const char c);		// util로 빼기
 char		*convert_env(const char *str);
 
 //		redir_syn_check.c
-int			redir_syn_check(t_line **line);
+int			redir_syn_check(t_line *line);
 
 //		split_by_null.c
-void		split_by_semi(t_line **line);
+void		split_by_semi(t_line *line);
+t_line		*ft_list_null_term(t_line *lst, int index);
+int			ft_split_list_token(t_line *lst, char token);
 
 //		redirection.c
 int			ft_redirection(t_line **line);
 int			which_redir(char *s);
 
 //		token_syn_check.c
-int			token_syn_check(t_line **line);
+int			token_syn_check(t_line *line);
 
 //		parse.c
 int			is_token(char *s);
-int			make_list(t_line **line, char *s_line);
+int			make_list(t_line *line, char *s_line);
 
 //		util_str.c
 int			ft_strcmp(char *dest, char *src);
@@ -175,7 +179,9 @@ int			is_alpha(char c);
 int			is_dollar(char c);
 char	*str_appendchar(char *s1, char c);
 
-
+// //		util_list.c
+// t_env	*ft_listnew(void *key, void *value)
+// void	ft_listadd_back(t_env **lst, t_env *new)
 #endif
 
 

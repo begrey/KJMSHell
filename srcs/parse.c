@@ -138,7 +138,7 @@ void	list_split_addback(t_line **lst, char *arg)
 	}
 }
 
-int		make_list(t_line **line, char *s_line)
+int		make_list(t_line *line, char *s_line)
 {
 	char **split_line;
 	int i;
@@ -163,9 +163,9 @@ int		make_list(t_line **line, char *s_line)
 	while (split_line[i])
 	{
 		if (is_token_quote(split_line[i]))
-			list_split_addback(line, split_line[i]);
+			list_split_addback(&line, split_line[i]);
 		else
-			ft_listadd_back(line, ft_listnew(split_line[i]));
+			ft_listadd_back(&line, ft_listnew(split_line[i]));
 		i++;
 	}
 
@@ -177,33 +177,33 @@ int		make_list(t_line **line, char *s_line)
 	return (0);
 }
 
-int main(int argc, char *argv[], char *envp[])
-{
-	char	*input_line;
-//	char *input = "echo hi | everyone ; pwd | grep ; ls";
-	t_line	*line;
-	t_line	*down;
-	int	lvl;
+// int main(int argc, char *argv[], char *envp[])
+// {
+// 	char	*input_line;
+// //	char *input = "echo hi | everyone ; pwd | grep ; ls";
+// 	t_line	*line;
+// 	t_line	*down;
+// 	int	lvl;
 
-	if (argc != 1 || argv[1])
-	{
-		write(1, "cannot excute binary file\n", 26);
-		return (0);
-	}
-	init_env(envp);
-	write(1, "KJMSHell(OoO) >> ", 17);
-	while ((parse_line(&input_line)) > 0)
-	{
-		if (input_line[0] == '$' && input_line[1] == '?')
-		{
-			printf("ft_errno %d\n", ft_errno);
-		}
-		if ((make_list(&line, input_line)) == -1)
-		{
-			;
-		}
-		write(1, "KJMSHell(OoO) >> ", 17);
-		free(line);
-	}
-	return (0);
-}
+// 	if (argc != 1 || argv[1])
+// 	{
+// 		write(1, "cannot excute binary file\n", 26);
+// 		return (0);
+// 	}
+// 	init_env(envp);
+// 	write(1, "KJMSHell(OoO) >> ", 17);
+// 	while ((parse_line(&input_line)) > 0)
+// 	{
+// 		if (input_line[0] == '$' && input_line[1] == '?')
+// 		{
+// 			printf("ft_errno %d\n", ft_errno);
+// 		}
+// 		if ((make_list(&line, input_line)) == -1)
+// 		{
+// 			;
+// 		}
+// 		write(1, "KJMSHell(OoO) >> ", 17);
+// 		free(line);
+// 	}
+// 	return (0);
+// }
