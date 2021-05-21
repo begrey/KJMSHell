@@ -23,7 +23,7 @@ void		exec_command(t_line *line)
 		;
 //		exec_env(line->next);
 	else if (ft_strcmp(command, "exit") == 0)
-		exit(0);
+		exit(0); //프로세스만 종료되기 때문에 수정 필요
 	else 
 		other_command(line);
 }
