@@ -228,11 +228,11 @@ int		ft_redirection(t_line **line)
 	if (pid != 0)
 	{
 		wait(&status);
+		//close(fd_wr);
 	}
 	else
 	{
 		dup2(fd_wr, 1);
-
 		if (((*line)->next) == NULL)
 			exec_command(*line, NULL);
 		else
@@ -246,7 +246,8 @@ int		ft_redirection(t_line **line)
 			}
 			exec_command(*line, re_name[j]);
 		}
-
+		//close(fd_wr);
+		//exit(0);
 	}
 	return (0);
 }
