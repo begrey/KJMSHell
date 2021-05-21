@@ -1,141 +1,116 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
+/*   Updated: 2021/05/21 13:24:56 by sunmin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-
-// (*command_line)->arg
-// (*command_line)->next->arg
-
-void	exec_export(t_line **command_line)
+#include "./minishell.h"
+/*
+char	*exec_export(char **command_line, int len)
+//void	exec_export(t_line *line)
 {
-	int		len;
 	int		i;
 	char	*str;
 	t_env	*temp;
 	t_env	*idx;
-	t_line	*ttemp;
-
-	i = 0;
-	ttemp = *command_line;
-	while((ttemp))
-	{
-		ttemp = ttemp->next;
-		i++;
-	}
-	len = i;
-	i = 0;
 
 	str = ft_strdup("");
-
-	if ((*command_line)->next == NULL)		// export 단독일 때 환경변수 출력
-	{
-		idx = env;		// 임시 변수를 사용하지 않으면 한번밖에 사용할 수 없음
-		while (idx)
-		{
-			str = str_append1(str, "declare -x ");
-			str = str_append1(str, idx->key);
-			if (idx->value)
-			{
-				str = str_append1(str, "=");
-				str = str_append1(str, "\"");
-				str = str_append1(str, idx->value);
-				str = str_append1(str, "\"");
-			}
-			str = str_append1(str, "\n");
-			idx = idx->next; 
-		}
-		printf("%s", str);
-	}
-	else		// 환경변수를 추가할 때
-	{
-
-		temp = (t_env *)malloc(sizeof(t_env) * (len));
-		*command_line = (*command_line)->next;
-		while ((*command_line))
-		{
-			if (is_alpha((*command_line)->arg[0]) || is_dollar((*command_line)->arg[0]))
-			{
-				if (ft_envfind(&env, extract_env(find_key((*command_line)->arg))))
-					temp = ft_envfind(&env, extract_env(find_key((*command_line)->arg)));
-				else
-				{
-					(*temp).key = extract_env(find_key((*command_line)->arg));
-					ft_envadd_back(&env, temp);
-				}
-				if (ft_strchr((*command_line)->arg, '='))
-				{
-					(*temp).value = extract_env(find_value((*command_line)->arg));
-				}
-			}
-			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
-			{
-				str = str_append1(str, "export: ");
-				str = str_append2(str, &(*command_line)->arg[0]);
-				str = str_append1(str, ": not a valid identifier\n");
-			}
-			(*command_line) = (*command_line)->next;
-		}
-	}
-//	return (str);
-}
-
-void		exec_env(t_line **command_line)
-{
-	t_env	*idx;
-	char	*str;
-	int		len;
-	int		i;
-	t_line	*ttemp;
-
-	i = 0;
-	ttemp = *command_line;
-	while((ttemp))
-	{
-		ttemp = ttemp->next;
-		i++;
-	}
-	len = i;
-	i = 0;
-
-	if (len > 1)
-	{
-		str = ft_strdup("env: No such file or directory\n");
-		printf("%s", str);
-	}
-	str = ft_strdup("");
-	if ((*command_line)->next == NULL)
+	if (line == NULL)			// export 단독으로 들어왔을 때
 	{
 		idx = env;
 		while (idx)
 		{
-			if (idx->value)
+			str = ft_strjoin(str, "declare -x ");
+			str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
+			if (idx->if_value)
 			{
-				str = str_append1(str, idx->key);
-				str = str_append1(str, "=");
-				str = str_append1(str, idx->value);
-				str = str_append1(str, "\n");
+				str = ft_strjoin(str, "=");
+				str = ft_strjoin(str, "\"");
+				str = ft_strjoin(str, idx->value);
+				str = ft_strjoin(str, "\"");
+			}
+			str = ft_strjoin(str, "\n");
+			idx = idx->next; 
+		}
+	}
+	else						// export 이외에 인자가 있을 때			// 여기서부터 하면 됨
+	{
+		temp = (t_env *)malloc(sizeof(t_env) * (len));
+		i = 1;
+		while (command_line[i])
+		{
+			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
+			{
+				if (ft_envfind(&env, extract_env(find_key(command_line[i]))))
+					temp = ft_envfind(&env, extract_env(find_key(command_line[i])));
+				else
+				{
+					(*temp).key = extract_env(find_key(command_line[i]));
+					ft_envadd_back(&env, temp);
+				}
+				if (ft_strchr(command_line[i], '=') != 0)
+				{
+					(*temp).if_value = 1;
+					(*temp).value = extract_env(find_value(command_line[i]));
+				}
+				else
+					(*temp).if_value = 0;
+
+			}
+			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
+			{
+				str = ft_strjoin(str, "export: ");
+				str = ft_strjoin(str, &command_line[i][0]);
+				str = ft_strjoin(str, ": not a valid identifier\n");
+			}
+
+			i++;
+			temp++;
+		}
+	}
+	return (str);
+}
+*/
+char	*exec_env(char **command_line, int len)
+{
+	t_env	*idx;
+	char	*str;
+
+	if (len > 1)
+	{
+		str = ft_strdup("env: No such file or directory\n");
+		return (str);
+	}
+	str = ft_strdup("");
+	if (command_line[1] == NULL)
+	{
+		idx = env;
+		while (idx)
+		{
+			if (idx->if_value)
+			{
+				str = ft_strjoin(str, idx->key);
+				str = ft_strjoin(str, "=");
+				str = ft_strjoin(str, idx->value);
+				str = ft_strjoin(str, "\n");
 			}
 			idx = idx->next; 
 		}
 	}
-	printf("%s", str);
+	return (str);
 }
 
-void	exec_unset(t_line **command_line)
+char	*exec_unset(char **command_line, int len)
 {
 	t_env	*now;
 	t_env	*begin;
 	int		i;
-	int		len;
-	t_line	*ttemp;
-
-	i = 0;
-	ttemp = *command_line;
-	while((ttemp))
-	{
-		ttemp = ttemp->next;
-		i++;
-	}
-	len = i;
-	i = 0;
 
 	i = 1;
 	while (i < len)
@@ -144,7 +119,7 @@ void	exec_unset(t_line **command_line)
 		begin = env;
 		while (begin)
 		{
-			if (ft_strcmp(begin->key, find_key((*command_line)->next->arg)) == 0)
+			if (ft_strcmp(begin->key, find_key(command_line[i])) == 0)
 			{
 				if (now->next)
 					now->next = begin->next;
@@ -153,8 +128,8 @@ void	exec_unset(t_line **command_line)
 			begin = begin->next;
 		}
 		i++;
-		(*command_line) = (*command_line)->next;
 	}
+	return (NULL);
 	command_line = NULL;
 	len = 0;
 }
@@ -167,7 +142,7 @@ char	*extract_env(char *str)
 
 	if (*str != '$')
 		return (str);
-	else if (is_dollar(str[0]) && !str[1])
+	else if (str[0] == '$' && str[1] == '\0')
 	{
 		return (str);
 	}
@@ -178,5 +153,3 @@ char	*extract_env(char *str)
 		ret = ft_strdup("");
 	return (ret);
 }
-
-

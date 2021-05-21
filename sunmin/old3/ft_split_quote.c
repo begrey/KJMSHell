@@ -160,14 +160,6 @@ char		**ft_split_quote(const char *str)
 	int		*word_len;
 	int		i;
 
-	if (str[0] == '\0')
-	{
-		split = (char **)malloc(sizeof(char *) * (2));
-		split[1] = NULL;
-		split[0] = ft_strdup("");
-		return (split);
-	}
-
 	split = NULL;
 	word_num2 = get_word_num(str);
 	word_len = get_word_len(str);
@@ -228,22 +220,25 @@ char		**ft_split_quote(const char *str)
 	free(word_len);
 	return (split);
 }
+
+
 /*
+
 int		main(void)
 {
 	char	*str;
 	char	**split;
 
-	str = ft_strdup("a ;;\"abc\";;\"abc\" dd");
+	str = ft_strdup("a ;;\\\"  \"abc\";;\"abc\" dd");
 //	str = ft_strdup("a    abc a\"a\" \'\"aa\' \' ");
 //	str = ft_strdup("a");
-	printf("input :%s\n", str);
+	printf("input :[%s]\n", str);
 	split = ft_split_quote(str);
 
 	int i = 0;
 	while (split[i])
 	{
-		printf("split[%d] :%s\n", i, split[i]);
+		printf("quote_split[%d] :%s\n", i, split[i]);
 		i++;
 	}
 //	system("leaks a.out");

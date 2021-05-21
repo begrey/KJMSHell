@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_env.c                                         :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/02 17:09:40 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/21 11:34:12 by jimkwon          ###   ########.fr       */
+/*   Created: 2021/05/03 09:28:27 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/05/20 09:48:17 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		init_env(char *envp[])
+void		ft_echo(t_line *line)
 {
 	int		i;
-	int		len;
-	t_env	*temp;
+	int		flag;
 
-	i = 0;
-	while (envp[i])
+	i = 1;
+	flag = 0;
+	//-nnnnn 옵션 플래그 검사kk
+	if (line->arg[0] == '-' && line->arg[1] == 'n')
 	{
-		i++;
+		flag = 1;
+		while (line->arg[i] != '\0')
+			if (line->arg[i] != 'n')
+				flag = 0;
+		line = line->next;
 	}
-	len = i;
-	temp = (t_env *)malloc(sizeof(t_env) * (len));
-	env = ft_envnew(find_key(envp[0]), find_value(envp[0]));
-	i = 0;
-	while (i < len)
+	while (line != NULL)
 	{
-		temp[i].key = find_key(envp[i]);
-		temp[i].value = find_value(envp[i]);
-		temp[i].if_value = 1;
-		ft_envadd_back(&env, &temp[i]);
-		i++;
+		printf("%s", line->arg);
+		if (line->next != NULL)
+			printf(" ");
+		line = line->next;
 	}
-	return (0);
 }
-

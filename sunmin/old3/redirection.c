@@ -7,14 +7,13 @@ int		is_redir(char c)
 	return (0);
 }
 
-int		put_redir(t_line **line, char ***re_name, int **re_type)
+int		put_redir(t_line **line, char ***re_name, int **re_type, int num)
 {
 	t_line	*temp;
 	int		flag;
 	int		type;
 	int		i;
 
-	i = 0;
 	temp = *line;
 	while (temp)			// 1,2,3 으로 다시 해야 함		 >=1, >>=2, <=3
 	{
@@ -104,7 +103,14 @@ void	ft_list_delredir(t_line **line)		// >a만 올 때 세그폴트
 		}
 		temp = temp->next;
 	}
-
+	//
+	temp = *line;
+	while (temp)
+	{
+		printf("%s\n", temp->arg);
+		temp = temp->next;
+	}
+	//
 }
 
 int		check_num_delquote(char *str)		// 잘됨
@@ -185,7 +191,7 @@ int		ft_redirection(t_line **line)
 	re_num = redir_num(&temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
-	put_redir(line, &re_name, &re_type);
+	put_redir(line, &re_name, &re_type, re_num);
 
 	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트 (sunmin/maina문 문제일수도)
 	ft_list_delredir(line);
@@ -232,9 +238,9 @@ int		ft_redirection(t_line **line)
 	else
 	{
 		dup2(fd_wr, 1);
-
-		if (((*line)->next) == NULL)
-			exec_command(*line, NULL);
+/*
+		if ((*line->next) == NULL)
+			ft_exec(line, NULL);
 		else
 		{
 			i = 0;
@@ -244,9 +250,9 @@ int		ft_redirection(t_line **line)
 					j = i;
 				i++;
 			}
-			exec_command(*line, re_name[j]);
+			ft_exec(line, re_name[j]);
 		}
-
+*/
 	}
 	return (0);
 }
