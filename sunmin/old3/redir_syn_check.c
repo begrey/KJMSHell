@@ -19,13 +19,13 @@ static int	forbidden_char(char c)
 	return (0);
 }
 
-int		redir_syn_check(t_line *line)
+int		redir_syn_check(t_line **line)
 {
 	t_line	*lst;
 	int		n;
 
 	n = 0;
-	lst = line;
+	lst = *line;
 	while (lst)
 	{
 		if (which_redir(lst->arg) && !lst->next)
