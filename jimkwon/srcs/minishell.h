@@ -60,7 +60,7 @@ t_line		*ft_listnew(char *content);
 char        **ft_split_syn(char const *s, char c);
 
 //  ft_echo.c
-char	*ft_echo(char *args);
+void	ft_echo(t_line *line);
 
 //	parse_line.c
 char	*append(char *line, char c);
