@@ -55,7 +55,7 @@ void		other_command(t_line *line)
 		{//직접 환경변수 PATH 접합
 			path_slash = ft_strjoin(path[i], "/");
 			new_path = ft_strjoin(path_slash, line->arg);
-		}
+
 		else
 			new_path = line->arg;
 		argv = make_list_argv(line);

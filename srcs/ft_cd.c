@@ -2,7 +2,7 @@
 
 char		*root_path()
 {
-	//나중에 이곳을 환경변수 USER에서 받아오기
+	//환경변수 USER에서 받아옴
 	return(ft_strdup(convert_env("$USER")));
 }
 

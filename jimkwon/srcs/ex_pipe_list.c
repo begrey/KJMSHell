@@ -72,9 +72,9 @@ int main()
 	t_line *list;
 	t_line *temp;
 	t_line *iter;
-	t_line *new_list;
-	t_line *new_temp;
+	t_line **ptr_list;
 	int i;
+	int index = 0;
 
 	list = NULL;
 	//pwd -> | ls -> | -> pwd -> ; -> echo -> abc
@@ -90,25 +90,16 @@ int main()
 	ft_listadd_back(&list, ft_listnew("abc"));
 	temp = list;
 	iter = list;
-	new_list = NULL;
-	ft_listadd_back(&new_list, ft_listnew("1"));
-	ft_listadd_back(&new_list, ft_listnew("2"));
-	ft_listadd_back(&new_list, ft_listnew("3"));
-	new_temp = new_list;
+	ptr_list = (t_line **)malloc(sizeof(t_line *) * (3 + 2)); //나중엔 pip + 2로
 	while (temp != NULL)
 	{
 		i = ft_split_list_token(temp, '|');
 		temp = ft_list_null_term(temp, i);
-		new_list = iter;
-		ft_listiter(new_list);
-		new_list = new_list->next;
+		ptr_list[index] = iter;
+		ft_listiter(ptr_list[index]);
+		//printf("%s\n", (*(ptr_list[index]))->arg);
+		index++;
 		iter = temp;
 		printf("\n");
 	}
-	ft_listiter(new_list);
-	// while (new_temp != NULL)
-	// {
-	// 	ft_listiter(new_temp);
-	// 	new_temp = new_temp->next;
-	// }
 }
