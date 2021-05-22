@@ -13,14 +13,11 @@ void		exec_command(t_line *line, char *file_name)
 	else if (ft_strcmp(command, "pwd") == 0)
 		ft_pwd();
 	else if (ft_strcmp(command, "export") == 0)
-		;
-//		exec_export(line->next);
+		exec_export(line);
 	else if (ft_strcmp(command, "unset") == 0)
-		;
-//		exec_unset(line->next);
+		exec_unset(line);
 	else if (ft_strcmp(command, "env") == 0)
-		;
-//		exec_env(line->next);
+		exec_env(line);
 	else if (ft_strcmp(command, "exit") == 0)
 		exit(0); //프로세스만 종료되기 때문에 수정 필요
 	else 

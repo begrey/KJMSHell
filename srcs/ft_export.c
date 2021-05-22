@@ -6,23 +6,36 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/21 11:05:55 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/22 16:44:09 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-char	*exec_export(char **command_line, int len)
+void	exec_export(t_line *line)
 {
 	int		i;
 	char	*str;
 	t_env	*temp;
 	t_env	*idx;
+	int		len;
+	char	**command_line;
+
+	len = ft_listsize(line);
+	command_line = (char **)malloc(sizeof(char *) * (len + 1));
+	command_line[len] = NULL;
+	i = 0;
+	while (i < len)
+	{
+		command_line[i] = ft_strdup(line->arg);
+		i++;
+		line = line->next;
+	}
 
 	str = ft_strdup("");
-	if (command_line[1] == NULL)
+	if (command_line[1] == NULL)			// export 단독으로 들어왔을 때
 	{
-		idx = env;		// 임시 변수를 사용하지 않으면 한번밖에 사용할 수 없음
+		idx = env;
 		while (idx)
 		{
 			str = ft_strjoin(str, "declare -x ");
@@ -38,7 +51,7 @@ char	*exec_export(char **command_line, int len)
 			idx = idx->next; 
 		}
 	}
-	else
+	else						// export 이외에 인자가 있을 때			// 여기서부터 하면 됨
 	{
 		temp = (t_env *)malloc(sizeof(t_env) * (len));
 		i = 1;
@@ -73,18 +86,32 @@ char	*exec_export(char **command_line, int len)
 			temp++;
 		}
 	}
-	return (str);
+	write(1, str, ft_strlen(str));
 }
 
-char	*exec_env(char **command_line, int len)
+void	exec_env(t_line *line)
 {
 	t_env	*idx;
 	char	*str;
+	char	**command_line;
+	int		len;
+	int		i;
+
+	len = ft_listsize(line);
+	command_line = (char **)malloc(sizeof(char *) * (len + 1));
+	command_line[len] = NULL;
+	i = 0;
+	while (i < len)
+	{
+		command_line[i] = ft_strdup(line->arg);
+		i++;
+		line = line->next;
+	}
 
 	if (len > 1)
 	{
 		str = ft_strdup("env: No such file or directory\n");
-		return (str);
+		return ;
 	}
 	str = ft_strdup("");
 	if (command_line[1] == NULL)
@@ -102,14 +129,27 @@ char	*exec_env(char **command_line, int len)
 			idx = idx->next; 
 		}
 	}
-	return (str);
+	write(1, str, ft_strlen(str));
 }
 
-char	*exec_unset(char **command_line, int len)
+void	exec_unset(t_line *line)
 {
 	t_env	*now;
 	t_env	*begin;
 	int		i;
+	int		len;
+	char	**command_line;
+
+	len = ft_listsize(line);
+	command_line = (char **)malloc(sizeof(char *) * (len + 1));
+	command_line[len] = NULL;
+	i = 0;
+	while (i < len)
+	{
+		command_line[i] = ft_strdup(line->arg);
+		i++;
+		line = line->next;
+	}
 
 	i = 1;
 	while (i < len)
@@ -128,9 +168,6 @@ char	*exec_unset(char **command_line, int len)
 		}
 		i++;
 	}
-	return (NULL);
-	command_line = NULL;
-	len = 0;
 }
 
 char	*extract_env(char *str)
