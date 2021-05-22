@@ -23,6 +23,8 @@
 		static 함수 처리, 인자로 넘겨받는 문자열 const로 처리하고 옮겨서 사용
 	5. 환경변수 처리
 		$USERa 입력시 세그폴트
+	6. redirection
+		ls -al | grep Makefile 입력시 배쉬와 다름
 
 
 

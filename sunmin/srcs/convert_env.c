@@ -61,9 +61,10 @@ static int		check_env_len(const char *str)	// 플래그를 고려 안해도 됨(
 
 	len = 0;
 	s = (char *)str;
-	while (*s && !is_space(*s) && *s != '\'' && *s != '\"')
+	while (*s && !is_space(*s) && *s != '\'' && *s != '\"' && *s != '=')
 	{
-		len++;
+		if (*s != '$')
+			len++;
 		s++;
 	}
 	return (len);
@@ -113,7 +114,6 @@ static int		get_new_len(const char *str)
 			new_len++;
 		}
 	}
-//	printf("n_l %d\n", new_len);
 	return (new_len);
 }
 
@@ -146,10 +146,9 @@ char		*convert_env(const char *str)		// 인풋으로는 syntax 에러가 없는 
 			s = s + env_len;
 		}
 		else
-		{
 			result = str_append3(result, *s);
-			s++;
-		}
+		s++;
+
 	}
 	return (result);
 }

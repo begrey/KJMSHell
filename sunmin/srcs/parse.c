@@ -148,19 +148,20 @@ int		make_list(t_line *line, char *s_line)
 
 
 
+
 	int k  = 0;
 	while (split_line[k])
 	{
 		split_line[k] = ft_strtrim(split_line[k], " ");
 		k++;
 	}
+
 	i = 0;
 	while (split_line[i])
 	{
 		split_line[i] = convert_env(split_line[i]);
 		i++;
 	}
-
 	i = 0;
 	while (split_line[i])
 	{

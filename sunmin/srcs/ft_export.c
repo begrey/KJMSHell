@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/22 16:44:09 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/22 17:47:44 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	exec_export(t_line *line)
 			idx = idx->next; 
 		}
 	}
-	else						// export 이외에 인자가 있을 때			// 여기서부터 하면 됨
+	else						// export 이외에 인자가 있을
 	{
 		temp = (t_env *)malloc(sizeof(t_env) * (len));
 		i = 1;
@@ -72,7 +72,9 @@ void	exec_export(t_line *line)
 					(*temp).value = extract_env(find_value(command_line[i]));
 				}
 				else
+				{
 					(*temp).if_value = 0;
+				}
 
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
