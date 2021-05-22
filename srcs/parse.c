@@ -145,6 +145,10 @@ int		make_list(t_line *line, char *s_line)
 
 	split_line = ft_split_quote(s_line);
 
+
+
+
+
 	int k  = 0;
 	while (split_line[k])
 	{
@@ -158,7 +162,6 @@ int		make_list(t_line *line, char *s_line)
 		split_line[i] = convert_env(split_line[i]);
 		i++;
 	}
-
 	i = 0;
 	while (split_line[i])
 	{
