@@ -112,9 +112,9 @@ t_pipe		*ft_pipelast(t_pipe *lst);
 t_pipe		*ft_pipenew();
 
 //ft_export.c
-char	*exec_export(char **command_line, int len);
-char	*exec_env(char **command_line, int len);
-char	*exec_unset(char **command_line, int len);
+void	exec_export(t_line *line);
+void	exec_env(t_line *line);
+void	exec_unset(t_line *line);
 char	*extract_env(char *str);
 
 // sunmin 추가
@@ -178,6 +178,9 @@ char		*str_append3(char *s1, char c);
 int			is_alpha(char c);
 int			is_dollar(char c);
 char	*str_appendchar(char *s1, char c);
+
+//		ft_listsize.c
+int			ft_listsize(t_line *line);
 
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)

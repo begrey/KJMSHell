@@ -160,6 +160,14 @@ char		**ft_split_quote(const char *str)
 	int		*word_len;
 	int		i;
 
+	if (str[0] == '\0')			// 없으면 그냥 엔터시 세그폴트
+	{
+		split = (char **)malloc(sizeof(char *) * (2));
+		split[1] = NULL;
+		split[0] = ft_strdup("");
+		return (split);
+	}
+
 	split = NULL;
 	word_num2 = get_word_num(str);
 	word_len = get_word_len(str);
