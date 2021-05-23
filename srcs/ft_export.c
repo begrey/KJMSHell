@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/22 17:47:44 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/23 14:18:48 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	exec_export(t_line *line)
 	str = ft_strdup("");
 	if (command_line[1] == NULL)			// export 단독으로 들어왔을 때
 	{
+		ft_env_sort(&env);// idx 정렬 한번 하기
 		idx = env;
 		while (idx)
 		{

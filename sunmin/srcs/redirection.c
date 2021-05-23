@@ -190,6 +190,7 @@ int		ft_redirection(t_line **line)
 	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트 (sunmin/maina문 문제일수도)
 	ft_list_delredir(line);
 
+	temp = *line;
 	// 리스트에서 quote 제거(ing)
 	while (temp)
 	{
