@@ -191,6 +191,7 @@ int		ft_redirection(t_line **line)
 	ft_list_delredir(line);
 
 	// 리스트에서 quote 제거(ing)
+	temp = *line;
 	while (temp)
 	{
 		(temp)->arg = ft_del_quote((temp)->arg);

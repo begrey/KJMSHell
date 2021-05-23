@@ -182,6 +182,9 @@ char	*str_appendchar(char *s1, char c);
 //		ft_listsize.c
 int		ft_listsize(t_line  *line);
 
+//		ft_env_sort.c
+void		ft_env_sort(t_env **env);
+
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)
 // void	ft_listadd_back(t_env **lst, t_env *new)
