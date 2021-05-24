@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/21 11:38:43 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/21 12:48:49 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ char		**make_list_argv(t_line *line)
 
 void		other_command(t_line *line)
 {
+	
+	t_line	*temp;
+	temp = 0;
+
+
 	int		i;
 	char	**path;
 	char	*new_path;

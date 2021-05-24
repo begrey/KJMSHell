@@ -20,6 +20,8 @@ void		exec_command(t_line *line, char *file_name)
 		exec_env(line);
 	else if (ft_strcmp(command, "exit") == 0)
 		exit(0); //프로세스만 종료되기 때문에 수정 필요
+	else if (line->arg[0] == '\0')
+		return ;
 	else 
 		other_command(line);
 	file_name = NULL;

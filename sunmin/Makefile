@@ -16,13 +16,13 @@ SRCS		= ./srcs/convert_env.c \
 			  ./srcs/ft_pwd.c \
 			  ./srcs/parse.c \
 			  ./srcs/util_envlist.c \
+			  ./srcs/ft_export.c \
 			  ./srcs/ft_split_quote.c \
 			  ./srcs/parse_line.c \
 			  ./srcs/util_envlist2.c \
 			  ./srcs/ft_listadd_back.c \
 			  ./srcs/ft_split_syn.c \
 			  ./srcs/ft_listlast.c \
-			  ./srcs/ft_export.c \
 			  ./srcs/init_env.c \
 			  ./srcs/redir_syn_check.c \
 			  ./srcs/util_str.c \
