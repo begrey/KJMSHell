@@ -6,17 +6,18 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/02 17:09:40 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/21 11:34:12 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/24 16:24:25 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		init_env(char *envp[])
+t_env	*init_env(char *envp[])
 {
 	int		i;
 	int		len;
 	t_env	*temp;
+	t_env	*env;
 
 	i = 0;
 	while (envp[i])
@@ -35,6 +36,6 @@ int		init_env(char *envp[])
 		ft_envadd_back(&env, &temp[i]);
 		i++;
 	}
-	return (0);
+	return (env);
 }
 

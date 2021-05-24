@@ -168,7 +168,7 @@ char	*ft_del_quote(char *str)
 }
 
 
-int		ft_redirection(t_line *line)
+int		ft_redirection(t_line *line, t_env *env)
 {
 	int		re_num;
 	int		i;
@@ -182,7 +182,6 @@ int		ft_redirection(t_line *line)
 	int		j;
 
 	temp = line;
-
 	re_num = redir_num(temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
@@ -193,40 +192,17 @@ int		ft_redirection(t_line *line)
 	temp = line;
 	ft_list_delredir(temp);
 
-	// escape 제거
-	temp = line;
-	while (temp)
-	{
-		temp->arg = delete_escape(temp->arg);
-		temp = temp->next;
-	}
-	
 	// 리스트에서 quote 제거(ing)
 	temp = line;
 	while (temp)
 	{
-		temp->arg = ft_del_quote(temp->arg);
-		temp = temp->next;
-	}
-
-	// 아스키 -값 복원
-	temp = line;
-	while (temp)
-	{
-		temp->arg = restore_escape(temp->arg);
-		temp = temp->next;
+		(temp)->arg = ft_del_quote((temp)->arg);
+		temp = (temp)->next;
 	}
 
 
 
 
-
-
-
-
-
-	fd_wr = 0;
-	fd_op = 0;
 	i = 0;
 	while (i < re_num)
 	{
@@ -251,41 +227,31 @@ int		ft_redirection(t_line *line)
 		i++;
 	}
 
-		temp = line;//
-/*	
+	temp = line;
 	pid = fork();
-	printf("1 %d\n", pid);
 	if (pid != 0)
+	{
 		wait(&status);
+		//close(fd_wr);
+	}
 	else
 	{
-*/
-		temp = line;
-		if (re_num)
-		{
-			if (fd_wr)
-				dup2(fd_wr, 1);
-			if (fd_op)
-			{
-				i = 0;
-				while (re_name[i])
-				{
-					if (re_type[i] == 3)
-						j = i;
-					i++;
-				}
-				exec_command(temp, re_name[j]);
-			}
-		}
+		dup2(fd_wr, 1);
+		if ((temp->next) == NULL)
+			exec_command(temp, NULL, env);
 		else
-//		{
-			exec_command(temp, NULL);
-			//close(fd_wr);
-			//exit(0);
-//		}
-//	}
+		{
+			i = 0;
+			while (re_name[i])
+			{
+				if (re_type[i] == 3)
+					j = i;
+				i++;
+			}
+			exec_command(temp, re_name[j], env);
+		}
+		//close(fd_wr);
+		//exit(0);
+	}
 	return (0);
-	status = 0;
-	j = 0;
-	pid = 0;
 }
