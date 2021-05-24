@@ -10,5 +10,6 @@ void		ft_pwd()
 		exit(1);
 	}
 	printf("%s\n", getcwd(buf, 1024));
+	exit(0);
 }
 

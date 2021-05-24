@@ -52,7 +52,7 @@ void pipe_exec(t_pipe *pip, t_line **list) //list는 파이프 기준으로 spli
         }
         dup_pipe(list[i], pip_temp->fd, STDIN_PIPE);   //last;
         close(pip_temp->fd[READ]);
-        int status;
+        //int status;
         while (wait(&status) > 0);
 }
 
@@ -64,6 +64,7 @@ void    split_by_pipe(t_line *list) { // pwd -> | -> ls -> | -> cat -> | -> pwd
         int     pip;
         int     index;
         int     i;
+        pid_t   pid;
         t_line **arg_list; // 리스트 채워넣는 부분 따로 함수로 빼두기
 
         pip = 0;
@@ -97,7 +98,17 @@ void    split_by_pipe(t_line *list) { // pwd -> | -> ls -> | -> cat -> | -> pwd
                 pip--;
         }
         if (i == 0)
-                ft_redirection(list);
+        {
+                pid = fork();
+                if (pid != 0)
+                {
+                        wait(&status);
+                        if (status >= 256)
+                                status /= 256;
+                }
+                else
+                        ft_redirection(list);
+        }
         else
                 pipe_exec(pipe, arg_list);
 }

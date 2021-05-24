@@ -80,8 +80,8 @@ void exec_command(char *command, int pipefd[2], int flags);
 void pipe_exec(t_pipe *pip, t_line *list);
 		//main.c 바꿀것
 
-//	exec_command.c
-void		exec_command(t_line *line);
+// //	exec_command.c
+// void		exec_command(t_line *line);
 
 //	other_command.c
 char	*other_command(char **command_line, int len);
@@ -89,7 +89,7 @@ char	*other_command(char **command_line, int len);
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int		num_len(int n);
 int		putchar_tc(int tc);
-void	get_cursor_position(t_cursor *cursor)
+void	get_cursor_position(t_cursor *cursor);
 void	delete_end(t_cursor *cursor);
 void	delete_line(t_cursor *cursor);
 char	*remove_c(char *line);

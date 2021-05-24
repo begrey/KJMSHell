@@ -43,7 +43,7 @@ void pipe_exec(t_pipe *pip, t_line *list)
         //temp = ft_list_null_term(temp, i);
 	//여기서 echo -> aa 와 같은 리스트를 argv 형태의 2차원 배열로 만들어서 exec_command로 보내보자
 	
-        exec_command("/bin/cat", pip_temp->fd, STDOUT_PIPE);   //start;
+        exec_command("/bin/ls", pip_temp->fd, STDOUT_PIPE);   //start;
         close(pip_temp->fd[WRITE]);
         //iter = temp;
         while (pip_temp->next != NULL) //pipe가 2개면 이 반복문을 돌지 않는다!
@@ -51,12 +51,12 @@ void pipe_exec(t_pipe *pip, t_line *list)
                 temp_pipefd[0] = pip_temp->fd[READ];
                 //자신의 출력을 다음 pipe_write로 보낸다 
                 temp_pipefd[1] = pip_temp->next->fd[WRITE];
-                exec_command("/bin/cat", temp_pipefd, STDIN_PIPE | STDOUT_PIPE); // 중앙부 실행
+                exec_command("/bin/ls", temp_pipefd, STDIN_PIPE | STDOUT_PIPE); // 중앙부 실행
                 close(pip_temp->fd[READ]);
                 pip_temp = pip_temp->next;
                 close(pip_temp->fd[WRITE]);
         }
-        exec_command("/bin/ls", pip_temp->fd, STDIN_PIPE);   //last;
+        exec_command("/bin/pwd", pip_temp->fd, STDIN_PIPE);   //last;
         close(pip_temp->fd[READ]);
         int status;
         while (wait(&status) > 0);
@@ -72,11 +72,11 @@ int main() { // pwd -> | -> ls -> | -> cat -> | -> pwd
 	list = NULL;
         pipe = NULL;
         pip = 0;
-	ft_listadd_back(&list, ft_listnew("cat"));
-	ft_listadd_back(&list, ft_listnew("|"));
-	ft_listadd_back(&list, ft_listnew("wc"));
-	ft_listadd_back(&list, ft_listnew("|"));
-	ft_listadd_back(&list, ft_listnew("wc"));
+	// ft_listadd_back(&list, ft_listnew("cat"));
+	// ft_listadd_back(&list, ft_listnew("|"));
+	// ft_listadd_back(&list, ft_listnew("wc"));
+	// ft_listadd_back(&list, ft_listnew("|"));
+	// ft_listadd_back(&list, ft_listnew("wc"));
         //파이프 개수 세서 그만큼 파이프 생성.
         while (list != NULL)
         {
@@ -85,7 +85,7 @@ int main() { // pwd -> | -> ls -> | -> cat -> | -> pwd
                 list = list->next;
         }
         //pipe_list 생성하기
-        pip = 4;
+        pip = 0;
         while (pip != 0)
         {
                 ft_pipeadd_back(&pipe, ft_pipenew(fd));
