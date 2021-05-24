@@ -5,6 +5,7 @@ void		exec_command(t_line *line, char *file_name)
 {
 	char	*command;
 
+	command = line->arg;
 	if (ft_strcmp(command, "echo") == 0)
 		ft_echo(line->next);
 	else if (ft_strcmp(command, "cd") == 0)
