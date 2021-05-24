@@ -21,7 +21,7 @@ void dup_pipe(t_line *list, int pipefd[2], int flags)
         // char *const argv[] = {command, NULL};
         // char *const envp[] = {NULL};
         // execve(command, argv, envp);
-        ft_redirection(&list);
+        ft_redirection(list);
 }
 
 void pipe_exec(t_pipe *pip, t_line **list) //list는 파이프 기준으로 split된 배열 리스트들
@@ -90,13 +90,14 @@ void    split_by_pipe(t_line *list) { // pwd -> | -> ls -> | -> cat -> | -> pwd
 	}
         arg_list[index] = NULL;
         //pipe_list 생성
+		i = pip;
         while (pip != 0)
         {
                 ft_pipeadd_back(&pipe, ft_pipenew());
                 pip--;
         }
-        if (pip == 0)
-                ft_redirection(&list);
+        if (i == 0)
+                ft_redirection(list);
         else
                 pipe_exec(pipe, arg_list);
 }

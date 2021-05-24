@@ -182,6 +182,7 @@ int		ft_redirection(t_line *line)
 	int		j;
 
 	temp = line;
+
 	re_num = redir_num(temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
@@ -191,6 +192,7 @@ int		ft_redirection(t_line *line)
 	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트 (sunmin/maina문 문제일수도)
 	temp = line;
 	ft_list_delredir(temp);
+
 
 	// 리스트에서 quote 제거(ing)
 	temp = line;
@@ -203,6 +205,9 @@ int		ft_redirection(t_line *line)
 
 
 
+
+	fd_wr = 0;
+	fd_op = 0;
 	i = 0;
 	while (i < re_num)
 	{
@@ -227,31 +232,41 @@ int		ft_redirection(t_line *line)
 		i++;
 	}
 
-	temp = line;
+		temp = line;//
+/*	
 	pid = fork();
+	printf("1 %d\n", pid);
 	if (pid != 0)
-	{
 		wait(&status);
-		//close(fd_wr);
-	}
 	else
 	{
-		dup2(fd_wr, 1);
-		if ((temp->next) == NULL)
-			exec_command(temp, NULL);
-		else
+*/
+		temp = line;
+		if (re_num)
 		{
-			i = 0;
-			while (re_name[i])
+			if (fd_wr)
+				dup2(fd_wr, 1);
+			if (fd_op)
 			{
-				if (re_type[i] == 3)
-					j = i;
-				i++;
+				i = 0;
+				while (re_name[i])
+				{
+					if (re_type[i] == 3)
+						j = i;
+					i++;
+				}
+				exec_command(temp, re_name[j]);
 			}
-			exec_command(temp, re_name[j]);
 		}
-		//close(fd_wr);
-		//exit(0);
-	}
+		else
+//		{
+			exec_command(temp, NULL);
+			//close(fd_wr);
+			//exit(0);
+//		}
+//	}
 	return (0);
+	status = 0;
+	j = 0;
+	pid = 0;
 }
