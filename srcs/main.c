@@ -18,7 +18,10 @@ int main(int argc, char **argv, char **envp)
 	int		read;
 	t_list	*history;
 	t_line	*list;
+	t_env	*env;
+	int		i;
 
+	i = 0;
 	list = NULL;
 	history = NULL;
 	if (!(g_line = malloc(1)))
@@ -29,23 +32,17 @@ int main(int argc, char **argv, char **envp)
 		write(1, "cannot excute binary file\n", 26);
 		return (0);
 	}
-	init_env(envp);
-	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
-	signal(SIGQUIT, signalHandler);
+	env = init_env(envp);
 	signal(SIGINT, signalHandler);
     signal(SIGTSTP, signalHandler);
+    signal(SIGQUIT, signalHandler);
+	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 	while((read = parse_line(history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
 	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(g_line));
-		if ((make_list(list, g_line)) == -1)
+		if ((int)g_line[0] != 0 && (i = make_list(list, g_line, env)) == -1)
 			printf("syntax error!\n"); //syntax 에러 처리부분
-		//printf("status : %d\n", status);
-		if (status == 10)
-		{
-			printf("exit\n");
-			exit(0);
-		}
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		(g_line)[0] = 0;
 	}

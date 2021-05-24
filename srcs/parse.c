@@ -138,16 +138,12 @@ void	list_split_addback(t_line **lst, char *arg)
 	}
 }
 
-int		make_list(t_line *line, char *s_line)
+int		make_list(t_line *line, char *s_line, t_env *env)
 {
-	char	*escape_line;
 	char **split_line;
 	int i;
 
-
-	escape_line = convert_escape(s_line);
-
-	split_line = ft_split_quote(escape_line);
+	split_line = ft_split_quote(s_line);
 
 
 
@@ -163,7 +159,7 @@ int		make_list(t_line *line, char *s_line)
 	i = 0;
 	while (split_line[i])
 	{
-		split_line[i] = convert_env(split_line[i]);
+		split_line[i] = convert_env(split_line[i], env);
 		i++;
 	}
 	i = 0;
@@ -180,9 +176,8 @@ int		make_list(t_line *line, char *s_line)
 		return (-1);
 	if ((token_syn_check(line)) == -1)
 		return (-1);;					// 토큰이 처음에 오거나, 연속으로 두개 나오는 경우
-	split_by_semi(line);	// 이 함수 안에서 실행
-	return (0);
-
+	i = split_by_semi(line, env);	// 이 함수 안에서 실행
+	return (i);
 }
 
 // int main(int argc, char *argv[], char *envp[])

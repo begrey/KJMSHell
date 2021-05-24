@@ -87,7 +87,7 @@ static int		if_effective(const char *str, int flag)
 	return (0);
 }
 
-static int		get_new_len(const char *str)
+static int		get_new_len(const char *str, t_env *env)
 {
 	char	*s;
 	int		env_len;
@@ -104,7 +104,7 @@ static int		get_new_len(const char *str)
 		flag = check_flag(*s, flag);
 		if ((env_len = if_effective(s, flag)))
 		{
-			env_var_len = ft_strlen(extract_env(exact_envstr(s)));
+			env_var_len = ft_strlen(extract_env(exact_envstr(s), env));
 			s = s + env_len;
 			new_len += env_var_len;
 		}
@@ -117,7 +117,7 @@ static int		get_new_len(const char *str)
 	return (new_len);
 }
 
-char		*convert_env(const char *str)		// 인풋으로는 syntax 에러가 없는 값만 들어옴
+char		*convert_env(const char *str, t_env *env)		// 인풋으로는 syntax 에러가 없는 값만 들어옴
 {
 	char	*s;
 	int		env_len;
@@ -127,7 +127,7 @@ char		*convert_env(const char *str)		// 인풋으로는 syntax 에러가 없는 
 
 	flag = 0;
 	result = ft_strdup("");
-	new_len = get_new_len(str);
+	new_len = get_new_len(str, env);
 
 	result = (char *)malloc(sizeof(new_len + 1));
 
@@ -142,7 +142,7 @@ char		*convert_env(const char *str)		// 인풋으로는 syntax 에러가 없는 
 		flag = check_flag(*s, flag);
 		if ((env_len = if_effective(s, flag)))
 		{
-			result = ft_strjoin(result, extract_env(exact_envstr(s)));
+			result = ft_strjoin(result, extract_env(exact_envstr(s), env));
 			s = s + env_len;
 		}
 		else

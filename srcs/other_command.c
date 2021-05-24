@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   other_command.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/24 16:12:56 by jimkwon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char		**make_list_argv(t_line *line)
@@ -38,7 +26,7 @@ char		**make_list_argv(t_line *line)
 	return (argv);
 }
 
-void		other_command(t_line *line)
+void		other_command(t_line *line, t_env *env)
 {
 	int		i;
 	char	**path;
@@ -46,7 +34,7 @@ void		other_command(t_line *line)
 	char	**argv;
 	char	*path_slash;
 
-	path = ft_split(extract_env("$PATH"), ':');
+	path = ft_split(extract_env("$PATH", env), ':');
 	i = 0;
 	argv = make_list_argv(line);
 	execve(line->arg, argv, NULL);
@@ -61,9 +49,21 @@ void		other_command(t_line *line)
 			new_path = line->arg;
 		argv = make_list_argv(line);
 		execve(new_path, argv, NULL);
-		
 		i++;
 	}
-	status = 127;
 	printf("%s: command not found\n", line->arg);
-}	
+	exit(1);
+}
+// int main()
+// {
+// 	t_line *list;
+
+// 	list = NULL;
+// 	ft_listadd_back(&list, ft_listnew("echo"));
+// 	ft_listadd_back(&list, ft_listnew("hi"));
+// 	ft_listadd_back(&list, ft_listnew("everyone"));
+// 	//char	**argv = make_list_argv(list);
+// 	other_command(list);
+// 	//char *const argv[] = {"/bin/echo", "hi", NULL};
+// 	//execve("/bin/echo", argv, NULL);
+// }	
