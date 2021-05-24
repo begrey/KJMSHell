@@ -3,7 +3,7 @@
 char		*root_path()
 {
 	//환경변수 USER에서 받아옴
-	return(ft_strjoin(ft_strdup("/USERS/"), convert_env("$USER")));
+	return(ft_strdup(convert_env("$USER")));
 }
 
 char		*convert_root_path(t_line *line)

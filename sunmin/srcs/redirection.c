@@ -7,7 +7,7 @@ int		is_redir(char c)
 	return (0);
 }
 
-int		put_redir(t_line **line, char ***re_name, int **re_type)
+int		put_redir(t_line *line, char ***re_name, int **re_type)
 {
 	t_line	*temp;
 	int		flag;
@@ -15,7 +15,7 @@ int		put_redir(t_line **line, char ***re_name, int **re_type)
 	int		i;
 
 	i = 0;
-	temp = *line;
+	temp = line;
 	while (temp)			// 1,2,3 으로 다시 해야 함		 >=1, >>=2, <=3
 	{
 		type = 0;
@@ -55,41 +55,41 @@ int		put_redir(t_line **line, char ***re_name, int **re_type)
 	return (0);
 }
 
-int		redir_num(t_line **line)		// 구조체 안에 redir 정보 넣는 것 까지 같이
+int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지 같이
 {
 	int		num;
-	t_line	**temp;
+	t_line	*temp;
 
 	num = 0;
 	temp = line;
-	while (*temp)
+	while (temp)
 	{
-		if (is_redir((*temp)->arg[0]))
+		if (is_redir(temp->arg[0]))
 		{
-			*temp = (*temp)->next;
-			if (is_redir((*temp)->arg[0]))
-				*temp = (*temp)->next;
-			while (*temp && !is_redir((*temp)->arg[0]))
-				*temp = (*temp)->next;
+			temp = temp->next;
+			if (is_redir(temp->arg[0]))
+				temp = temp->next;
+			while (temp && !is_redir(temp->arg[0]))
+				temp = temp->next;
 			num++;
 		}
-		if (*temp && !is_redir((*temp)->arg[0]))
-			*temp = (*temp)->next;
+		if (temp && !is_redir(temp->arg[0]))
+			temp = temp->next;
 	}
 	return (num);
 }
 
-void	ft_list_delredir(t_line **line)		// >a만 올 때 세그폴트
+void	ft_list_delredir(t_line *line)		// >a만 올 때 세그폴트
 {
 	t_line	*temp;
 
-	temp = *line;
+	temp = line;
 	if (which_redir((temp)->arg))
 	{
 		(temp) = (temp)->next;
 		(temp)->prev = NULL;
 	}
-	temp = *line;
+	temp = line;
 
 	while (temp)
 	{
@@ -168,7 +168,7 @@ char	*ft_del_quote(char *str)
 }
 
 
-int		ft_redirection(t_line **line)
+int		ft_redirection(t_line *line)
 {
 	int		re_num;
 	int		i;
@@ -181,17 +181,19 @@ int		ft_redirection(t_line **line)
 	int		fd_op;
 	int		j;
 
-	temp = *line;
-	re_num = redir_num(&temp);
+	temp = line;
+	re_num = redir_num(temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_type = (int *)malloc(sizeof(int) * (re_num));
-	put_redir(line, &re_name, &re_type);
+	temp = line;
+	put_redir(temp, &re_name, &re_type);
 
 	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트 (sunmin/maina문 문제일수도)
-	ft_list_delredir(line);
+	temp = line;
+	ft_list_delredir(temp);
 
-	temp = *line;
 	// 리스트에서 quote 제거(ing)
+	temp = line;
 	while (temp)
 	{
 		(temp)->arg = ft_del_quote((temp)->arg);
@@ -225,17 +227,18 @@ int		ft_redirection(t_line **line)
 		i++;
 	}
 
+	temp = line;
 	pid = fork();
 	if (pid != 0)
 	{
 		wait(&status);
+		//close(fd_wr);
 	}
 	else
 	{
 		dup2(fd_wr, 1);
-
-		if (((*line)->next) == NULL)
-			exec_command(*line, NULL);
+		if ((temp->next) == NULL)
+			exec_command(temp, NULL);
 		else
 		{
 			i = 0;
@@ -245,9 +248,10 @@ int		ft_redirection(t_line **line)
 					j = i;
 				i++;
 			}
-			exec_command(*line, re_name[j]);
+			exec_command(temp, re_name[j]);
 		}
-
+		//close(fd_wr);
+		//exit(0);
 	}
 	return (0);
 }

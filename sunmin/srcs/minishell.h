@@ -160,7 +160,7 @@ t_line		*ft_list_null_term(t_line *lst, int index);
 int			ft_split_list_token(t_line *lst, char token);
 
 //		redirection.c
-int			ft_redirection(t_line **line);
+int			ft_redirection(t_line *line);
 int			which_redir(char *s);
 
 //		token_syn_check.c
@@ -180,7 +180,7 @@ int			is_dollar(char c);
 char	*str_appendchar(char *s1, char c);
 
 //		ft_listsize.c
-int		ft_listsize(t_line  *line);
+int			ft_listsize(t_line *line);
 
 //		ft_env_sort.c
 void		ft_env_sort(t_env **env);
