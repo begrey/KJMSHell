@@ -193,15 +193,6 @@ int		ft_redirection(t_line *line)
 	temp = line;
 	ft_list_delredir(temp);
 
-
-	// 리스트에서 quote 제거(ing)
-	temp = line;
-	while (temp)
-	{
-		temp->arg = ft_del_quote(temp->arg);
-		temp = temp->next;
-	}
-
 	// escape 제거
 	temp = line;
 	while (temp)
@@ -210,6 +201,14 @@ int		ft_redirection(t_line *line)
 		temp = temp->next;
 	}
 	
+	// 리스트에서 quote 제거(ing)
+	temp = line;
+	while (temp)
+	{
+		temp->arg = ft_del_quote(temp->arg);
+		temp = temp->next;
+	}
+
 	// 아스키 -값 복원
 	temp = line;
 	while (temp)
@@ -217,6 +216,10 @@ int		ft_redirection(t_line *line)
 		temp->arg = restore_escape(temp->arg);
 		temp = temp->next;
 	}
+
+
+
+
 
 
 
