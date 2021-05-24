@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/24 15:52:14 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/24 16:12:56 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,10 @@ void		other_command(t_line *line)
 	char	**argv;
 	char	*path_slash;
 
-	if (!!(signal(SIGQUIT, signalHandler)))
-	{
-		// if (ft_strcmp(line->arg, "") != 0)
-		// 	printf("^\\Quit: 3\n");
-	}
 	path = ft_split(extract_env("$PATH"), ':');
-	//path = ft_split("/Users/jimkwon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
 	i = 0;
+	argv = make_list_argv(line);
+	execve(line->arg, argv, NULL);
 	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음
 	{  //ft_strncmp 를 이용해 환경변수 PATH부분과 앞이 똑같으면 그대로 실행, 아니면 직접 붙여주기
 		if ((ft_strncmp(path[i], line->arg, ft_strlen(path[i]))) != 0)

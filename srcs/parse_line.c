@@ -61,47 +61,50 @@ void	delete_end(t_cursor *cursor)
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
 }
-char *remove_c(char *line)
+int		remove_c()
 {
 	char *str; //끝 문자 제거할 문자열
 	int i;
 
 	i = 0;
-	if (ft_strlen(line) == 0)
+	if (ft_strlen(g_line) == 0)
 	{
-		free(line);
-		return (ft_strdup(""));
+		free(g_line);
+		g_line = ft_strdup("");
+		return (0);
 	}
-	if(!(str = (char *)malloc(sizeof(char) * ft_strlen(line))))
-			return NULL;
-	while(i != (int)ft_strlen(line) - 1)
+	if(!(str = (char *)malloc(sizeof(char) * ft_strlen(g_line))))
+			return (-1);
+	while(i != (int)ft_strlen(g_line) - 1)
 	{
-		str[i] = line[i];
+		str[i] = g_line[i];
 		i++;
 	}
 	str[i] = 0;
-	free(line);
-	return (str);
+	free(g_line);
+	g_line = str;
+	return (0);
 }
 
-char *append(char *line, char c)
+int		append(char c)
 {
 	char *str; //이어붙일 문자열
 	int i;
 
 	i = 0;
-	if(!(str = (char *)malloc(sizeof(char) * (ft_strlen(line) + 2))))
-			return NULL;
-	while(line[i] != '\0')
+	if(!(str = (char *)malloc(sizeof(char) * (ft_strlen(g_line) + 2))))
+			return (-1);
+	while(g_line[i] != '\0')
 	{
-		str[i] = line[i];
+		str[i] = g_line[i];
 		i++;
 	}
 	str[i] = c;
 	i++;
 	str[i] = 0;
-	free(line);
-	return (str);
+	free(g_line);
+	g_line = str;
+	return (0);
 }
 
 void delete_line(t_cursor *cursor)
@@ -116,7 +119,7 @@ void delete_line(t_cursor *cursor)
 	tputs(cursor->ce, 1, putchar_tc);
 }
 
-void	renew_history(t_list **history, char *line, int cnt) //히스토리 갱신
+void	renew_history(t_list **history, int cnt) //히스토리 갱신
 {
 	t_list	*temp;
 	int		len;
@@ -131,12 +134,12 @@ void	renew_history(t_list **history, char *line, int cnt) //히스토리 갱신
 		temp = temp->next;
 		i++;
 	}
-	temp->content = line;
+	temp->content = g_line;
 	if (i == -1)
-		printf("%s\n", line);
+		printf("%s\n", g_line);
 }
 
-int find_history(t_list *history, char **line, int cnt, t_cursor *cursor)
+int find_history(t_list *history, int cnt, t_cursor *cursor)
 {
 	t_list	*temp;
 	int		len;
@@ -146,7 +149,8 @@ int find_history(t_list *history, char **line, int cnt, t_cursor *cursor)
 		return (0);
 	if (cnt <= 0)
 	{
-		(*line) = ft_strdup("");
+		free(g_line);
+		g_line = ft_strdup("");
 		delete_line(cursor);
 		return (0); // down_arrow 최소값 조정
 	}
@@ -163,11 +167,11 @@ int find_history(t_list *history, char **line, int cnt, t_cursor *cursor)
 	delete_line(cursor);
 	write(1, temp->content, ft_strlen(temp->content));
 	cursor->prev_his = temp->content;
-	*line = temp->content;
+	g_line = temp->content;
 	return (cnt);
 }
 
-int parse_line(char **line, t_list *history)
+int parse_line(t_list *history)
 {
 // 터미널 세팅 설정 
 	struct termios term;
@@ -187,42 +191,44 @@ int parse_line(char **line, t_list *history)
 	cursor.prev_his = 0;
 	
 	int c;
-	char ch;
 	int h_cnt; //history count
 
 	c = 0;
 	h_cnt = 0;
-	if (!(*line = malloc(1)))
-		return (-1);
-	(*line)[0] = 0;
 	get_cursor_position(&cursor);
 	cursor.col = 19;
 	while (read(0, &c, sizeof(c)) > 0)
 	{
 		if (c == U_ARROW)
-			h_cnt = find_history(history, line, h_cnt + 1, &cursor);
+			h_cnt = find_history(history, h_cnt + 1, &cursor);
 		else if (c == D_ARROW)
-			h_cnt = find_history(history, line, h_cnt - 1, &cursor);
+			h_cnt = find_history(history, h_cnt - 1, &cursor);
 		else if (c == BACKSPACE)
 		{
 			delete_end(&cursor);
-			*line = remove_c(*line);
-			//renew_history(history, *line, h_cnt);
+			if((remove_c()) == -1)
+				return (0);
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{
-			ch = (char)c;
 			write(1, &c, 1);
 			if ((char)c == '\n')
 				return (1);
-			*line = append(*line, (char)c);
-			if (!*line)
+			if ((append((char)c)) == -1)
+				return (0);
+			if (!g_line)
 				return (0);
 			if (history != NULL)
-				renew_history(&history, *line, h_cnt);
+				renew_history(&history, h_cnt);
 			cursor.col++;
+		}
+		if (c == 4)
+		{
+			if ((int)g_line[0] == 4)
+				return (-1); //ctrl-d
 		}
 		c = 0; //flush buffer
 	}
+	printf("ctrl-d?\n");
 	return (-1);
 }
