@@ -19,7 +19,9 @@ void		exec_command(t_line *line, char *file_name)
 	else if (ft_strcmp(command, "env") == 0)
 		exec_env(line);
 	else if (ft_strcmp(command, "exit") == 0)
-		exit(0); //프로세스만 종료되기 때문에 수정 필요
+		exit(10);
+	else if (ft_strcmp(command, "") == 0)
+		exit(status);
 	else 
 		other_command(line);
 	file_name = NULL;

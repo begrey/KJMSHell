@@ -42,17 +42,17 @@ int main() { // cat  |  wc  |   wc
         pipe(pipefd2);
         //pipe(pipefd3);
 
-        exec_command("/bin/cat", pipefd1, STDOUT_PIPE); //처음
+        exec_command("/bin/ls", pipefd1, STDOUT_PIPE); //처음
         close(pipefd1[WRITE]);
 
 
-        int temp_pipefd[] = {pipefd1[READ], pipefd2[WRITE]};
-        exec_command("/usr/bin/wc", temp_pipefd, STDIN_PIPE | STDOUT_PIPE); //중간
-        close(pipefd1[READ]);
-        close(pipefd2[WRITE]);
+        // int temp_pipefd[] = {pipefd1[READ], pipefd2[WRITE]};
+        // exec_command("/bin/ls", temp_pipefd, STDIN_PIPE | STDOUT_PIPE); //중간
+        // close(pipefd1[READ]);
+        // close(pipefd2[WRITE]);
 
-        exec_command("/usr/bin/wc", pipefd1, STDIN_PIPE); //마지막
-        close(pipefd2[READ]);
+        exec_command("/usr/bin/grep", pipefd1, STDIN_PIPE); //마지막
+        close(pipefd1[READ]);
 
         // temp_pipefd[0] = pipefd2[READ];
         // temp_pipefd[1] = pipefd3[WRITE];

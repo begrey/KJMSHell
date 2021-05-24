@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/23 14:18:48 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/24 11:32:43 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	exec_export(t_line *line)
 		}
 	}
 	write(1, str, ft_strlen(str));
+	exit(0);
 }
 
 void	exec_env(t_line *line)
@@ -133,6 +134,7 @@ void	exec_env(t_line *line)
 		}
 	}
 	write(1, str, ft_strlen(str));
+	exit(0);
 }
 
 void	exec_unset(t_line *line)
@@ -171,6 +173,7 @@ void	exec_unset(t_line *line)
 		}
 		i++;
 	}
+	exit(0);
 }
 
 char	*extract_env(char *str)

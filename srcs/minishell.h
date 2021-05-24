@@ -44,7 +44,8 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-t_env *env;
+t_env	*env;
+int		status;
 
 typedef	struct	s_redirc
 {
@@ -116,6 +117,9 @@ void	exec_export(t_line *line);
 void	exec_env(t_line *line);
 void	exec_unset(t_line *line);
 char	*extract_env(char *str);
+
+//	main.c
+void signalHandler(int sig);
 
 // sunmin 추가
 

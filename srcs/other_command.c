@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/24 10:21:03 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/24 15:52:14 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,11 @@ void		other_command(t_line *line)
 	char	**argv;
 	char	*path_slash;
 
+	if (!!(signal(SIGQUIT, signalHandler)))
+	{
+		// if (ft_strcmp(line->arg, "") != 0)
+		// 	printf("^\\Quit: 3\n");
+	}
 	path = ft_split(extract_env("$PATH"), ':');
 	//path = ft_split("/Users/jimkwon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
 	i = 0;
@@ -60,21 +65,9 @@ void		other_command(t_line *line)
 			new_path = line->arg;
 		argv = make_list_argv(line);
 		execve(new_path, argv, NULL);
+		
 		i++;
 	}
+	status = 127;
 	printf("%s: command not found\n", line->arg);
-//	exit(1);
-}
-// int main()
-// {
-// 	t_line *list;
-
-// 	list = NULL;
-// 	ft_listadd_back(&list, ft_listnew("echo"));
-// 	ft_listadd_back(&list, ft_listnew("hi"));
-// 	ft_listadd_back(&list, ft_listnew("everyone"));
-// 	//char	**argv = make_list_argv(list);
-// 	other_command(list);
-// 	//char *const argv[] = {"/bin/echo", "hi", NULL};
-// 	//execve("/bin/echo", argv, NULL);
-// }	
+}	
