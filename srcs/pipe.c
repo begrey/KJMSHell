@@ -24,7 +24,7 @@ void dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env)
         ft_redirection(list, env);
 }
 
-void pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준으로 split된 배열 리스트들
+int  pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준으로 split된 배열 리스트들
 {
         t_pipe *pip_temp;
         int     temp_pipefd[2];
@@ -54,16 +54,19 @@ void pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기�
         close(pip_temp->fd[READ]);
         int status;
         while (wait(&status) > 0);
+		return (status);
 }
 
 
-void    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -> | -> pwd
+int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -> | -> pwd
         t_line *temp;
         t_line *iter;
         t_pipe *pipe;
         int     pip;
         int     index;
         int     i;
+		int		j;
+
         t_line **arg_list; // 리스트 채워넣는 부분 따로 함수로 빼두기
 
         pip = 0;
@@ -96,7 +99,8 @@ void    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat 
                 pip--;
         }
         if (pip == 0)
-                ft_redirection(list, env);
+                j = ft_redirection(list, env);
         else
-                pipe_exec(pipe, arg_list, env);
+               j =  pipe_exec(pipe, arg_list, env);
+		return (j);
 }
