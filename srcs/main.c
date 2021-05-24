@@ -7,8 +7,8 @@ void signalHandler(int sig){
                 exit(0);
         }
         if(sig==SIGQUIT){ //ctrl-'\'
-                //printf("^\\Quit: %d\n", sig);
-				//exit(0);
+                printf("signal SIGQUIT : %d\n", sig);
+				exit(0);
         }
 }
 
@@ -18,6 +18,7 @@ int main(int argc, char **argv, char **envp)
 	int		read;
 	t_list	*history;
 	t_line	*list;
+	t_env	*env;
 
 	list = NULL;
 	history = NULL;
@@ -26,23 +27,17 @@ int main(int argc, char **argv, char **envp)
 		write(1, "cannot excute binary file\n", 26);
 		return (0);
 	}
-	init_env(envp);
-	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
-	signal(SIGQUIT, signalHandler);
-	while((read = parse_line(&line, history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
-	{
+	env = init_env(envp);
 	signal(SIGINT, signalHandler);
     signal(SIGTSTP, signalHandler);
+    signal(SIGQUIT, signalHandler);
+	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
+	while((read = parse_line(&line, history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
+	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(line));
-		if ((make_list(list, line)) == -1)
+		if ((make_list(list, line, env)) == -1)
 			printf("syntax error!\n"); //syntax 에러 처리부분
-		//printf("status : %d\n", status);
-		if (status == 10)
-		{
-			printf("exit\n");
-			exit(0);
-		}
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 	}
 	return (0);

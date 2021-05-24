@@ -6,13 +6,13 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/23 14:18:48 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/24 16:30:40 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-void	exec_export(t_line *line)
+void	exec_export(t_line *line, t_env *env)
 {
 	int		i;
 	char	*str;
@@ -60,17 +60,17 @@ void	exec_export(t_line *line)
 		{
 			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
 			{
-				if (ft_envfind(&env, extract_env(find_key(command_line[i]))))
-					temp = ft_envfind(&env, extract_env(find_key(command_line[i])));
+				if (ft_envfind(&env, extract_env(find_key(command_line[i]), env)))
+					temp = ft_envfind(&env, extract_env(find_key(command_line[i]), env));
 				else
 				{
-					(*temp).key = extract_env(find_key(command_line[i]));
+					(*temp).key = extract_env(find_key(command_line[i]), env);
 					ft_envadd_back(&env, temp);
 				}
 				if (ft_strchr(command_line[i], '=') != 0)
 				{
 					(*temp).if_value = 1;
-					(*temp).value = extract_env(find_value(command_line[i]));
+					(*temp).value = extract_env(find_value(command_line[i]), env);
 				}
 				else
 				{
@@ -92,7 +92,7 @@ void	exec_export(t_line *line)
 	write(1, str, ft_strlen(str));
 }
 
-void	exec_env(t_line *line)
+void	exec_env(t_line *line, t_env *env)
 {
 	t_env	*idx;
 	char	*str;
@@ -135,7 +135,7 @@ void	exec_env(t_line *line)
 	write(1, str, ft_strlen(str));
 }
 
-void	exec_unset(t_line *line)
+void	exec_unset(t_line *line, t_env *env)
 {
 	t_env	*now;
 	t_env	*begin;
@@ -173,7 +173,7 @@ void	exec_unset(t_line *line)
 	}
 }
 
-char	*extract_env(char *str)
+char	*extract_env(char *str, t_env *env)
 {
 	char	*s;
 	char	*ret;

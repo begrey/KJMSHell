@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/21 11:38:43 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/24 16:31:13 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char		**make_list_argv(t_line *line)
 	return (argv);
 }
 
-void		other_command(t_line *line)
+void		other_command(t_line *line, t_env *env)
 {
 	int		i;
 	char	**path;
@@ -46,7 +46,7 @@ void		other_command(t_line *line)
 	char	**argv;
 	char	*path_slash;
 
-	path = ft_split(extract_env("$PATH"), ':');
+	path = ft_split(extract_env("$PATH", env), ':');
 	//path = ft_split("/Users/jimkwon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
 	i = 0;
 	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음

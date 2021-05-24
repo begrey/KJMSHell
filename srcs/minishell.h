@@ -44,9 +44,6 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-t_env	*env;
-int		status;
-
 typedef	struct	s_redirc
 {
 	int				type;
@@ -79,15 +76,15 @@ char		*root_path();
 void		ft_pwd();
 
 //	pipe.c
-void		dup_pipe(t_line *list, int pipefd[2], int flags);
-void		pipe_exec(t_pipe *pip, t_line **list);
-void		split_by_pipe(t_line *list);
+void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env);
+void		pipe_exec(t_pipe *pip, t_line **list, t_env *env);
+void		split_by_pipe(t_line *list, t_env *env);
 
 //	exec_command.c
-void		exec_command(t_line *line, char *file_name);
+void		exec_command(t_line *line, char *file_name, t_env *env);
 
 //	other_command.c
-void		other_command(t_line *line);
+void		other_command(t_line *line, t_env *env);
 
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int			num_len(int n);
@@ -113,13 +110,10 @@ t_pipe		*ft_pipelast(t_pipe *lst);
 t_pipe		*ft_pipenew();
 
 //ft_export.c
-void	exec_export(t_line *line);
-void	exec_env(t_line *line);
-void	exec_unset(t_line *line);
-char	*extract_env(char *str);
-
-//	main.c
-void signalHandler(int sig);
+void	exec_export(t_line *line, t_env *env);
+void	exec_env(t_line *line, t_env *env);
+void	exec_unset(t_line *line, t_env *env);
+char	*extract_env(char *str, t_env *env);
 
 // sunmin 추가
 
@@ -144,7 +138,7 @@ char		*find_key(const char *str);
 char		*find_value(const char *str);
 
 //		init_env.c
-int			init_env(char *envp[]);
+t_env		*init_env(char *envp[]);
 
 //		ft_split_quote.c
 char		**ft_split_quote(const char *str);
@@ -153,18 +147,18 @@ char		flag_check(const char c, char flag); // util
 int			is_quote(const char c);		// util로 빼기
 
 //		convert_env.c
-char		*convert_env(const char *str);
+char		*convert_env(const char *str, t_env *env);
 
 //		redir_syn_check.c
 int			redir_syn_check(t_line *line);
 
 //		split_by_null.c
-void		split_by_semi(t_line *line);
+void		split_by_semi(t_line *line, t_env *env);
 t_line		*ft_list_null_term(t_line *lst, int index);
 int			ft_split_list_token(t_line *lst, char token);
 
 //		redirection.c
-int			ft_redirection(t_line *line);
+int			ft_redirection(t_line *line, t_env *env);
 int			which_redir(char *s);
 
 //		token_syn_check.c
@@ -172,7 +166,7 @@ int			token_syn_check(t_line *line);
 
 //		parse.c
 int			is_token(char *s);
-int			make_list(t_line *line, char *s_line);
+int			make_list(t_line *line, char *s_line, t_env *env);
 
 //		util_str.c
 int			ft_strcmp(char *dest, char *src);
@@ -188,11 +182,6 @@ int			ft_listsize(t_line *line);
 
 //		ft_env_sort.c
 void		ft_env_sort(t_env **env);
-
-//		convert_escape.c
-char		*convert_escape(char *s);
-char		*restore_escape(char *s);
-char		*delete_escape(char *s);
 
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)

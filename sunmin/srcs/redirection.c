@@ -168,7 +168,7 @@ char	*ft_del_quote(char *str)
 }
 
 
-int		ft_redirection(t_line *line)
+int		ft_redirection(t_line *line, t_env *env)
 {
 	int		re_num;
 	int		i;
@@ -238,7 +238,7 @@ int		ft_redirection(t_line *line)
 	{
 		dup2(fd_wr, 1);
 		if ((temp->next) == NULL)
-			exec_command(temp, NULL);
+			exec_command(temp, NULL, env);
 		else
 		{
 			i = 0;
@@ -248,7 +248,7 @@ int		ft_redirection(t_line *line)
 					j = i;
 				i++;
 			}
-			exec_command(temp, re_name[j]);
+			exec_command(temp, re_name[j], env);
 		}
 		//close(fd_wr);
 		//exit(0);

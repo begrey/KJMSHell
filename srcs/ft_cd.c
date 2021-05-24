@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-char		*root_path()
+char		*root_path(t_env *env)
 {
 	//환경변수 USER에서 받아옴
-	return(ft_strjoin(ft_strdup("/USERS/"), convert_env("$USER")));
+	return(ft_strjoin(ft_strdup("/USERS/"), convert_env("$USER", env)));
 }
 
-char		*convert_root_path(t_line *line)
+char		*convert_root_path(t_line *line, t_env *env)
 {
 	//  ~/42Curses의 경우 /USER/jimkwon으로 치환
-	return (ft_strjoin(root_path(), line->arg + 1));
+	return (ft_strjoin(root_path(env), line->arg + 1));
 }
 
-void		ft_cd(t_line *line)
+void		ft_cd(t_line *line, t_env *env)
 {
 	int		check;
 	char 	*path;
@@ -20,9 +20,9 @@ void		ft_cd(t_line *line)
 
 	//path 정해주기
 	if (line == NULL) // cd 만 입력한 경우
-		path = root_path();
+		path = root_path(env);
 	else if (line->arg[0] == '~') // 루트 디렉토리
-		path = convert_root_path(line);
+		path = convert_root_path(line, env);
 	else
 		path = line->arg;	
 	check = chdir(path);
