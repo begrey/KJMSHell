@@ -229,7 +229,6 @@ int parse_line(t_list *history)
 		}
 		c = 0; //flush buffer
 	}
-	printf("1\n");
 	printf("ctrl-d?\n");
 	return (-1);
 }
