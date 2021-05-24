@@ -32,6 +32,7 @@ SRCS		= ./srcs/convert_env.c \
 			  ./srcs/main.c \
 			  ./srcs/ft_listsize.c \
 			  ./srcs/ft_env_sort.c \
+			  ./srcs/convert_escape.c \
 
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -f

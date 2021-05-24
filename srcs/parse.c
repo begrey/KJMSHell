@@ -140,10 +140,14 @@ void	list_split_addback(t_line **lst, char *arg)
 
 int		make_list(t_line *line, char *s_line)
 {
+	char	*escape_line;
 	char **split_line;
 	int i;
 
-	split_line = ft_split_quote(s_line);
+
+	escape_line = convert_escape(s_line);
+
+	split_line = ft_split_quote(escape_line);
 
 
 

@@ -198,8 +198,24 @@ int		ft_redirection(t_line *line)
 	temp = line;
 	while (temp)
 	{
-		(temp)->arg = ft_del_quote((temp)->arg);
-		temp = (temp)->next;
+		temp->arg = ft_del_quote(temp->arg);
+		temp = temp->next;
+	}
+
+	// escape 제거
+	temp = line;
+	while (temp)
+	{
+		temp->arg = delete_escape(temp->arg);
+		temp = temp->next;
+	}
+	
+	// 아스키 -값 복원
+	temp = line;
+	while (temp)
+	{
+		temp->arg = restore_escape(temp->arg);
+		temp = temp->next;
 	}
 
 
