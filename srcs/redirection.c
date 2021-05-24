@@ -228,30 +228,35 @@ int		ft_redirection(t_line *line)
 	}
 
 	temp = line;
-	pid = fork();
-	if (pid != 0)
+	if (re_num)
 	{
-		wait(&status);
-		//close(fd_wr);
-	}
-	else
-	{
-		dup2(fd_wr, 1);
-		if ((temp->next) == NULL)
-			exec_command(temp, NULL);
+		pid = fork();
+		if (pid != 0)
+		{
+			wait(&status);
+			//close(fd_wr);
+		}
 		else
 		{
-			i = 0;
-			while (re_name[i])
+			dup2(fd_wr, 1);
+			if ((temp->next) == NULL)
+				exec_command(temp, NULL);
+			else
 			{
-				if (re_type[i] == 3)
-					j = i;
-				i++;
+				i = 0;
+				while (re_name[i])
+				{
+					if (re_type[i] == 3)
+						j = i;
+					i++;
+				}
+				exec_command(temp, re_name[j]);
 			}
-			exec_command(temp, re_name[j]);
+			//close(fd_wr);
+			//exit(0);
 		}
-		//close(fd_wr);
-		//exit(0);
 	}
+	else
+		exec_command(temp, NULL);
 	return (0);
 }
