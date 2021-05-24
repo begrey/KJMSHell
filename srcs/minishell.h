@@ -68,17 +68,17 @@ typedef struct s_line
 void		ft_echo(t_line *line);
 
 //	ft_cd.c
-void		ft_cd(t_line *line);
-char		*convert_root_path(t_line *line);
-char		*root_path();
+void		ft_cd(t_line *line, t_env *env);
+char		*convert_root_path(t_line *line, t_env *env);
+char		*root_path(t_env *env);
 
 //	ft_pwd.c
 void		ft_pwd();
 
 //	pipe.c
 void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env);
-void		pipe_exec(t_pipe *pip, t_line **list, t_env *env);
-void		split_by_pipe(t_line *list, t_env *env);
+int			pipe_exec(t_pipe *pip, t_line **list, t_env *env);
+int			split_by_pipe(t_line *list, t_env *env);
 
 //	exec_command.c
 void		exec_command(t_line *line, char *file_name, t_env *env);
@@ -153,7 +153,7 @@ char		*convert_env(const char *str, t_env *env);
 int			redir_syn_check(t_line *line);
 
 //		split_by_null.c
-void		split_by_semi(t_line *line, t_env *env);
+int			split_by_semi(t_line *line, t_env *env);
 t_line		*ft_list_null_term(t_line *lst, int index);
 int			ft_split_list_token(t_line *lst, char token);
 

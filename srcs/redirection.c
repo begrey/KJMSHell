@@ -227,6 +227,7 @@ int		ft_redirection(t_line *line, t_env *env)
 		i++;
 	}
 
+	status = 0;
 	temp = line;
 	pid = fork();
 	if (pid != 0)
@@ -253,5 +254,5 @@ int		ft_redirection(t_line *line, t_env *env)
 		//close(fd_wr);
 		//exit(0);
 	}
-	return (0);
+	return (status);
 }
