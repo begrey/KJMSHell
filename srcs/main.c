@@ -7,14 +7,14 @@ void signalHandler(int sig){
                 exit(0);
         }
         if(sig==SIGQUIT){ //ctrl-'\'
-                printf("signal SIGQUIT : %d\n", sig);
-				exit(0);
+			if (ft_strcmp(g_line, "") != 0)
+                printf("^\\Quit: %d\n", sig);
+				//exit(0);
         }
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	char	*line;
 	int		read;
 	t_list	*history;
 	t_line	*list;
@@ -24,6 +24,9 @@ int main(int argc, char **argv, char **envp)
 	i = 0;
 	list = NULL;
 	history = NULL;
+	if (!(g_line = malloc(1)))
+		return (-1);
+	(g_line)[0] = 0;
 	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
 	{
 		write(1, "cannot excute binary file\n", 26);
@@ -34,14 +37,16 @@ int main(int argc, char **argv, char **envp)
     signal(SIGTSTP, signalHandler);
     signal(SIGQUIT, signalHandler);
 	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
-	while((read = parse_line(&line, history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
+	while((read = parse_line(history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
 	{
 		//히스토리 리스트 추가
-		ft_lstadd_back(&history, ft_lstnew(line));
-		if ((i = make_list(list, line, env)) == -1)
+		ft_lstadd_back(&history, ft_lstnew(g_line));
+		if ((int)g_line[0] != 0 && (i = make_list(list, g_line, env)) == -1)
 			printf("syntax error!\n"); //syntax 에러 처리부분
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
+		(g_line)[0] = 0;
 	}
+	printf("exit\n");
 	return (0);
 	argv = NULL;
 }

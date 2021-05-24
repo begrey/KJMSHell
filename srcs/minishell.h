@@ -44,6 +44,8 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
+char	*g_line;  //기존 line과 겹쳐서 임시로 g_line으로 함
+
 typedef	struct	s_redirc
 {
 	int				type;
@@ -92,11 +94,11 @@ int			putchar_tc(int tc);
 void		get_cursor_position(t_cursor *cursor);
 void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
-char		*remove_c(char *line);
-char		*append(char *line, char c);
-void		renew_history(t_list **history, char *line, int cnt);
-int			find_history(t_list *history, char **line, int cnt, t_cursor *cursor);
-int			parse_line(char **line, t_list *history);
+int			remove_c();
+int			append(char c);
+void		renew_history(t_list **history, int cnt);
+int			find_history(t_list *history, int cnt, t_cursor *cursor);
+int			parse_line(t_list *history);
 
 //	ft_add_back.c
 void		ft_pipeadd_back(t_pipe **pip, t_pipe *new);

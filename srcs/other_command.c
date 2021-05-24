@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   other_command.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/04 12:46:38 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/24 16:31:13 by sunmin           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 char		**make_list_argv(t_line *line)
@@ -47,8 +35,9 @@ void		other_command(t_line *line, t_env *env)
 	char	*path_slash;
 
 	path = ft_split(extract_env("$PATH", env), ':');
-	//path = ft_split("/Users/jimkwon/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/munki", ':');
 	i = 0;
+	argv = make_list_argv(line);
+	execve(line->arg, argv, NULL);
 	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음
 	{  //ft_strncmp 를 이용해 환경변수 PATH부분과 앞이 똑같으면 그대로 실행, 아니면 직접 붙여주기
 		if ((ft_strncmp(path[i], line->arg, ft_strlen(path[i]))) != 0)
