@@ -79,15 +79,15 @@ int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지
 	return (num);
 }
 
-void	ft_list_delredir(t_line *line)		// >a만 올 때 세그폴트
+t_line	*ft_list_delredir(t_line *line)
 {
 	t_line	*temp;
 
-	temp = line;
-	if (which_redir((temp)->arg))
+
+	if (which_redir((line)->arg))
 	{
-		(temp) = (temp)->next;
-		(temp)->prev = NULL;
+		(line) = (line)->next->next;
+		(line)->prev = NULL;
 	}
 	temp = line;
 
@@ -104,7 +104,7 @@ void	ft_list_delredir(t_line *line)		// >a만 올 때 세그폴트
 		}
 		temp = temp->next;
 	}
-
+	return (line);
 }
 
 int		check_num_delquote(char *str)		// 잘됨
@@ -187,10 +187,18 @@ int		ft_redirection(t_line *line, t_env *env)
 	temp = line;
 	put_redir(temp, &re_name, &re_type);
 
-	// 리다이렉션 구조체 삭제(ing)		// >a 만 입력하면 세그폴트 (sunmin/maina문 문제일수도)
-	temp = line;
-	ft_list_delredir(temp);
 
+
+	// 리다이렉션 구조체 삭제(ing)
+	temp = line;
+	line = ft_list_delredir(temp);
+
+// temp = line;
+// while (temp)
+// {
+// 	printf("ss %s\n", temp->arg);
+// 	temp = temp->next;
+// }
 	// 리스트에서 quote 제거(ing)
 	temp = line;
 	while (temp)
@@ -199,9 +207,8 @@ int		ft_redirection(t_line *line, t_env *env)
 		temp = (temp)->next;
 	}
 
-
-
-
+	fd_wr = -1;
+	j = -1;
 	i = 0;
 	while (i < re_num)
 	{
@@ -215,32 +222,23 @@ int		ft_redirection(t_line *line, t_env *env)
 		}
 		else if (re_type[i] == 3)	//	<
 		{
+			j = i;
+			// printf("?\n");
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
 				printf("no file read\n");
 				return(-1);
 			}
-			else
-				;
 		}
 		i++;
 	}
-
+	temp = line;
+	if (j == -1 || temp->next != NULL)
+		re_name[j] = NULL;
 	status = 0;
 	temp = line;
-	dup2(fd_wr, 1);
-	if ((temp->next) == NULL)
-		exec_command(temp, NULL, env);
-	else
-	{
-		i = 0;
-		while (re_name[i])
-		{
-			if (re_type[i] == 3)
-				j = i;
-			i++;
-		}
-		exec_command(temp, re_name[j], env);
-	}
-	return (status);
+	if (fd_wr > 0)
+		dup2(fd_wr, 1);
+	exec_command(temp, re_name[j], env);
+	return (status); // exec에서 종료하기때문에 이 구문이 실행되지 않는다.
 }
