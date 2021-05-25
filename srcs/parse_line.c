@@ -119,7 +119,7 @@ void delete_line(t_cursor *cursor)
 	tputs(cursor->ce, 1, putchar_tc);
 }
 
-void	renew_history(t_list **history, int cnt) //히스토리 갱신
+void	renew_history(t_list **history, int cnt, t_cursor *cursor) //히스토리 갱신
 {
 	t_list	*temp;
 	int		len;
@@ -127,16 +127,15 @@ void	renew_history(t_list **history, int cnt) //히스토리 갱신
 
 	temp = *history;
 	i = 1;
-	len = ft_lstsize(*history) - cnt + 1; // 맨 뒤부터 첫번쨰, cnt가 2고 사이즈가 5면 4번째 출력
-	//temp->content = line;
+	len = ft_lstsize(*history) - cnt + 1;
 	while (temp != NULL && i != len && cnt != 0)
 	{
 		temp = temp->next;
 		i++;
 	}
-	temp->content = g_line;
+	//temp->content = g_line;
 	if (i == -1)
-		printf("%s\n", g_line);
+		printf("%s\n", cursor->prev_his);
 }
 
 int find_history(t_list *history, int cnt, t_cursor *cursor)
@@ -149,8 +148,7 @@ int find_history(t_list *history, int cnt, t_cursor *cursor)
 		return (0);
 	if (cnt <= 0)
 	{
-		free(g_line);
-		g_line = ft_strdup("");
+		g_line = "";
 		delete_line(cursor);
 		return (0); // down_arrow 최소값 조정
 	}
@@ -218,8 +216,8 @@ int parse_line(t_list *history)
 				return (0);
 			if (!g_line)
 				return (0);
-			if (history != NULL)
-				renew_history(&history, h_cnt);
+			// if (history != NULL && h_cnt != 0)
+			// 	renew_history(&history, h_cnt, &cursor);
 			cursor.col++;
 		}
 		if (c == 4)
@@ -229,6 +227,5 @@ int parse_line(t_list *history)
 		}
 		c = 0; //flush buffer
 	}
-	printf("ctrl-d?\n");
 	return (-1);
 }

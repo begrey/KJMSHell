@@ -65,10 +65,11 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         int     pip;
         int     index;
         int     i;
-		int		j;
+	int	j;
 
         t_line **arg_list; // 리스트 채워넣는 부분 따로 함수로 빼두기
 
+        pipe = NULL;
         pip = 0;
         index = 0;
         i = 0;
@@ -93,12 +94,13 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
 	}
         arg_list[index] = NULL;
         //pipe_list 생성
+        i = pip;
         while (pip != 0)
         {
                 ft_pipeadd_back(&pipe, ft_pipenew());
                 pip--;
         }
-        if (pip == 0)
+        if (i == 0)
                 j = ft_redirection(list, env);
         else
                j =  pipe_exec(pipe, arg_list, env);
