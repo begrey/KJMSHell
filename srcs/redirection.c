@@ -200,9 +200,7 @@ int		ft_redirection(t_line *line, t_env *env)
 		temp = (temp)->next;
 	}
 
-
-
-
+	j = -1;
 	i = 0;
 	while (i < re_num)
 	{
@@ -216,6 +214,7 @@ int		ft_redirection(t_line *line, t_env *env)
 		}
 		else if (re_type[i] == 3)	//	<
 		{
+			j = i;
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
 				printf("no file read\n");
@@ -226,7 +225,7 @@ int		ft_redirection(t_line *line, t_env *env)
 		}
 		i++;
 	}
-
+	if (j == -1)
 	status = 0;
 	temp = line;
 	pid = fork();
@@ -239,17 +238,22 @@ int		ft_redirection(t_line *line, t_env *env)
 	{
 		dup2(fd_wr, 1);
 		if ((temp->next) == NULL)
-			exec_command(temp, NULL, env);
+		{
+			if (j == -1)
+				exec_command(temp, NULL, env);
+			else
+				exec_command(temp, re_name[j], env);
+		}
 		else
 		{
 			i = 0;
-			while (re_name[i])
-			{
-				if (re_type[i] == 3)
-					j = i;
-				i++;
-			}
-			exec_command(temp, re_name[j], env);
+//			while (re_name[i])
+//			{
+//				if (re_type[i] == 3)
+//					j = i;
+//				i++;
+//			}
+			exec_command(temp, NULL, env);
 		}
 		//close(fd_wr);
 		//exit(0);

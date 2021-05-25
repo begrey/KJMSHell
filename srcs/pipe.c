@@ -69,6 +69,7 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
 
         t_line **arg_list; // 리스트 채워넣는 부분 따로 함수로 빼두기
 
+		pipe = NULL;
         pip = 0;
         index = 0;
         i = 0;
@@ -94,12 +95,11 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
 	}
         arg_list[index] = NULL;
         //pipe_list 생성
-        while (pip != 0)			// ls | ls 명령어 입력시 세그폴트 5/24 21:16
+        while (pip != 0)
         {
                 ft_pipeadd_back(&pipe, ft_pipenew());
                 pip--;
         }
-printf("1\n");		// 출력 안됨 (세그폴트)
         if (pip == 0)
                 j = ft_redirection(list, env);
         else

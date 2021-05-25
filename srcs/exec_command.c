@@ -3,6 +3,7 @@
 //echo -> abc -> aa or   pwd -> 등의 단일 커맨드와 arg가 들어온다.
 void		exec_command(t_line *line, char *file_name, t_env *env)
 {
+	printf("ss %s\n", file_name);
 	char	*command;
 
 	command = line->arg;
@@ -21,6 +22,6 @@ void		exec_command(t_line *line, char *file_name, t_env *env)
 	else if (ft_strcmp(command, "exit") == 0)
 		exit(0); //프로세스만 종료되기 때문에 수정 필요
 	else 
-		other_command(line, env);
+		other_command(line, file_name, env);
 	file_name = NULL;
 }

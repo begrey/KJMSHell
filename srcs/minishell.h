@@ -86,7 +86,7 @@ int			split_by_pipe(t_line *list, t_env *env);
 void		exec_command(t_line *line, char *file_name, t_env *env);
 
 //	other_command.c
-void		other_command(t_line *line, t_env *env);
+void		other_command(t_line *line, char *file_name, t_env *env);
 
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int			num_len(int n);
