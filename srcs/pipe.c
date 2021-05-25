@@ -99,7 +99,7 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
                 ft_pipeadd_back(&pipe, ft_pipenew());
                 pip--;
         }
-printf("1\n");
+printf("1\n");		// 출력 안됨 (세그폴트)
         if (pip == 0)
                 j = ft_redirection(list, env);
         else
