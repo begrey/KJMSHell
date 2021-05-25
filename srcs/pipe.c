@@ -65,10 +65,11 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         int     pip;
         int     index;
         int     i;
-		int		j;
+	int	j;
 
         t_line **arg_list; // 리스트 채워넣는 부분 따로 함수로 빼두기
 
+        pipe = NULL;
         pip = 0;
         index = 0;
         i = 0;

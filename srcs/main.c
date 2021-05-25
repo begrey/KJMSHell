@@ -2,15 +2,27 @@
 
 void signalHandler(int sig){
         if(sig==SIGINT){ //ctrl-c
-                printf("signal SIGINT : %d\n", sig);
-                //sleep(3000); //mac 에서는 sleep
-                exit(0);
+				if (ft_strcmp(g_line, "") != 0)
+				{
+					free(g_line);
+					g_line = ft_strdup("");
+
+				}
         }
         if(sig==SIGQUIT){ //ctrl-'\'
 			if (ft_strcmp(g_line, "") != 0)
                 printf("^\\Quit: %d\n", sig);
-				//exit(0);
         }
+}
+
+void	iter_history(t_list *history)
+{
+	while (history != NULL)
+	{
+		printf("history: %s -> ", history->content);
+		history = history->next;
+	}
+	printf("\n");
 }
 
 int main(int argc, char **argv, char **envp)
@@ -40,12 +52,14 @@ int main(int argc, char **argv, char **envp)
 	while((read = parse_line(history)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
 	{
 		//히스토리 리스트 추가
-		ft_lstadd_back(&history, ft_lstnew(g_line));
+		ft_lstadd_back(&history, ft_lstnew(ft_strdup(g_line)));
 		if ((int)g_line[0] != 0 && (i = make_list(list, g_line, env)) == -1)
 			printf("syntax error!\n"); //syntax 에러 처리부분
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		(g_line)[0] = 0;
+		//iter_history(history);
 	}
+	//iter_history(history);
 	printf("exit\n");
 	return (0);
 	argv = NULL;

@@ -176,7 +176,6 @@ int		ft_redirection(t_line *line, t_env *env)
 	int		*re_type;
 	t_line	*temp;
 	int		status;
-	pid_t	pid;
 	int		fd_wr;
 	int		fd_op;
 	int		j;
@@ -229,30 +228,19 @@ int		ft_redirection(t_line *line, t_env *env)
 
 	status = 0;
 	temp = line;
-	pid = fork();
-	if (pid != 0)
-	{
-		wait(&status);
-		//close(fd_wr);
-	}
+	dup2(fd_wr, 1);
+	if ((temp->next) == NULL)
+		exec_command(temp, NULL, env);
 	else
 	{
-		dup2(fd_wr, 1);
-		if ((temp->next) == NULL)
-			exec_command(temp, NULL, env);
-		else
+		i = 0;
+		while (re_name[i])
 		{
-			i = 0;
-			while (re_name[i])
-			{
-				if (re_type[i] == 3)
-					j = i;
-				i++;
-			}
-			exec_command(temp, re_name[j], env);
+			if (re_type[i] == 3)
+				j = i;
+			i++;
 		}
-		//close(fd_wr);
-		//exit(0);
+		exec_command(temp, re_name[j], env);
 	}
 	return (status);
 }
