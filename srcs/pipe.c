@@ -24,7 +24,7 @@ void dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env)
         ft_redirection(list, env);
 }
 
-int  pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준으로 split된 배열 리스트들
+int pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준으로 split된 배열 리스트들
 {
         t_pipe *pip_temp;
         int     temp_pipefd[2];
@@ -53,8 +53,9 @@ int  pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기�
         dup_pipe(list[i], pip_temp->fd, STDIN_PIPE, env);   //last;
         close(pip_temp->fd[READ]);
         int status;
-        while (wait(&status) > 0);
-		return (status);
+        while (wait(&status) > 0);  
+        return (status);
+
 }
 
 
@@ -65,14 +66,16 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         int     pip;
         int     index;
         int     i;
-		int		j;
-
+        pid_t   pid;
         t_line **arg_list; // 리스트 채워넣는 부분 따로 함수로 빼두기
+        int     status;
+        int     j;
 
-		pipe = NULL;
+        pipe = NULL;
         pip = 0;
         index = 0;
         i = 0;
+        j = 0;
         //파이프 개수 세서 그만큼 파이프 생성.
         temp = list;
         while (temp != NULL)
@@ -84,7 +87,6 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         temp = list;
         iter = list;
         arg_list = (t_line **)malloc(sizeof(t_line *) * (pip + 2));
-
         while (temp != NULL)
 	{
 		i = ft_split_list_token(temp, '|');
@@ -95,14 +97,25 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
 	}
         arg_list[index] = NULL;
         //pipe_list 생성
+		i = pip;
         while (pip != 0)
         {
                 ft_pipeadd_back(&pipe, ft_pipenew());
                 pip--;
         }
-        if (pip == 0)
-                j = ft_redirection(list, env);
-        else
-               j =  pipe_exec(pipe, arg_list, env);
-		return (j);
+        if (i == 0)
+        {
+                pid = fork();
+                if (pid != 0)
+                {
+                        wait(&status);
+                        if (status >= 256)
+                                status /= 256;
+                }
+                else
+                        j = ft_redirection(list, env);
+                return (j);
+        }
+        j = pipe_exec(pipe, arg_list, env);
+        return (j);
 }

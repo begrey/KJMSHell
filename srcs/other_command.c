@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char		**make_list_argv(t_line *line)
+char		**make_list_argv(t_line *line, char *file_name)
 {
 	int		i;
 	int		len;
@@ -15,8 +15,8 @@ char		**make_list_argv(t_line *line)
 		len++;
 		temp = temp->next;
 	}
-	if (len == 0)		//
-		return (0);		//
+	if (file_name != NULL)
+		len++;
 	argv = (char **)malloc(sizeof(char) * (len + 1));
 	while (line != NULL)
 	{
@@ -24,11 +24,13 @@ char		**make_list_argv(t_line *line)
 		line = line->next;
 		i++;
 	}
+	if (file_name != NULL)
+		argv[i++] = file_name;
 	argv[i] = NULL;
 	return (argv);
 }
 
-void		other_command(t_line *line, char *file_name, t_env *env)
+void		other_command(t_line *line, t_env *env, char *file_name)
 {
 	int		i;
 	char	**path;
@@ -38,12 +40,8 @@ void		other_command(t_line *line, char *file_name, t_env *env)
 
 	path = ft_split(extract_env("$PATH", env), ':');
 	i = 0;
-	if ((argv = make_list_argv(line)) == 0)
-	{
-		argv = (char **)malloc(sizeof(char *) * 2);
-		argv[0] = file_name;
-		argv[1] = NULL;
-	}
+	argv = make_list_argv(line, file_name);
+	//printf("%s   %s\n", argv[0], argv[1]);s
 	execve(line->arg, argv, NULL);
 	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음
 	{  //ft_strncmp 를 이용해 환경변수 PATH부분과 앞이 똑같으면 그대로 실행, 아니면 직접 붙여주기
@@ -54,7 +52,7 @@ void		other_command(t_line *line, char *file_name, t_env *env)
 		}
 		else
 			new_path = line->arg;
-		argv = make_list_argv(line);
+		argv = make_list_argv(line, file_name);
 		execve(new_path, argv, NULL);
 		i++;
 	}

@@ -86,7 +86,7 @@ int			split_by_pipe(t_line *list, t_env *env);
 void		exec_command(t_line *line, char *file_name, t_env *env);
 
 //	other_command.c
-void		other_command(t_line *line, char *file_name, t_env *env);
+void		other_command(t_line *line, t_env *env, char *file_name);
 
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int			num_len(int n);
@@ -96,7 +96,7 @@ void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
 int			remove_c();
 int			append(char c);
-void		renew_history(t_list **history, int cnt);
+void		renew_history(t_list **history, int cnt, t_cursor *cursor);
 int			find_history(t_list *history, int cnt, t_cursor *cursor);
 int			parse_line(t_list *history);
 
@@ -184,6 +184,11 @@ int			ft_listsize(t_line *line);
 
 //		ft_env_sort.c
 void		ft_env_sort(t_env **env);
+
+//		convert_escape.c
+char		*delete_escape(char *s);
+char		*restore_escape(char *s);
+char		*convert_escape(char *s);
 
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)
