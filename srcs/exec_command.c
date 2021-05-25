@@ -23,6 +23,6 @@ void		exec_command(t_line *line, char *file_name, t_env *env)
 	else if (ft_strcmp(command, "") == 0)
 		exit(0); //$! 관련으로 차후에 수정 status
 	else 
-		other_command(line, env);
+		other_command(line, env, file_name);
 	file_name = NULL;
 }

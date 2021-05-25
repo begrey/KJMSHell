@@ -79,14 +79,14 @@ void		ft_pwd();
 
 //	pipe.c
 void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env);
-void			pipe_exec(t_pipe *pip, t_line **list, t_env *env);
-void			split_by_pipe(t_line *list, t_env *env);
+int			pipe_exec(t_pipe *pip, t_line **list, t_env *env);
+int			split_by_pipe(t_line *list, t_env *env);
 
 //	exec_command.c
 void		exec_command(t_line *line, char *file_name, t_env *env);
 
 //	other_command.c
-void		other_command(t_line *line, t_env *env);
+void		other_command(t_line *line, t_env *env, char *file_name);
 
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int			num_len(int n);
