@@ -94,13 +94,13 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
 	}
         arg_list[index] = NULL;
         //pipe_list 생성
-        i = pip;
         while (pip != 0)
         {
                 ft_pipeadd_back(&pipe, ft_pipenew());
                 pip--;
         }
-        if (i == 0)
+printf("1\n");
+        if (pip == 0)
                 j = ft_redirection(list, env);
         else
                j =  pipe_exec(pipe, arg_list, env);
