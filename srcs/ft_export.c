@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/24 21:50:46 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/25 09:13:03 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	exec_export(t_line *line, t_env *env)
 			{
 				if (ft_envfind(&env, extract_env(find_key(command_line[i]), env)))	// 여기 다시 짜야
 				{
-					temp = ft_envfind(&env, extract_env(find_key(command_line[i]), env));
+					temp = ft_envfind(&env, convert_env(find_key(command_line[i]), env));
 				}
 				else
 				{
@@ -72,7 +72,8 @@ void	exec_export(t_line *line, t_env *env)
 				if (ft_strchr(command_line[i], '=') != 0)
 				{
 					(*temp).if_value = 1;
-					(*temp).value = extract_env(find_value(command_line[i]), env);
+//					(*temp).value = extract_env(find_value(command_line[i]), env);
+					(*temp).value = convert_env(find_value(command_line[i]), env);
 				}
 				else
 				{
