@@ -193,30 +193,18 @@ int		ft_redirection(t_line *line, t_env *env)
 	temp = line;
 	line = ft_list_delredir(temp);
 
-
-	//	escape 제거
-	temp = line;
-	while (temp)
-	{
-		temp->arg = delete_escape(temp->arg);
-		temp = temp->next;
-	}
-
-
+// temp = line;
+// while (temp)
+// {
+// 	printf("ss %s\n", temp->arg);
+// 	temp = temp->next;
+// }
 	// 리스트에서 quote 제거(ing)
 	temp = line;
 	while (temp)
 	{
 		(temp)->arg = ft_del_quote((temp)->arg);
 		temp = (temp)->next;
-	}
-
-	// 아스키 -값 복구
-	temp = line;
-	while (temp)
-	{
-		temp->arg = restore_escape(temp->arg);
-		temp = temp->next;
 	}
 
 	fd_wr = -1;
