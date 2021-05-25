@@ -185,6 +185,11 @@ int			ft_listsize(t_line *line);
 //		ft_env_sort.c
 void		ft_env_sort(t_env **env);
 
+//		convert_escape.c
+char		*delete_escape(char *s);
+char		*restore_escape(char *s);
+char		*convert_escape(char *s);
+
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)
 // void	ft_listadd_back(t_env **lst, t_env *new)
