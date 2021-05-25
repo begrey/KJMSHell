@@ -61,9 +61,10 @@ static int		check_env_len(const char *str)	// 플래그를 고려 안해도 됨(
 
 	len = 0;
 	s = (char *)str;
-	while (*s && !is_space(*s) && *s != '\'' && *s != '\"' && *s != '=')
+	if (*s == '$')
+		s++;
+	while (*s && is_alpha(*s))
 	{
-		if (*s != '$')
 			len++;
 		s++;
 	}

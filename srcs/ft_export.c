@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/24 16:30:40 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/25 09:13:03 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,10 @@ void	exec_export(t_line *line, t_env *env)
 		{
 			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
 			{
-				if (ft_envfind(&env, extract_env(find_key(command_line[i]), env)))
-					temp = ft_envfind(&env, extract_env(find_key(command_line[i]), env));
+				if (ft_envfind(&env, extract_env(find_key(command_line[i]), env)))	// 여기 다시 짜야
+				{
+					temp = ft_envfind(&env, convert_env(find_key(command_line[i]), env));
+				}
 				else
 				{
 					(*temp).key = extract_env(find_key(command_line[i]), env);
@@ -70,13 +72,13 @@ void	exec_export(t_line *line, t_env *env)
 				if (ft_strchr(command_line[i], '=') != 0)
 				{
 					(*temp).if_value = 1;
-					(*temp).value = extract_env(find_value(command_line[i]), env);
+//					(*temp).value = extract_env(find_value(command_line[i]), env);
+					(*temp).value = convert_env(find_value(command_line[i]), env);
 				}
 				else
 				{
 					(*temp).if_value = 0;
 				}
-
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 			{
@@ -182,11 +184,14 @@ char	*extract_env(char *str, t_env *env)
 	if (*str != '$')
 		return (str);
 	else if (str[0] == '$' && str[1] == '\0')
-	{
 		return (str);
-	}
 	s = str + 1;
 	ex = ft_envfind(&env, s);
+	if (!ex)
+	{
+		ret = ft_strdup("");
+		return (ret);
+	}
 	ret = ex->value;
 	if (!ret)
 		ret = ft_strdup("");
