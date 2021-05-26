@@ -28,7 +28,7 @@ void		ft_cd(t_line *line, t_env *env)
 	check = chdir(path);
 	//ft_pwd();
 	if (check != 0)
-		printf("cd: no such file or directory: %s\n", line->arg);
+		printf("cd: %s: %s\n", line->arg, strerror(errno));
 }
 
 // int main()

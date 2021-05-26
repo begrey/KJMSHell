@@ -80,14 +80,13 @@ t_line	*ft_list_delredir(t_line *line)
 {
 	t_line	*temp;
 
-
 	if (which_redir((line)->arg))
 	{
 		(line) = (line)->next->next;
-		(line)->prev = NULL;
+		if (line != NULL)
+			(line)->prev = NULL;
 	}
 	temp = line;
-
 	while (temp)
 	{
 		if (which_redir(temp->arg))
@@ -184,12 +183,9 @@ int		ft_redirection(t_line *line, t_env *env)
 	temp = line;
 	put_redir(temp, &re_name, &re_type);
 
-
-
 	// 리다이렉션 구조체 삭제(ing)
 	temp = line;
 	line = ft_list_delredir(temp);
-
 
 	//	escape 제거
 	temp = line;

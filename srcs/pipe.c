@@ -106,6 +106,7 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         if (i == 0)
         {
                 pid = fork();
+                //errno = 0;
                 if (pid != 0)
                 {
                         wait(&status);
@@ -113,7 +114,10 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
                                 status /= 256;
                 }
                 else
+                {
+                //printf("hi : %d\n", errno);
                         j = ft_redirection(list, env);
+                }
                 return (j);
         }
         j = pipe_exec(pipe, arg_list, env);

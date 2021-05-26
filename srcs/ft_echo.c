@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 09:28:27 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/24 11:31:05 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/26 14:00:20 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ void		ft_echo(t_line *line)
 	}
 	if (flag == 0)
 		write(1, "\n", 1);
+	//printf("echo: %s\n", strerror(errno));
 	exit(0);
 }
