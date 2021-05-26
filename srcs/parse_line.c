@@ -55,6 +55,11 @@ int		putchar_tc(int tc)
 void	delete_end(t_cursor *cursor)
 {
 	get_cursor_position(cursor);
+	if ((int)ft_strlen(g_line) == 0)
+	{
+		delete_line(cursor);
+		return ;
+	}
 	if (cursor->col < 20)
 		return ;
 	--(cursor->col);
@@ -69,8 +74,7 @@ int		remove_c()
 	i = 0;
 	if (ft_strlen(g_line) == 0)
 	{
-		free(g_line);
-		g_line = ft_strdup("");
+		g_line[0] = 0;
 		return (0);
 	}
 	if(!(str = (char *)malloc(sizeof(char) * ft_strlen(g_line))))
@@ -81,7 +85,7 @@ int		remove_c()
 		i++;
 	}
 	str[i] = 0;
-	free(g_line);
+	//free(g_line);
 	g_line = str;
 	return (0);
 }
@@ -102,7 +106,7 @@ int		append(char c)
 	str[i] = c;
 	i++;
 	str[i] = 0;
-	free(g_line);
+	//free(g_line);
 	g_line = str;
 	return (0);
 }
@@ -119,21 +123,23 @@ void delete_line(t_cursor *cursor)
 	tputs(cursor->ce, 1, putchar_tc);
 }
 
-void	renew_history(t_list **history, int cnt, t_cursor *cursor) //히스토리 갱신
+void	renew_history(t_list *history, int cnt, t_cursor *cursor) //히스토리 갱신
 {
 	t_list	*temp;
 	int		len;
 	int		i;
 
-	temp = *history;
+	if (history == NULL || cnt <= 0)
+		return ;
+	temp = history;
 	i = 1;
-	len = ft_lstsize(*history) - cnt + 1;
-	while (temp != NULL && i != len && cnt != 0)
+	len = ft_lstsize(history) - cnt + 1;
+	while (temp != NULL && i != len)
 	{
 		temp = temp->next;
 		i++;
 	}
-	//temp->content = g_line;
+	temp->content = g_line;
 	if (i == -1)
 		printf("%s\n", cursor->prev_his);
 }
@@ -148,8 +154,9 @@ int find_history(t_list *history, int cnt, t_cursor *cursor)
 		return (0);
 	if (cnt <= 0)
 	{
-		g_line = "";
 		delete_line(cursor);
+		g_line = ft_strdup("");
+		//(g_line)[0] = 0; //why? 히스토리가 왜 지워질까..
 		return (0); // down_arrow 최소값 조정
 	}
 	else if (cnt >= ft_lstsize(history)) // up_arrow가 기존 히스토리 길이보다 큰 경우 최대값으로 조정
@@ -186,7 +193,6 @@ int parse_line(t_list *history)
 
 	cursor.cm = tgetstr("cm", NULL); //cursor motion
 	cursor.ce = tgetstr("ce", NULL); //clear line from cursor
-	cursor.prev_his = 0;
 	
 	int c;
 	int h_cnt; //history count
@@ -194,7 +200,7 @@ int parse_line(t_list *history)
 	c = 0;
 	h_cnt = 0;
 	get_cursor_position(&cursor);
-	cursor.col = 19;
+	cursor.col++;
 	while (read(0, &c, sizeof(c)) > 0)
 	{
 		if (c == U_ARROW)
@@ -203,12 +209,13 @@ int parse_line(t_list *history)
 			h_cnt = find_history(history, h_cnt - 1, &cursor);
 		else if (c == BACKSPACE)
 		{
-			delete_end(&cursor);
 			if((remove_c()) == -1)
 				return (0);
+			delete_end(&cursor);
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{
+			++cursor.col;
 			write(1, &c, 1);
 			if ((char)c == '\n')
 				return (1);
@@ -217,8 +224,7 @@ int parse_line(t_list *history)
 			if (!g_line)
 				return (0);
 			// if (history != NULL && h_cnt != 0)
-			// 	renew_history(&history, h_cnt, &cursor);
-			cursor.col++;
+			 	renew_history(history, h_cnt, &cursor);
 		}
 		if (c == 4)
 		{
