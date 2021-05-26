@@ -1,12 +1,25 @@
 #include "minishell.h"
 
+void sigint_cursor()
+{
+	//int		len;
+	t_cursor cursor;
+	tgetent(NULL, "xterm");
+
+	cursor.cm = tgetstr("cm", NULL); //cursor motion
+	cursor.ce = tgetstr("ce", NULL); //clear line from cursor
+	get_cursor_position(&cursor);
+	delete_line(&cursor);
+}
+
 void signalHandler(int sig){
+
         if(sig==SIGINT){ //ctrl-c
 				if (ft_strcmp(g_line, "") != 0)
 				{
 					free(g_line);
 					g_line = ft_strdup("");
-
+					sigint_cursor();
 				}
         }
         if(sig==SIGQUIT){ //ctrl-'\'
@@ -56,11 +69,14 @@ int main(int argc, char **argv, char **envp)
 		if ((int)g_line[0] != 0 && (i = make_list(list, g_line, env)) == -1)
 			printf("syntax error!\n"); //syntax 에러 처리부분
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
+		free(g_line);
+		if (!(g_line = malloc(1)))
+			return (-1);
 		(g_line)[0] = 0;
 		//iter_history(history);
 	}
 	//iter_history(history);
 	printf("exit\n");
-	return (0);
+	return (1); 
 	argv = NULL;
 }

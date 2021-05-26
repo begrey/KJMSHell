@@ -96,7 +96,7 @@ void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
 int			remove_c();
 int			append(char c);
-void		renew_history(t_list **history, int cnt, t_cursor *cursor);
+void		renew_history(t_list *history, int cnt, t_cursor *cursor);
 int			find_history(t_list *history, int cnt, t_cursor *cursor);
 int			parse_line(t_list *history);
 
