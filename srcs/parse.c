@@ -146,7 +146,8 @@ int		make_list(t_line *line, char *s_line, t_env *env)
 
 	escape_line = convert_escape(s_line);
 
-	split_line = ft_split_quote(escape_line);
+	if (!(split_line = ft_split_quote(escape_line)))
+		return (-1);
 
 
 
