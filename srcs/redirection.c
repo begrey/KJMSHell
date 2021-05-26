@@ -231,8 +231,8 @@ int		ft_redirection(t_line *line, t_env *env)
 			// printf("?\n");
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
-				printf("no file read\n");
-				return(-1);
+				printf("????? %s\n", strerror(errno));
+				exit(1);
 			}
 		}
 		i++;

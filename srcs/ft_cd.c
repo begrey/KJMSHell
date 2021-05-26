@@ -29,6 +29,7 @@ void		ft_cd(t_line *line, t_env *env)
 	//ft_pwd();
 	if (check != 0)
 		printf("cd: %s: %s\n", line->arg, strerror(errno));
+//	exit(0); 
 }
 
 // int main()

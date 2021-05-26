@@ -23,7 +23,7 @@ void signalHandler(int sig){
 				}
         }
         if(sig==SIGQUIT){ //ctrl-'\'
-			if (ft_strcmp(g_line, "") != 0)
+			if (g_line[0] != 0)
                 printf("^\\Quit: %d\n", sig);
         }
 }
@@ -66,16 +66,13 @@ int main(int argc, char **argv, char **envp)
 	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(ft_strdup(g_line)));
-		if ((int)g_line[0] != 0 && (i = make_list(list, g_line, env)) == -1)
-			printf("syntax error!\n"); //syntax 에러 처리부분
+		i = make_list(list, g_line, env);
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		free(g_line);
 		if (!(g_line = malloc(1)))
 			return (-1);
 		(g_line)[0] = 0;
-		//iter_history(history);
 	}
-	//iter_history(history);
 	printf("exit\n");
 	return (0); //i
 	argv = NULL;
