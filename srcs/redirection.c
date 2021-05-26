@@ -29,12 +29,9 @@ int		put_redir(t_line *line, char ***re_name, int **re_type)
 			else
 			{	
 				type = 1;
-				temp = temp->next;
-				if (is_redir(temp->arg[0]))
-				{
+				if (temp->arg[1] == '>')
 					type = 2;
-					temp = temp->next;
-				}
+				temp = temp->next;
 			}
 			flag = 0;
 			while (temp && !is_redir(temp->arg[0]))
@@ -230,7 +227,7 @@ int		ft_redirection(t_line *line, t_env *env)
 		}
 		else if (re_type[i] == 2)	// >>
 		{
-			fd_wr = open(re_name[i], O_RDWR | O_CREAT | O_APPEND, 00777);
+			fd_wr = open(re_name[i], O_RDWR | O_APPEND | O_CREAT, 00777);
 		}
 		else if (re_type[i] == 3)	//	<
 		{

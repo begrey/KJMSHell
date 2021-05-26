@@ -2,14 +2,16 @@
 
 void		ft_pwd()
 {
-	char	buf[1024];
+	char	*str;
+	char	*buf;
 
-	if ((getcwd(buf, 1024)) == NULL)
+	buf = NULL;
+	if (!(str = getcwd(buf, 1)))
 	{
 		printf("pwd error!\n");
 		exit(1);
 	}
-	printf("%s\n", getcwd(buf, 1024));
+	printf("%s\n", str);
 	exit(0);
 }
 
