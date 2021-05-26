@@ -211,7 +211,6 @@ int		ft_redirection(t_line *line, t_env *env)
 		temp->arg = restore_escape(temp->arg);
 		temp = temp->next;
 	}
-
 	fd_wr = -1;
 	j = -1;
 	i = 0;
