@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/02 17:09:40 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/24 16:24:25 by sunmin           ###   ########.fr       */
+/*   Created: 2021/05/26 15:28:21 by sunmin            #+#    #+#             */
+/*   Updated: 2021/05/26 15:28:24 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_env	*init_env(char *envp[])
 		i++;
 	}
 	len = i;
-	temp = (t_env *)malloc(sizeof(t_env) * (len));
+	temp = (t_env *)malloc(sizeof(t_env) * (len));		// 비밀의 방까지
 	env = ft_envnew(find_key(envp[0]), find_value(envp[0]));
 	i = 0;
 	while (i < len)
