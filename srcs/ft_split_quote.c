@@ -222,8 +222,7 @@ char		**ft_split_quote(const char *str)
 	{
 		free(word_len);
 		free_split(split);
-		printf("syntax error\n");
-		exit (0);
+		return (0);
 	}
 	free(word_len);
 	return (split);
