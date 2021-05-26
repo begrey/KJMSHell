@@ -8,7 +8,7 @@ void		ft_pwd()
 	buf = NULL;
 	if (!(str = getcwd(buf, 1)))
 	{
-		printf("pwd error!\n");
+		printf("pwd: %s\n", strerror(errno));
 		exit(1);
 	}
 	printf("%s\n", str);

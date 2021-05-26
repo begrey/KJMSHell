@@ -77,6 +77,6 @@ int main(int argc, char **argv, char **envp)
 	}
 	//iter_history(history);
 	printf("exit\n");
-	return (1); 
+	return (0); //i
 	argv = NULL;
 }
