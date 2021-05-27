@@ -80,7 +80,7 @@ t_line	*ft_list_delredir(t_line *line)
 {
 	t_line	*temp;
 
-	if (which_redir((line)->arg))
+	while (line && which_redir((line)->arg))
 	{
 		(line) = (line)->next->next;
 		if (line != NULL)
@@ -100,6 +100,8 @@ t_line	*ft_list_delredir(t_line *line)
 		}
 		temp = temp->next;
 	}
+	if (!line)
+		line = ft_listnew("");
 	return (line);
 }
 
