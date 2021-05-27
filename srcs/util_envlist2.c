@@ -18,7 +18,7 @@ void	put_return(int ret, t_env *env)
 	}
 }
 
-void	printf_return(t_env *env)		// 쓸 필요 없을 것 같음
+int		return_return(t_env *env)		// 쓸 필요 없을 것 같음
 {
 	t_env *temp;
 
@@ -27,10 +27,11 @@ void	printf_return(t_env *env)		// 쓸 필요 없을 것 같음
 	{
 		if (temp->key[0] == '?')
 		{
-			printf("%s\n", temp->value);
+			return (atoi(temp->value));
 		}
 		temp = temp->next;
 	}
+	return (0);
 }
 
 char	*find_key(const char *str)

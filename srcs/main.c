@@ -75,6 +75,6 @@ int main(int argc, char **argv, char **envp)
 		(g_line)[0] = 0;
 	} //$?
 	printf("exit\n");
-	return (0); //i
+	return (return_return(env)); //i
 	argv = NULL;
 }

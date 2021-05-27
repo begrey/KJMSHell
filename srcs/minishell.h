@@ -139,6 +139,8 @@ t_env		*ft_envlast(t_env *lst);
 //		util_envlist2.c
 char		*find_key(const char *str);
 char		*find_value(const char *str);
+void		put_return(int ret, t_env *env);
+int			return_return(t_env *env);
 
 //		init_env.c
 t_env		*init_env(char *envp[]);

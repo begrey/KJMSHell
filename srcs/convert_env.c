@@ -11,6 +11,14 @@ static char		*exact_envstr(char *str)
 	if (*s == '$')
 		s++;
 	len = 1;
+	if (*s == '?')
+	{
+		res = (char *)malloc(sizeof(char) * 3);
+		res[0] = '$';
+		res[1] = '?';
+		res[2] = '\0';
+		return (res);
+	}
 	while (((*s >= 'A' && *s <= 'Z') || (*s >= 'a' && *s <= 'z') || (*s == '?')))
 	{
 		s++;
@@ -63,6 +71,8 @@ static int		check_env_len(const char *str)	// 플래그를 고려 안해도 됨(
 	s = (char *)str;
 	if (*s == '$')
 		s++;
+	if (*s == '?')
+		return (1);
 	while (*s && is_alpha(*s))
 	{
 			len++;
