@@ -21,7 +21,7 @@ void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag)
 	else if (ft_strcmp(command, "exit") == 0)
 		ft_exit(line->next, env, pip_flag); //프로세스만 종료되기 때문에 수정 필요
 	else if (ft_strcmp(command, "") == 0)
-		exit(0); //$! 관련으로 차후에 수정 status
+		;
 	else 
 		other_command(line, env, file_name, pip_flag);
 	file_name = NULL;

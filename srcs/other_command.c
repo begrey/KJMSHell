@@ -40,7 +40,7 @@ void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag)
 		if (pid != 0)
 		{
 			wait(&status);
-			//put_return (미출생)
+			put_return(status, env); // (미출생)
 		}
 		else
 		{
