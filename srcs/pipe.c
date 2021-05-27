@@ -54,6 +54,7 @@ int pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준
         close(pip_temp->fd[READ]);
         int status;
         while (wait(&status) > 0);  
+	printf("status : %d\n", status);
         return (status);
 
 }
@@ -76,6 +77,7 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         index = 0;
         i = 0;
         j = 0;
+        status = 0;
         //파이프 개수 세서 그만큼 파이프 생성.
         temp = list;
         while (temp != NULL)
@@ -116,9 +118,9 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
                 else
                 {
                 //printf("hi : %d\n", errno);
-                        j = ft_redirection(list, env);
+                        ft_redirection(list, env);
                 }
-                return (j);
+                return (status);
         }
         j = pipe_exec(pipe, arg_list, env);
         return (j);

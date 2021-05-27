@@ -19,7 +19,7 @@ void		exec_command(t_line *line, char *file_name, t_env *env)
 	else if (ft_strcmp(command, "env") == 0)
 		exec_env(line, env);
 	else if (ft_strcmp(command, "exit") == 0)
-		exit(10); //프로세스만 종료되기 때문에 수정 필요
+		ft_exit(line->next, env); //프로세스만 종료되기 때문에 수정 필요
 	else if (ft_strcmp(command, "") == 0)
 		exit(0); //$! 관련으로 차후에 수정 status
 	else 
