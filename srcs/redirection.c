@@ -233,7 +233,8 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
 				printf("????? %s\n", strerror(errno));
-				exit(0);
+				put_return(1, env);
+				return(0);
 			}
 		}
 		i++;

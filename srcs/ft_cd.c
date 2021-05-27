@@ -27,9 +27,15 @@ void		ft_cd(t_line *line, t_env *env, int pip_flag)
 		path = line->arg;	
 	check = chdir(path);
 	if (check != 0)
+	{
 		printf("cd: %s: %s\n", line->arg, strerror(errno));
+		put_return(1, env);
+		return ;
+	}
 	if (pip_flag == 0)
 		exit(0); 
+	else
+		put_return(0, env);
 }
 
 // int main()

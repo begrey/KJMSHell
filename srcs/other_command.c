@@ -40,6 +40,8 @@ void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag)
 		if (pid != 0)
 		{
 			wait(&status);
+			if (status >= 256)
+				status /= 256;
 			put_return(status, env); // (미출생)
 		}
 		else
@@ -77,8 +79,11 @@ void		other_command_exec(t_line *line, t_env *env, char *file_name)
 		execve(new_path, argv, NULL);
 		i++;
 	}
-	printf("%s: command not found\n", line->arg);
-	exit(1);
+	write(2, line->arg, ft_strlen(line->arg));
+	write(2, ": command not found\n", 20);
+	//printf("%s: command not found\n", line->arg);
+	put_return(127, env);
+	exit(127);
 }
 // int main()
 // {

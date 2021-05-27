@@ -7,11 +7,11 @@ void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag)
 
 	command = line->arg;
 	if (ft_strcmp(command, "echo") == 0)
-		ft_echo(line->next, pip_flag);
+		ft_echo(line->next, pip_flag, env);
 	else if (ft_strcmp(command, "cd") == 0)
 		ft_cd(line->next, env, pip_flag);
 	else if (ft_strcmp(command, "pwd") == 0)
-		ft_pwd(pip_flag);
+		ft_pwd(pip_flag, env);
 	else if (ft_strcmp(command, "export") == 0)
 		exec_export(line, env, pip_flag);
 	else if (ft_strcmp(command, "unset") == 0)
