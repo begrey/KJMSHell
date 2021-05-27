@@ -67,7 +67,7 @@ typedef struct s_line
 }				t_line;
 
 //	ft_echo.c
-void		ft_echo(t_line *line, int pip_flag);
+void		ft_echo(t_line *line, int pip_flag, t_env *env);
 
 //	ft_cd.c
 void		ft_cd(t_line *line, t_env *env, int pip_flag);
@@ -75,7 +75,7 @@ char		*convert_root_path(t_line *line, t_env *env);
 char		*root_path(t_env *env);
 
 //	ft_pwd.c
-void		ft_pwd(int pip_flag);
+void		ft_pwd(int pip_flag, t_env *env);
 
 //	pipe.c
 void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env);

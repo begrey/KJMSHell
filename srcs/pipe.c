@@ -50,8 +50,7 @@ int pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준
         dup_pipe(list[i], pip_temp->fd, STDIN_PIPE, env);   //last;
         close(pip_temp->fd[READ]);
         int status;
-        while (wait(&status) > 0);  
-	printf("status : %d\n", status);
+        while (wait(&status) > 0);
         return (status);
 
 }
@@ -107,5 +106,6 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
                 return (status);
         }
         j = pipe_exec(pipe, arg_list, env);
+        put_return(j / 256, env);
         return (j);
 }
