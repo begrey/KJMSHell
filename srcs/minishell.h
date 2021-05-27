@@ -190,6 +190,9 @@ char		*delete_escape(char *s);
 char		*restore_escape(char *s);
 char		*convert_escape(char *s);
 
+//		exit.c
+void		ft_exit(t_line *line, t_env *env);
+
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)
 // void	ft_listadd_back(t_env **lst, t_env *new)

@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/25 09:13:03 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/27 11:06:04 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,19 @@ void	exec_export(t_line *line, t_env *env)
 		idx = env;
 		while (idx)
 		{
-			str = ft_strjoin(str, "declare -x ");
-			str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
-			if (idx->if_value)
+			if (idx->key[0] != '?')
 			{
-				str = ft_strjoin(str, "=");
-				str = ft_strjoin(str, "\"");
-				str = ft_strjoin(str, idx->value);
-				str = ft_strjoin(str, "\"");
+				str = ft_strjoin(str, "declare -x ");
+				str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
+				if (idx->if_value)
+				{
+					str = ft_strjoin(str, "=");
+					str = ft_strjoin(str, "\"");
+					str = ft_strjoin(str, idx->value);
+					str = ft_strjoin(str, "\"");
+				}
+				str = ft_strjoin(str, "\n");
 			}
-			str = ft_strjoin(str, "\n");
 			idx = idx->next; 
 		}
 	}
@@ -124,7 +127,7 @@ void	exec_env(t_line *line, t_env *env)
 		idx = env;
 		while (idx)
 		{
-			if (idx->if_value)
+			if (idx->key[0] != '?' && idx->if_value)
 			{
 				str = ft_strjoin(str, idx->key);
 				str = ft_strjoin(str, "=");
