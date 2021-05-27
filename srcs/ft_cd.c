@@ -12,7 +12,7 @@ char		*convert_root_path(t_line *line, t_env *env)
 	return (ft_strjoin(root_path(env), line->arg + 1));
 }
 
-void		ft_cd(t_line *line, t_env *env)
+void		ft_cd(t_line *line, t_env *env, int pip_flag)
 {
 	int		check;
 	char 	*path;
@@ -26,10 +26,10 @@ void		ft_cd(t_line *line, t_env *env)
 	else
 		path = line->arg;	
 	check = chdir(path);
-	//ft_pwd();
 	if (check != 0)
 		printf("cd: %s: %s\n", line->arg, strerror(errno));
-//	exit(0); 
+	if (pip_flag == 0)
+		exit(0); 
 }
 
 // int main()

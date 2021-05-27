@@ -11,11 +11,13 @@ int		is_num(char *line)
 	return (0);
 }
 
-void	ft_exit(t_line *line, t_env *env)
+void	ft_exit(t_line *line, t_env *env, int pip_flag)
 {
 	int	status; //$?
 
 	status = 0;
+	if (pip_flag == 0)
+		return;
 	if (line == NULL) //exit만 들어온 경우
 	{
 		status = 0;

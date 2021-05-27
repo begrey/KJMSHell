@@ -67,15 +67,15 @@ typedef struct s_line
 }				t_line;
 
 //	ft_echo.c
-void		ft_echo(t_line *line);
+void		ft_echo(t_line *line, int pip_flag);
 
 //	ft_cd.c
-void		ft_cd(t_line *line, t_env *env);
+void		ft_cd(t_line *line, t_env *env, int pip_flag);
 char		*convert_root_path(t_line *line, t_env *env);
 char		*root_path(t_env *env);
 
 //	ft_pwd.c
-void		ft_pwd();
+void		ft_pwd(int pip_flag);
 
 //	pipe.c
 void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env);
@@ -83,10 +83,11 @@ int			pipe_exec(t_pipe *pip, t_line **list, t_env *env);
 int			split_by_pipe(t_line *list, t_env *env);
 
 //	exec_command.c
-void		exec_command(t_line *line, char *file_name, t_env *env);
+void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag);
 
 //	other_command.c
-void		other_command(t_line *line, t_env *env, char *file_name);
+void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag);
+void		other_command_exec(t_line *line, t_env *env, char *file_name);
 
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int			num_len(int n);
@@ -112,9 +113,9 @@ t_pipe		*ft_pipelast(t_pipe *lst);
 t_pipe		*ft_pipenew();
 
 //ft_export.c
-void	exec_export(t_line *line, t_env *env);
-void	exec_env(t_line *line, t_env *env);
-void	exec_unset(t_line *line, t_env *env);
+void	exec_export(t_line *line, t_env *env, int pip_flag);
+void	exec_env(t_line *line, t_env *env, int pip_flag);
+void	exec_unset(t_line *line, t_env *env, int pip_flag);
 char	*extract_env(char *str, t_env *env);
 
 // sunmin 추가
@@ -160,7 +161,7 @@ t_line		*ft_list_null_term(t_line *lst, int index);
 int			ft_split_list_token(t_line *lst, char token);
 
 //		redirection.c
-int			ft_redirection(t_line *line, t_env *env);
+int			ft_redirection(t_line *line, t_env *env, int pip_flag);
 int			which_redir(char *s);
 
 //		token_syn_check.c
@@ -191,7 +192,7 @@ char		*restore_escape(char *s);
 char		*convert_escape(char *s);
 
 //		exit.c
-void		ft_exit(t_line *line, t_env *env);
+void		ft_exit(t_line *line, t_env *env, int pip_flag);
 
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)

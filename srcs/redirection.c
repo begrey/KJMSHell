@@ -166,7 +166,7 @@ char	*ft_del_quote(char *str)
 }
 
 
-int		ft_redirection(t_line *line, t_env *env)
+int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 {
 	int		re_num;
 	int		i;
@@ -233,7 +233,7 @@ int		ft_redirection(t_line *line, t_env *env)
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
 				printf("????? %s\n", strerror(errno));
-				exit(1);
+				exit(0);
 			}
 		}
 		i++;
@@ -245,6 +245,6 @@ int		ft_redirection(t_line *line, t_env *env)
 	temp = line;
 	if (fd_wr > 0)
 		dup2(fd_wr, 1);
-	exec_command(temp, re_name[j], env);
+	exec_command(temp, re_name[j], env, pip_flag);
 	return (status); // exec에서 종료하기때문에 이 구문이 실행되지 않는다.
 }

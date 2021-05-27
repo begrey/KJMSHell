@@ -29,8 +29,29 @@ char		**make_list_argv(t_line *line, char *file_name)
 	argv[i] = NULL;
 	return (argv);
 }
+void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag)
+{
+	int		status;
+	pid_t	pid;
 
-void		other_command(t_line *line, t_env *env, char *file_name)
+	if (pip_flag != 0)
+	{
+		pid = fork();
+		if (pid != 0)
+		{
+			wait(&status);
+			//put_return (미출생)
+		}
+		else
+		{
+			other_command_exec(line, env, file_name);
+		}
+	}
+	else
+		other_command_exec(line, env, file_name);
+}
+
+void		other_command_exec(t_line *line, t_env *env, char *file_name)
 {
 	int		i;
 	char	**path;

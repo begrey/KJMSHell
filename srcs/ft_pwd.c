@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void		ft_pwd()
+void		ft_pwd(int pip_flag)
 {
 	char	*str;
 	char	*buf;
@@ -12,6 +12,7 @@ void		ft_pwd()
 		exit(1);
 	}
 	printf("%s\n", str);
-	exit(0);
+	if (pip_flag == 0)
+		exit(0);
 }
 
