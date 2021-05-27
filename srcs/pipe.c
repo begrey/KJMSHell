@@ -17,11 +17,8 @@ void dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env)
 
         close(pipefd[READ]);
         close(pipefd[WRITE]);
-
-        // char *const argv[] = {command, NULL};
-        // char *const envp[] = {NULL};
-        // execve(command, argv, envp);
-        ft_redirection(list, env);
+;
+        ft_redirection(list, env, cpid);
 }
 
 int pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준으로 split된 배열 리스트들
@@ -67,7 +64,6 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         int     pip;
         int     index;
         int     i;
-        pid_t   pid;
         t_line **arg_list; // 리스트 채워넣는 부분 따로 함수로 빼두기
         int     status;
         int     j;
@@ -107,19 +103,7 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
         }
         if (i == 0)
         {
-                pid = fork();
-                //errno = 0;
-                if (pid != 0)
-                {
-                        wait(&status);
-                        if (status >= 256)
-                                status /= 256;
-                }
-                else
-                {
-                //printf("hi : %d\n", errno);
-                        ft_redirection(list, env);
-                }
+                ft_redirection(list, env, 1); //pipe인 경우가 아니면 fork를 하지 않는다!
                 return (status);
         }
         j = pipe_exec(pipe, arg_list, env);

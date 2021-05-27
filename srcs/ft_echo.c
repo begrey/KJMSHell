@@ -6,13 +6,13 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 09:28:27 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/05/26 16:35:28 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/27 14:21:08 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void		ft_echo(t_line *line)
+void		ft_echo(t_line *line, int pip_flag)
 {
 	int		i;
 	int		flag;
@@ -39,5 +39,6 @@ void		ft_echo(t_line *line)
 	if (flag == 0)
 		write(1, "\n", 1);
 	//printf("echo: %s\n", strerror(errno));
-	exit(0);
+	if (pip_flag == 0) //파이프인경우
+		exit(0);
 }

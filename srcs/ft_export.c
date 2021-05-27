@@ -6,13 +6,13 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/27 11:06:04 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/05/27 14:22:48 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./minishell.h"
 
-void	exec_export(t_line *line, t_env *env)
+void	exec_export(t_line *line, t_env *env, int pip_flag)
 {
 	int		i;
 	char	*str;
@@ -95,9 +95,11 @@ void	exec_export(t_line *line, t_env *env)
 		}
 	}
 	write(1, str, ft_strlen(str));
+	if (pip_flag == 0)
+		exit(0);
 }
 
-void	exec_env(t_line *line, t_env *env)
+void	exec_env(t_line *line, t_env *env, int pip_flag)
 {
 	t_env	*idx;
 	char	*str;
@@ -138,9 +140,11 @@ void	exec_env(t_line *line, t_env *env)
 		}
 	}
 	write(1, str, ft_strlen(str));
+	if (pip_flag == 0)
+		exit(0);
 }
 
-void	exec_unset(t_line *line, t_env *env)
+void	exec_unset(t_line *line, t_env *env, int pip_flag)
 {
 	t_env	*now;
 	t_env	*begin;
@@ -176,6 +180,8 @@ void	exec_unset(t_line *line, t_env *env)
 		}
 		i++;
 	}
+	if (pip_flag == 0)
+		exit(0);
 }
 
 char	*extract_env(char *str, t_env *env)
