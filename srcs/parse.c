@@ -138,6 +138,33 @@ void	list_split_addback(t_line **lst, char *arg)
 	}
 }
 
+int		check_single_escape(char *s)
+{
+	char *temp;
+
+	temp = s;
+	while (*temp)
+	{
+		if (*temp == '\\')
+		{
+			temp++;
+			if (*temp == '\0')
+				return (-1);
+		}
+		temp++;
+	}
+	return (0);
+}
+
+int		ft_strerror(char *s)
+{
+	char *temp;
+
+	temp = s;
+	printf("%s", temp);
+	return (-1);
+}
+
 int		make_list(t_line *line, char *s_line, t_env *env)
 {
 	char **split_line;
@@ -145,9 +172,11 @@ int		make_list(t_line *line, char *s_line, t_env *env)
 	int i;
 
 	escape_line = convert_escape(s_line);
+	if (check_single_escape(escape_line) == -1)
+		return (ft_strerror("syntax error\n"));
 
 	if (!(split_line = ft_split_quote(escape_line)))
-		return (-1);
+		return (ft_strerror("syntax error\n"));
 
 
 
@@ -178,8 +207,9 @@ int		make_list(t_line *line, char *s_line, t_env *env)
 
 	if ((redir_syn_check(line)) == -1)		// >>로 바꿔서 다시 만들어야
 		return (-1);
+
 	if ((token_syn_check(line)) == -1)
-		return (-1);					// 토큰이 처음에 오거나, 연속으로 두개 나오는 경우
+		return (-1);	// 토큰이 처음에 오거나, 연속으로 두개 나오는 경우
 	i = split_by_semi(line, env);	// 이 함수 안에서 실행
 	return (i);
 }
