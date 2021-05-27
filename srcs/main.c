@@ -46,7 +46,7 @@ int main(int argc, char **argv, char **envp)
 	t_env	*env;
 	int		i;
 
-	i = 0;
+	i = -1;
 	list = NULL;
 	history = NULL;
 	if (!(g_line = malloc(1)))
@@ -66,7 +66,8 @@ int main(int argc, char **argv, char **envp)
 	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(ft_strdup(g_line)));
-		i = make_list(list, g_line, env);
+		if ((i = make_list(list, g_line, env)) > 0)
+			break;
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		free(g_line);
 		if (!(g_line = malloc(1)))
@@ -74,6 +75,6 @@ int main(int argc, char **argv, char **envp)
 		(g_line)[0] = 0;
 	}
 	printf("exit\n");
-	return (0); //i
+	return (i); //i
 	argv = NULL;
 }
