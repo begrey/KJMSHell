@@ -66,15 +66,15 @@ int main(int argc, char **argv, char **envp)
 	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(ft_strdup(g_line)));
-		if ((i = make_list(list, g_line, env)) > 0)
+		if ((i = make_list(list, g_line, env)) == 0)
 			break;
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		free(g_line);
 		if (!(g_line = malloc(1)))
 			return (-1);
 		(g_line)[0] = 0;
-	}
+	} //$?
 	printf("exit\n");
-	return (i); //i
+	return (0); //i
 	argv = NULL;
 }
