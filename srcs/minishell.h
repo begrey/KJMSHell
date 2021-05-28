@@ -33,6 +33,8 @@ typedef struct	s_cursor
 	char			*prev_his; // 이전 명령어
 	int				row;
 	int				col;
+	int				first_row;
+	int				max_col;
 }				t_cursor;
 
 typedef struct s_env
@@ -97,9 +99,11 @@ void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
 int			remove_c();
 int			append(char c);
-void		renew_history(t_list *history, int cnt, t_cursor *cursor);
+void		renew_history(t_list *history, int cnt);
 int			find_history(t_list *history, int cnt, t_cursor *cursor);
 int			parse_line(t_list *history);
+struct termios		term_on();
+void		term_off();
 
 //	ft_add_back.c
 void		ft_pipeadd_back(t_pipe **pip, t_pipe *new);
