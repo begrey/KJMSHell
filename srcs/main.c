@@ -15,16 +15,19 @@ void sigint_cursor()
 void signalHandler(int sig){
 
         if(sig==SIGINT){ //ctrl-c
-				if (ft_strcmp(g_line, "") != 0)
+				if (g_line[0] != 0)
 				{
 					free(g_line);
 					g_line = ft_strdup("");
 					sigint_cursor();
 				}
+				else
+					write(1, "\nKJMSHell(｡☌ᴗ☌｡) >> ", 30);
+
         }
         if(sig==SIGQUIT){ //ctrl-'\'
 			if (g_line[0] != 0)
-                printf("^\\Quit: %d\n", sig);
+                printf("Quit: %d\n", sig);
         }
 }
 
@@ -55,7 +58,7 @@ int main(int argc, char **argv, char **envp)
 	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
 	{
 		write(1, "cannot excute binary file\n", 26);
-		return (0);
+		return (126);
 	}
 	env = init_env(envp);
 	signal(SIGINT, signalHandler);
@@ -75,6 +78,7 @@ int main(int argc, char **argv, char **envp)
 			return (-1);
 		(g_line)[0] = 0;
 	} //$?
+	iter_history(history);
 	printf("exit\n");
 	return (return_return(env)); //i
 	argv = NULL;
