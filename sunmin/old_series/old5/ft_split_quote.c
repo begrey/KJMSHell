@@ -5,7 +5,7 @@ static void	free_split(char **split)
 	int		i;
 
 	i = 0;
-	while (split[i])
+	while(split[i])
 	{
 		free(split[i]);
 		i++;
@@ -222,7 +222,8 @@ char		**ft_split_quote(const char *str)
 	{
 		free(word_len);
 		free_split(split);
-		return (0);
+		printf("syntax error\n");
+		exit (0);
 	}
 	free(word_len);
 	return (split);
