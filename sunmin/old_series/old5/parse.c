@@ -41,7 +41,7 @@ int		is_token_quote(const char *str)
 	return (ret);
 }
 
-int		where_token(char *str)
+int		where_token(char *str)	// is_token_quote와 구조 비슷	// 토큰의 인덱스 반환
 {
 	char		*s;
 	char		flag;
@@ -126,7 +126,7 @@ void	list_split_addback(t_line **lst, char *arg)
 {
 
 	int		i;
-	char	**split_token;
+	char	**split_token;		// 토큰 기준으로 스플릿
 
 	i = 0;
 	split_token = ft_token_split(arg);
@@ -138,55 +138,12 @@ void	list_split_addback(t_line **lst, char *arg)
 	}
 }
 
-int		check_single_escape(const char *s)
-{
-	char *temp;
-
-	temp = (char *)s;
-	while (*temp)
-	{
-		if (*temp == '\\')
-		{
-			temp++;
-			if (*temp == '\0')
-				return (-1);
-		}
-		temp++;
-	}
-	return (0);
-}
-
-int		ft_strerror(char *s)
-{
-	char *temp;
-
-	temp = s;
-	printf("%s", temp);
-	return (-1);
-}
-
-int		make_list(t_line *line, t_env *env)
+int		make_list(t_line *line, char *s_line, t_env *env)
 {
 	char **split_line;
-	char	*escape_line;
 	int i;
-	char	*temp;
 
-
-
-	escape_line = convert_escape(g_line);
-
-
-
-	if (check_single_escape(escape_line) == -1)
-		return (ft_strerror("syntax error\n"));
-
-	if (!(split_line = ft_split_quote(escape_line)))
-		return (ft_strerror("syntax error\n"));
-
-
-
-
+	split_line = ft_split_quote(s_line);
 
 
 
@@ -195,33 +152,18 @@ int		make_list(t_line *line, t_env *env)
 	int k  = 0;
 	while (split_line[k])
 	{
-		temp = split_line[k];
 		split_line[k] = ft_strtrim(split_line[k], " ");
-		free(temp);
 		k++;
 	}
-
-
-
-
-
-
-
-
-
 
 	i = 0;
 	while (split_line[i])
 	{
-		temp = split_line[i];
-		split_line[i] = convert_env(split_line[i], env);		// 누수 너무 많음
-		free(temp);
+		split_line[i] = convert_env(split_line[i], env);
 		i++;
 	}
-
-
 	i = 0;
-	while (split_line[i])							// 누수 발생 ... 
+	while (split_line[i])
 	{
 		if (is_token_quote(split_line[i]))
 			list_split_addback(&line, split_line[i]);
@@ -230,17 +172,41 @@ int		make_list(t_line *line, t_env *env)
 		i++;
 	}
 
-
-
-
-	if ((redir_syn_check(line)) == -1)
+	if ((redir_syn_check(line)) == -1)		// >>로 바꿔서 다시 만들어야
 		return (-1);
-
-
 	if ((token_syn_check(line)) == -1)
-		return (-1);
-
-	i = split_by_semi(line, env);
-
-	return (i);
+		return (-1);;					// 토큰이 처음에 오거나, 연속으로 두개 나오는 경우
+	split_by_semi(line, env);	// 이 함수 안에서 실행
+	return (0);
 }
+
+// int main(int argc, char *argv[], char *envp[])
+// {
+// 	char	*input_line;
+// //	char *input = "echo hi | everyone ; pwd | grep ; ls";
+// 	t_line	*line;
+// 	t_line	*down;
+// 	int	lvl;
+
+// 	if (argc != 1 || argv[1])
+// 	{
+// 		write(1, "cannot excute binary file\n", 26);
+// 		return (0);
+// 	}
+// 	init_env(envp);
+// 	write(1, "KJMSHell(OoO) >> ", 17);
+// 	while ((parse_line(&input_line)) > 0)
+// 	{
+// 		if (input_line[0] == '$' && input_line[1] == '?')
+// 		{
+// 			printf("ft_errno %d\n", ft_errno);
+// 		}
+// 		if ((make_list(&line, input_line)) == -1)
+// 		{
+// 			;
+// 		}
+// 		write(1, "KJMSHell(OoO) >> ", 17);
+// 		free(line);
+// 	}
+// 	return (0);
+// }

@@ -1,14 +1,16 @@
 #include "minishell.h"
 
-void		ft_pwd()
+void		ft_pwd(int pip_flag, t_env *env)
 {
-	char	buf[1024];
+	char	*str;
+	char	*buf;
 
-	if ((getcwd(buf, 1024)) == NULL)
-	{
-		printf("pwd error!\n");
-		exit(1);
-	}
-	printf("%s\n", getcwd(buf, 1024));
+	buf = NULL;
+	str = getcwd(buf, 1);
+	printf("%s\n", str);
+	if (pip_flag == 0)
+		exit(0);
+	else
+		put_return(0, env);
 }
 

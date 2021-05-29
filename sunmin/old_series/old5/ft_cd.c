@@ -1,18 +1,18 @@
 #include "minishell.h"
 
-char		*root_path(t_env *env)
+char		*root_path()
 {
 	//환경변수 USER에서 받아옴
-	return(ft_strjoin(ft_strdup("/USERS/"), convert_env("$USER", env)));
+	return(ft_strjoin(ft_strdup("/USERS/"), convert_env("$USER")));
 }
 
-char		*convert_root_path(t_line *line, t_env *env)
+char		*convert_root_path(t_line *line)
 {
 	//  ~/42Curses의 경우 /USER/jimkwon으로 치환
-	return (ft_strjoin(root_path(env), line->arg + 1));
+	return (ft_strjoin(root_path(), line->arg + 1));
 }
 
-void		ft_cd(t_line *line, t_env *env, int pip_flag)
+void		ft_cd(t_line *line)
 {
 	int		check;
 	char 	*path;
@@ -20,22 +20,15 @@ void		ft_cd(t_line *line, t_env *env, int pip_flag)
 
 	//path 정해주기
 	if (line == NULL) // cd 만 입력한 경우
-		path = root_path(env);
+		path = root_path();
 	else if (line->arg[0] == '~') // 루트 디렉토리
-		path = convert_root_path(line, env);
+		path = convert_root_path(line);
 	else
 		path = line->arg;	
 	check = chdir(path);
+	//ft_pwd();
 	if (check != 0)
-	{
-		printf("cd: %s: %s\n", line->arg, strerror(errno));
-		put_return(1, env);
-		return ;
-	}
-	if (pip_flag == 0)
-		exit(0); 
-	else
-		put_return(0, env);
+		printf("cd: no such file or directory: %s\n", line->arg);
 }
 
 // int main()

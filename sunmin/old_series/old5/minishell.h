@@ -33,8 +33,6 @@ typedef struct	s_cursor
 	char			*prev_his; // 이전 명령어
 	int				row;
 	int				col;
-	int				first_row;
-	int				max_col;
 }				t_cursor;
 
 typedef struct s_env
@@ -45,8 +43,6 @@ typedef struct s_env
 	struct s_env	*prev;
 	struct s_env	*next;
 }				t_env;
-
-char	*g_line;  //기존 line과 겹쳐서 임시로 g_line으로 함
 
 typedef	struct	s_redirc
 {
@@ -69,27 +65,26 @@ typedef struct s_line
 }				t_line;
 
 //	ft_echo.c
-void		ft_echo(t_line *line, int pip_flag, t_env *env);
+void		ft_echo(t_line *line);
 
 //	ft_cd.c
-void		ft_cd(t_line *line, t_env *env, int pip_flag);
-char		*convert_root_path(t_line *line, t_env *env);
-char		*root_path(t_env *env);
+void		ft_cd(t_line *line);
+char		*convert_root_path(t_line *line);
+char		*root_path();
 
 //	ft_pwd.c
-void		ft_pwd(int pip_flag, t_env *env);
+void		ft_pwd();
 
 //	pipe.c
 void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env);
-int			pipe_exec(t_pipe *pip, t_line **list, t_env *env);
-int			split_by_pipe(t_line *list, t_env *env);
+void		pipe_exec(t_pipe *pip, t_line **list, t_env *env);
+void		split_by_pipe(t_line *list, t_env *env);
 
 //	exec_command.c
-void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag);
+void		exec_command(t_line *line, char *file_name, t_env *env);
 
 //	other_command.c
-void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag);
-void		other_command_exec(t_line *line, t_env *env, char *file_name);
+void		other_command(t_line *line, t_env *env);
 
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int			num_len(int n);
@@ -97,13 +92,11 @@ int			putchar_tc(int tc);
 void		get_cursor_position(t_cursor *cursor);
 void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
-int			remove_c();
-int			append(char c);
-void		renew_history(t_list *history, int cnt);
-int			find_history(t_list *history, int cnt, t_cursor *cursor);
-int			parse_line(t_list *history);
-struct termios		term_on();
-void		term_off();
+char		*remove_c(char *line);
+char		*append(char *line, char c);
+void		renew_history(t_list **history, char *line, int cnt);
+int			find_history(t_list *history, char **line, int cnt, t_cursor *cursor);
+int			parse_line(char **line, t_list *history);
 
 //	ft_add_back.c
 void		ft_pipeadd_back(t_pipe **pip, t_pipe *new);
@@ -117,9 +110,9 @@ t_pipe		*ft_pipelast(t_pipe *lst);
 t_pipe		*ft_pipenew();
 
 //ft_export.c
-void	exec_export(t_line *line, t_env *env, int pip_flag);
-void	exec_env(t_line *line, t_env *env, int pip_flag);
-void	exec_unset(t_line *line, t_env *env, int pip_flag);
+void	exec_export(t_line *line, t_env *env);
+void	exec_env(t_line *line, t_env *env);
+void	exec_unset(t_line *line, t_env *env);
 char	*extract_env(char *str, t_env *env);
 
 // sunmin 추가
@@ -135,7 +128,7 @@ t_line		*ft_listlast(t_line *lst);
 t_line		*ft_listnew(char *content);
 
 //		util_envlist.c
-t_env		*ft_envnew(void *key, void *value, int if_value);
+t_env		*ft_envnew(void *key, void *value);
 void		ft_envadd_back(t_env **lst, t_env *new);
 t_env		*ft_envfind(t_env **lst, char *s);
 t_env		*ft_envlast(t_env *lst);
@@ -143,11 +136,9 @@ t_env		*ft_envlast(t_env *lst);
 //		util_envlist2.c
 char		*find_key(const char *str);
 char		*find_value(const char *str);
-void		put_return(int ret, t_env *env);
-int			return_return(t_env *env);
 
 //		init_env.c
-t_env		*init_env(char *envp[], t_env *env);
+t_env		*init_env(char *envp[]);
 
 //		ft_split_quote.c
 char		**ft_split_quote(const char *str);
@@ -156,18 +147,18 @@ char		flag_check(const char c, char flag); // util
 int			is_quote(const char c);		// util로 빼기
 
 //		convert_env.c
-char		*convert_env(char *str, t_env *env);
+char		*convert_env(const char *str, t_env *env);
 
 //		redir_syn_check.c
 int			redir_syn_check(t_line *line);
 
 //		split_by_null.c
-int			split_by_semi(t_line *line, t_env *env);
+void		split_by_semi(t_line *line, t_env *env);
 t_line		*ft_list_null_term(t_line *lst, int index);
 int			ft_split_list_token(t_line *lst, char token);
 
 //		redirection.c
-int			ft_redirection(t_line *line, t_env *env, int pip_flag);
+int			ft_redirection(t_line *line, t_env *env);
 int			which_redir(char *s);
 
 //		token_syn_check.c
@@ -175,7 +166,7 @@ int			token_syn_check(t_line *line);
 
 //		parse.c
 int			is_token(char *s);
-int			make_list(t_line *line, t_env *env);
+int			make_list(t_line *line, char *s_line, t_env *env);
 
 //		util_str.c
 int			ft_strcmp(char *dest, char *src);
@@ -191,14 +182,6 @@ int			ft_listsize(t_line *line);
 
 //		ft_env_sort.c
 void		ft_env_sort(t_env **env);
-
-//		convert_escape.c
-char		*delete_escape(char *s);
-char		*restore_escape(char *s);
-char		*convert_escape(char *s);
-
-//		exit.c
-void		ft_exit(t_line *line, t_env *env, int pip_flag);
 
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)
