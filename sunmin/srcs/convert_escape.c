@@ -7,6 +7,7 @@ char		*convert_escape(char *s)
 	int		i;
 
 	result = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	result[ft_strlen(s)] = '\0';
 	i = 0;
 	flag = 0;
 	while (*s)
@@ -71,6 +72,7 @@ char	*delete_escape(char *s)
 	flag = 0;
 	num = check_escape(s);
 	result = (char *)malloc(sizeof(char) * (ft_strlen(s) - num + 1));
+	result[ft_strlen(s) - num] = '\0';
 	while (*s)
 	{
 		flag = flag_check(*s, flag);
@@ -92,6 +94,7 @@ char	*restore_escape(char *s)
 	int			i;
 
 	result = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	result[ft_strlen(s)] = '\0';
 	i = 0;
 	while (*s)
 	{
