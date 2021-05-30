@@ -76,13 +76,21 @@ int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지
 	return (num);
 }
 
-t_line	*ft_list_delredir(t_line *line)
+t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 {
 	t_line	*temp;
+t_line	*free1;
+	t_line	*free2;
 
 	while (line && which_redir((line)->arg))
 	{
+		free1 = line;
+		free2 = line->next;
 		(line) = (line)->next->next;
+		if (free1)
+			free(free1);
+		if (free2)
+			free(free2);
 		if (line != NULL)
 			(line)->prev = NULL;
 	}
@@ -91,12 +99,18 @@ t_line	*ft_list_delredir(t_line *line)
 	{
 		if (which_redir(temp->arg))
 		{
+			free1 = temp;
+			free2 = temp->next;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
 			temp = temp->next;
 			temp->prev->next = temp->next;
+			free(free1);
 			if (temp->next)
+			{
 					temp->next->prev = temp->prev;
+					free(free2);
+			}
 		}
 		temp = temp->next;
 	}
@@ -168,6 +182,7 @@ char	*ft_del_quote(char *str)
 
 int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 {
+
 	int		re_num;
 	int		i;
 	char	**re_name;
@@ -177,6 +192,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	int		fd_wr;
 	int		fd_op;
 	int		j;
+	char	*temp_str;
 
 	temp = line;
 	re_num = redir_num(temp);
@@ -187,39 +203,61 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 
 
 
-	// 리다이렉션 구조체 삭제(ing)			// 릭 o
+
+
+
+	// 리다이렉션 구조체 삭제(ing)			// 릭 잡는 중
 	temp = line;
-	line = ft_list_delredir(temp);
+	line = ft_list_delredir(temp);		// 세니타이저 에러
+
+
+
 
 
 
 
 	//	escape 제거
-	temp = line;							// 릭 o
+	temp = line;							// 릭 제거
 	while (temp)
 	{
+		temp_str = temp->arg;
 		temp->arg = delete_escape(temp->arg);
+//		free(temp_str); 있으면 세니타이즈 에러
 		temp = temp->next;
 	}
 
 
 
-	// 리스트에서 quote 제거(ing)			// 릭 o
+
+
+
+
+	// 리스트에서 quote 제거(ing)			// 릭 제거
 	temp = line;
 	while (temp)
 	{
+		temp_str = temp->arg;
 		(temp)->arg = ft_del_quote((temp)->arg);
+		free(temp_str);
 		temp = (temp)->next;
 	}
 
 
-	// 아스키 -값 복구						// 릭 o
+
+
+
+
+	// 아스키 -값 복구						// 릭 제거
 	temp = line;
 	while (temp)
 	{
+		temp_str = temp->arg;
 		temp->arg = restore_escape(temp->arg);
+		free(temp_str);
 		temp = temp->next;
 	}
+
+
 
 	fd_wr = -1;
 	j = -1;
@@ -247,9 +285,14 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 		}
 		i++;
 	}
+
+
 	temp = line;
 	if (j == -1 || temp->next != NULL)
+	{
+		j = 0;					// 나중에 다시 생각해봐야
 		re_name[j] = NULL;
+	}
 	status = 0;
 	temp = line;
 	if (fd_wr > 0)
