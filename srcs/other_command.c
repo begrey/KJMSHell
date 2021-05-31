@@ -17,10 +17,11 @@ char		**make_list_argv(t_line *line, char *file_name)
 	}
 	if (file_name != NULL)
 		len++;
-	argv = (char **)malloc(sizeof(char) * (len + 1));
+	argv = (char **)malloc(sizeof(char *) * (len + 1));
+	argv[len] = NULL;
 	while (line != NULL)
 	{
-		argv[i] = line->arg;		// sanitize 터지는 위치
+		argv[i] = line->arg;
 		line = line->next;
 		i++;
 	}

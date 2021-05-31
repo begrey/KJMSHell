@@ -175,7 +175,7 @@ int		make_list(t_env *env)
 	char	*temp;
 
 	line = NULL;
-	escape_line = convert_escape(ft_strdup(g_line));		//  개행까지 넘어올 예
+	escape_line = convert_escape(ft_strdup(g_line));
 	escape_line[ft_strlen(escape_line) - 1] = '\0';
 
 
