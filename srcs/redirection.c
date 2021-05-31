@@ -79,6 +79,8 @@ int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지
 t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 {
 	t_line	*temp;
+	t_line	*redir;
+	t_line	*file;
 
 	if (!line)
 	{
@@ -88,7 +90,11 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 	temp = line;
 	while (line && which_redir((line)->arg))
 	{
+		redir = line;
+		file = line->next;
 		(line) = (line)->next->next;
+		free_struct(redir);				// free(free1);
+		free_struct(file);				// free(free2);
 		if (line != NULL)
 			(line)->prev = NULL;
 	}
@@ -97,14 +103,18 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 	{
 		if (which_redir(temp->arg))
 		{
+			redir = temp;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
+			free_struct(redir);					// free(free1);
 			temp = temp->next;
 			if (temp && temp->prev)
 			{
-					temp->prev->next = temp->next;
-					if (temp->next)
-						temp->next->prev = temp->prev;
+				file = temp;
+				temp->prev->next = temp->next;
+				if (temp->next)
+					temp->next->prev = temp->prev;
+				free_struct(file);				// free(free2);
 			}
 		}
 		temp = temp->next;
@@ -145,12 +155,10 @@ char	*ft_del_quote(char *str)
 	int		j;
 	int		num;
 	char	compare;
-	int		*quote;
 
 	num = check_num_delquote(str);
 	temp = (char *)malloc(sizeof(char) * (num + 1));
 	temp[num] = '\0';
-	quote = (int *)malloc(sizeof(int) * (ft_strlen(str) - num));
 	s = (char *)str;
 	flag = 0;
 
@@ -197,12 +205,27 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 
 
 
+/*
 
+	temp = line;
+	while (temp)
+	{
+		line = line->next;
+//		free_struct(temp);		// 구조체만 free를 하면 구조체의 멤버 (char *arg)에 접근할 방법이 사라져서 누수가 발생함
+//		free(temp);
+		temp = line;
+	}
 
+while (1)
+	;
+*/
 
-	// 리다이렉션 구조체 삭제(ing)			// 릭 잡는 중
+	// 리다이렉션 구조체 삭제(ing)			// 릭 제거
 	temp = line;
 	line = ft_list_delredir(temp);		// 세니타이저 에러 || 누수(free)		// 진행중
+
+
+
 
 
 
@@ -212,7 +235,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	{
 		temp_str = temp->arg;
 		temp->arg = delete_escape(temp->arg);
-//		free(temp_str); 있으면 세니타이즈 에러
+		free(temp_str);
 		temp = temp->next;
 	}
 
@@ -227,10 +250,12 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	while (temp)
 	{
 		temp_str = temp->arg;
+
 		(temp)->arg = ft_del_quote((temp)->arg);
 		free(temp_str);
 		temp = (temp)->next;
 	}
+
 
 
 
@@ -246,6 +271,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 		free(temp_str);
 		temp = temp->next;
 	}
+
 
 
 
@@ -277,10 +303,13 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	}
 
 
+	while (1)				// 여기서 다시 시작
+		;
+
 	temp = line;
-	if (j == -1 || temp->next != NULL)
+	if (j == -1 || temp->next != NULL)		// 릭 발생
 	{
-		j = 0;					// 나중에 다시 생각해봐야
+		j = 0;					// 구조 다시 생각해봐야
 		re_name[j] = NULL;
 	}
 	status = 0;
@@ -290,6 +319,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 		fd_temp = dup(1);
 		dup2(fd_wr, 1);
 	}
+
 	exec_command(temp, re_name[j], env, pip_flag);
 	if (fd_wr > 0)
 	{
