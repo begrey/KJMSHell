@@ -176,7 +176,7 @@ int			token_syn_check(t_line *line);
 
 //		parse.c
 int			is_token(char *s);
-int			make_list(t_line *line, char *s_line, t_env *env);
+int			make_list(t_line *line, t_env *env);
 
 //		util_str.c
 int			ft_strcmp(char *dest, char *src);

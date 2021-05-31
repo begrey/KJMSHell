@@ -165,13 +165,13 @@ int		ft_strerror(char *s)
 	return (-1);
 }
 
-int		make_list(t_line *line, char *s_line, t_env *env)
+int		make_list(t_line *line,t_env *env)
 {
 	char	**split_line;
 	char	*escape_line;
 	int i;
 
-	escape_line = convert_escape(s_line);
+	escape_line = convert_escape(ft_strdup(g_line));
 	escape_line[ft_strlen(escape_line) - 1] = '\0';
 	if (check_single_escape(escape_line) == -1)
 		return (ft_strerror("syntax error\n"));

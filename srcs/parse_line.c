@@ -30,8 +30,8 @@ void	get_cursor_position(t_cursor *cursor)
 	write(0, "\033[6n", 4);  //report cursor location
 	ret = read(0, buf, 254);
 	buf[ret] = '\0';
-	int fd = open("./a", O_RDWR | O_CREAT | O_APPEND, 00777);
-	write(fd, buf, ret);
+	//int fd = open("./a", O_RDWR | O_CREAT | O_APPEND, 00777);
+	//write(fd, buf, ret);
 	while (*buf)
 	{
 		if (*buf >= '0' && *buf <= '9')
@@ -39,17 +39,17 @@ void	get_cursor_position(t_cursor *cursor)
 			if (a == 0)
 			{
 				cursor->row = atoi(buf) - 1;
-				write(fd, "\nrow ", 5);
-				write(fd, buf, 2);
-				write(fd, ", ", 2);
+				//write(fd, "\nrow ", 5);
+				//write(fd, buf, 2);
+				//write(fd, ", ", 2);
 				buf += num_len(cursor->row);
 			}
 			else
 			{
-				 write(fd, "col ", 4);
+				//write(fd, "col ", 4);
 				temp = atoi(buf) - 1;
 				cursor->col = temp;
-				write(fd, buf, 2);
+				//write(fd, buf, 2);
 				//char c = cursor->first_row + 'A';
 				//write(fd, &c, 1);
 				return ;
