@@ -166,14 +166,15 @@ int		ft_strerror(char *s)
 	return (-1);
 }
 
-int		make_list(t_line *line, t_env *env)
+int		make_list(t_env *env)
 {
-	char **split_line;
+	t_line	*line;
+	char	**split_line;
 	char	*escape_line;
 	int i;
 	char	*temp;
 
-
+	line = NULL;
 	escape_line = convert_escape(ft_strdup(g_line));		//  개행까지 넘어올 예
 	escape_line[ft_strlen(escape_line) - 1] = '\0';
 
