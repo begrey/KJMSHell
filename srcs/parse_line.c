@@ -50,8 +50,8 @@ void	get_cursor_position(t_cursor *cursor)
 				temp = atoi(buf) - 1;
 				cursor->col = temp;
 				write(fd, buf, 2);
-				char c = cursor->first_row + 'A';
-				write(fd, &c, 1);
+				//char c = cursor->first_row + 'A';
+				//write(fd, &c, 1);
 				return ;
 			}
 			a++;
@@ -68,21 +68,19 @@ int		putchar_tc(int tc)
 
 void	delete_end(t_cursor *cursor)
 {
-	int current_row;
 
 	get_cursor_position(cursor);
-	current_row = cursor->row;
 	if ((int)ft_strlen(g_line) == 0)
 	{
 		delete_line(cursor);
 		return ;
 	}
+	cursor->prev_col = cursor->col; //맨 마지막 col 2개는 같은 좌표 취급 당해서!
 	--(cursor->col);
-	if (cursor->col == -1)
+	if (cursor->col == -1) //한번 다음줄로 넘어갔다는 소리니까 next_flag on
 	{
 		cursor->row--;
-		cursor->col = cursor->max_col - 3;
-		cursor->first_row--;
+		cursor->col = cursor->max_col - 1;
 	}
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
@@ -137,7 +135,7 @@ void delete_line(t_cursor *cursor)
 	int len;
 
 	get_cursor_position(cursor);
-	len = cursor->col - 19;
+	len = cursor->col - 19;   //-19
 	if (cursor->col < 0)
 		cursor->col = 0;
 	tputs(tgoto(cursor->cm, cursor->col - len, cursor->row), 1, putchar_tc);
@@ -216,7 +214,7 @@ struct termios term_on()
 	return (term);
 }
 
-int parse_line(t_list *history)
+int parse_line(t_list *history, t_env *env)
 {
 	struct termios term;
 	term = term_on();
@@ -234,11 +232,16 @@ int parse_line(t_list *history)
 	h_cnt = 0;
 	//cursor.col++;
 	get_cursor_position(&cursor);
-	cursor.first_row = 0;
 	cursor.max_col = 0;
+	cursor.prev_col = 0;
 	//printf("%d", cursor.first_row);
 	while (read(0, &c, sizeof(c)) > 0)
 	{
+		if (g_line[0] == -3)
+		{
+			put_return(1, env);
+			g_line[0] = 0;
+		}
 		if (c == U_ARROW)
 		{
 			h_cnt = find_history(history, h_cnt + 1, &cursor);
@@ -248,28 +251,25 @@ int parse_line(t_list *history)
 			h_cnt = find_history(history, h_cnt - 1, &cursor);
 		}
 		else if (c == BACKSPACE)
-		{
+		{ 
 			if((remove_c()) == -1)
 				return (0);
 			delete_end(&cursor);
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{
-			++cursor.col;
+			write(1, &c, 1);
+			get_cursor_position(&cursor);
 			if (cursor.max_col <= cursor.col)
 				cursor.max_col = cursor.col;
-			else  //다음줄로 넘어간 경우, col이 max보다 작아짐 
-			{
-				cursor.first_row++;
-			}
-			write(1, &c, 1);
+			//if (c != -1) //그냥 넘겨버릴 땐 append 안해야 line에 값 안붙음
+			if ((append((char)c)) == -1)
+				return (0);
 			if ((char)c == '\n')
 			{
 				term_off(term);
 				return (1);
 			}
-			if ((append((char)c)) == -1)
-				return (0);
 			if (!g_line)
 				return (0);
 			renew_history(history, h_cnt);

@@ -33,7 +33,8 @@ typedef struct	s_cursor
 	char			*prev_his; // 이전 명령어
 	int				row;
 	int				col;
-	int				first_row;
+	int				prev_col; //col 마지막 칸 두개는 한칸취급당하기 떄문에
+	int				remove_col;
 	int				max_col;
 }				t_cursor;
 
@@ -101,7 +102,7 @@ int			remove_c();
 int			append(char c);
 void		renew_history(t_list *history, int cnt);
 int			find_history(t_list *history, int cnt, t_cursor *cursor);
-int			parse_line(t_list *history);
+int			parse_line(t_list *history, t_env *env);
 struct termios		term_on();
 void		term_off();
 
