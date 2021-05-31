@@ -113,14 +113,15 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 			free1 = temp;
 //			temp->prev->next = temp->next;
 //			free(free2);
-			if (temp->next && temp->prev)
+			if (temp->prev)
 			{
 					temp->prev->next = temp->next;
-					temp->next->prev = temp->prev;
+					if (temp->next)
+						temp->next->prev = temp->prev;
 			}
 		}
 		temp = temp->next;
-	}
+	}							// echo a >b 일 때 b가 없어야 함
 	return (line);
 }
 
