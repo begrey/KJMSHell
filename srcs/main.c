@@ -68,6 +68,7 @@ int main(int argc, char **argv, char **envp)
 	int		i;
 
 	i = -1;
+	env = NULL;
 	list = NULL;
 	history = NULL;
 	if (!(g_line = malloc(1)))
@@ -78,7 +79,7 @@ int main(int argc, char **argv, char **envp)
 		write(1, "cannot excute binary file\n", 26);
 		return (126);
 	}
-	env = init_env(envp);
+	env = init_env(envp, env);
 	signal(SIGINT, signalHandler);
     signal(SIGTSTP, signalHandler);
     signal(SIGQUIT, signalHandler);

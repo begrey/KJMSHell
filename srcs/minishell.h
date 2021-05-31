@@ -136,7 +136,7 @@ t_line		*ft_listlast(t_line *lst);
 t_line		*ft_listnew(char *content);
 
 //		util_envlist.c
-t_env		*ft_envnew(void *key, void *value);
+t_env		*ft_envnew(void *key, void *value, int if_value);
 void		ft_envadd_back(t_env **lst, t_env *new);
 t_env		*ft_envfind(t_env **lst, char *s);
 t_env		*ft_envlast(t_env *lst);
@@ -148,7 +148,7 @@ void		put_return(int ret, t_env *env);
 int			return_return(t_env *env);
 
 //		init_env.c
-t_env		*init_env(char *envp[]);
+t_env		*init_env(char *envp[], t_env *env);
 
 //		ft_split_quote.c
 char		**ft_split_quote(const char *str);

@@ -128,22 +128,24 @@ static int		get_new_len(const char *str, t_env *env)
 	return (new_len);
 }
 
-char		*convert_env(const char *str, t_env *env)		// 인풋으로는 syntax 에러가 없는 값만 들어옴
+char		*convert_env(const char *str, t_env *env)
 {
 	char	*s;
 	int		env_len;
 	int		new_len;
 	char	*result;
 	int		flag;
+	char	*temp;
 
+//	result = NULL;
 	flag = 0;
 	result = ft_strdup("");
 	new_len = get_new_len(str, env);
 
-	result = (char *)malloc(sizeof(new_len + 1));
+//	result = (char *)malloc(sizeof(new_len + 1));
 
 
-	result[new_len] = '\0';
+//	result[new_len] = '\0';
 
 	env_len = 0;
 	s = (char *)str;
@@ -153,11 +155,18 @@ char		*convert_env(const char *str, t_env *env)		// 인풋으로는 syntax 에�
 		flag = check_flag(*s, flag);
 		if ((env_len = if_effective(s, flag)))
 		{
+			temp = result;
+//			result = str_append2(result, extract_env(exact_envstr(s), env));
 			result = ft_strjoin(result, extract_env(exact_envstr(s), env));
+			free(temp);
 			s = s + env_len;
 		}
 		else
+		{
+			temp = result;
 			result = str_append3(result, *s);
+	//		free(temp);
+		}
 		s++;
 
 	}
