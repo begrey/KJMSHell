@@ -71,11 +71,7 @@ void	delete_end(t_cursor *cursor)
 
 	get_cursor_position(cursor);
 	if ((int)ft_strlen(g_line) == 0)
-	{
-		//delete_line(cursor);
 		return ;
-	}
-	cursor->prev_col = cursor->col; //맨 마지막 col 2개는 같은 좌표 취급 당해서!
 	--(cursor->col);
 	if (cursor->col == -1) //한번 다음줄로 넘어갔다는 소리니까 next_flag on
 	{
@@ -85,7 +81,7 @@ void	delete_end(t_cursor *cursor)
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
 }
-int		remove_c()
+int		remove_c(t_cursor *cursor)
 {
 	char *str; //끝 문자 제거할 문자열
 	int i;
@@ -95,6 +91,11 @@ int		remove_c()
 	{
 		g_line[0] = 0;
 		return (0);
+	}
+	if (cursor->last_col_flag == 1 && (cursor->col + 1) == cursor->max_col) // 맨끝이기 때문에 2번 지워야함.
+	{
+		g_line[ft_strlen(g_line) - 1] = '\0';
+		cursor->last_col_flag = 0;
 	}
 	if(!(str = (char *)malloc(sizeof(char) * ft_strlen(g_line))))
 			return (-1);
@@ -234,6 +235,7 @@ int parse_line(t_list *history, t_env *env)
 	get_cursor_position(&cursor);
 	cursor.max_col = 0;
 	cursor.prev_col = 0;
+	cursor.last_col_flag = 0;
 	//printf("%d", cursor.first_row);
 	while (read(0, &c, sizeof(c)) > 0)
 	{
@@ -253,16 +255,18 @@ int parse_line(t_list *history, t_env *env)
 		else if (c == BACKSPACE)
 		{ 
 			delete_end(&cursor);
-			if((remove_c()) == -1)
+			if((remove_c(&cursor)) == -1)
 				return (0);
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{
+			cursor.prev_col = cursor.col;
 			write(1, &c, 1);
 			get_cursor_position(&cursor);
+			if (cursor.col == cursor.prev_col) //마지막 두칸
+				cursor.last_col_flag = 1;
 			if (cursor.max_col <= cursor.col)
 				cursor.max_col = cursor.col;
-			//if (c != -1) //그냥 넘겨버릴 땐 append 안해야 line에 값 안붙음
 			if ((append((char)c)) == -1)
 				return (0);
 			if ((char)c == '\n')

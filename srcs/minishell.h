@@ -34,7 +34,7 @@ typedef struct	s_cursor
 	int				row;
 	int				col;
 	int				prev_col; //col 마지막 칸 두개는 한칸취급당하기 떄문에
-	int				remove_col;
+	int				last_col_flag; // 마지막 칸이라는 플래그
 	int				max_col;
 }				t_cursor;
 
@@ -98,7 +98,7 @@ int			putchar_tc(int tc);
 void		get_cursor_position(t_cursor *cursor);
 void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
-int			remove_c();
+int			remove_c(t_cursor *cursor);
 int			append(char c);
 void		renew_history(t_list *history, int cnt);
 int			find_history(t_list *history, int cnt, t_cursor *cursor);
