@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/27 14:22:48 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/05/31 15:50:16 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,9 @@ char	*extract_env(char *str, t_env *env)
 	t_env	*ex;
 
 	if (*str != '$')
-		return (str);
+		return (ft_strdup(str));
 	else if (str[0] == '$' && str[1] == '\0')
-		return (str);
+		return (ft_strdup(str));
 	s = str + 1;
 	ex = ft_envfind(&env, s);
 	if (!ex)
@@ -204,5 +204,5 @@ char	*extract_env(char *str, t_env *env)
 	ret = ex->value;
 	if (!ret)
 		ret = ft_strdup("");
-	return (ret);
+	return (ft_strdup(ret));
 }

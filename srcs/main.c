@@ -13,7 +13,7 @@ void sigint_cursor()
 
 void signalHandler(int sig){
     if(sig==SIGINT){ //ctrl-c
-			if (ft_strchr(g_line, '\n') != NULL)
+/*			if (ft_strchr(g_line, '\n') != NULL)
 			{
 				g_line[0] = -1;
 				printf("\n");
@@ -27,8 +27,9 @@ void signalHandler(int sig){
 				}
 				g_line[0] = -3;
 				write(1, "\nKJMSHell(｡☌ᴗ☌｡) >> ", 30);
-			}
-    }
+			} */
+		exit(0);
+    }	
     if(sig==SIGQUIT){ //ctrl-'\'
 		if (ft_strchr(g_line, '\n') != NULL)
 		{
