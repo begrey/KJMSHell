@@ -20,7 +20,7 @@ char		**make_list_argv(t_line *line, char *file_name)
 	argv = (char **)malloc(sizeof(char) * (len + 1));
 	while (line != NULL)
 	{
-		argv[i] = line->arg;
+		argv[i] = line->arg;		// sanitize 터지는 위치
 		line = line->next;
 		i++;
 	}
