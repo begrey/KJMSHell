@@ -79,23 +79,16 @@ int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지
 t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 {
 	t_line	*temp;
-	t_line	*free1;
-	t_line	*free2;
 
 	if (!line)
 	{
 		line = ft_listnew(ft_strdup(""));
 		return (line);
 	}
+	temp = line;
 	while (line && which_redir((line)->arg))
 	{
-		free1 = line;
-		free2 = line->next;
 		(line) = (line)->next->next;
-		if (free1)
-			free(free1);
-		if (free2)
-			free(free2);
 		if (line != NULL)
 			(line)->prev = NULL;
 	}
@@ -104,16 +97,10 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 	{
 		if (which_redir(temp->arg))
 		{
-			free1 = temp;
-//			free2 = temp->next;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
-//			free(free1);
 			temp = temp->next;
-			free1 = temp;
-//			temp->prev->next = temp->next;
-//			free(free2);
-			if (temp->prev)
+			if (temp && temp->prev)
 			{
 					temp->prev->next = temp->next;
 					if (temp->next)
@@ -121,7 +108,7 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 			}
 		}
 		temp = temp->next;
-	}							// echo a >b 일 때 b가 없어야 함
+	}
 	return (line);
 }
 
@@ -215,11 +202,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 
 	// 리다이렉션 구조체 삭제(ing)			// 릭 잡는 중
 	temp = line;
-	line = ft_list_delredir(temp);		// 세니타이저 에러 || 누수(free)
-
-
-
-
+	line = ft_list_delredir(temp);		// 세니타이저 에러 || 누수(free)		// 진행중
 
 
 

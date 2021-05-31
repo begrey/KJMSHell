@@ -86,7 +86,7 @@ char	*str_append3(char *s1, char c)
 
 	return (str);
 }
-
+/*
 void	free_split(char ***split)
 {
 	int		i;
@@ -98,7 +98,7 @@ void	free_split(char ***split)
 		i++;
 	}
 	free(*split);
-}
+}*/
 
 int		is_alpha(char c)		// 영문자인지 체크
 {

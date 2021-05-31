@@ -23,10 +23,14 @@ void	get_cursor_position(t_cursor *cursor)
 	int		ret;
 	int		temp;
 
+
+
+
 	a = 0;
 	i = 1;
 	buf = NULL;
 	buf = (char *)malloc(sizeof(char) * 255);
+	char *ttemp = buf;
 	write(0, "\033[6n", 4);  //report cursor location
 	ret = read(0, buf, 254);
 	buf[ret] = '\0';
@@ -52,12 +56,14 @@ void	get_cursor_position(t_cursor *cursor)
 				//write(fd, buf, 2);
 				//char c = cursor->first_row + 'A';
 				//write(fd, &c, 1);
-				return ;
+
+				break ;
 			}
 			a++;
 		}
 		buf++;
 	}
+	free(ttemp);
 }
 
 int		putchar_tc(int tc)
@@ -105,7 +111,7 @@ int		remove_c(t_cursor *cursor)
 		i++;
 	}
 	str[i] = 0;
-	//free(g_line);
+	free(g_line);
 	g_line = str;
 	return (0);
 }
@@ -126,7 +132,7 @@ int		append(char c)
 	str[i] = c;
 	i++;
 	str[i] = 0;
-	//free(g_line);
+	free(g_line);
 	g_line = str;
 	return (0);
 }
@@ -173,11 +179,15 @@ int find_history(t_list *history, int cnt, t_cursor *cursor)
 	if (cnt <= 0)
 	{
 		delete_line(cursor);
+		free(g_line);
 		g_line = ft_strdup("");
 		return (0); // down_arrow 최소값 조정
 	}
-	else if (cnt >= ft_lstsize(history)) // up_arrow가 기존 히스토리 길이보다 큰 경우 최대값으로 조정
+	else if (cnt > ft_lstsize(history)) // up_arrow가 기존 히스토리 길이보다 큰 경우 최대값으로 조정
+	{
 		cnt = ft_lstsize(history);
+		return (cnt);
+	}
 	temp = history;
 	i = 1;
 	len = ft_lstsize(history) - cnt + 1; // 맨 뒤부터 첫번쨰, cnt가 2고 사이즈가 5면 4번째 출력
@@ -189,7 +199,8 @@ int find_history(t_list *history, int cnt, t_cursor *cursor)
 	delete_line(cursor);
 	write(1, temp->content, ft_strlen(temp->content));
 	cursor->prev_his = temp->content;
-	g_line = temp->content;
+	free(g_line);
+	g_line = ft_strdup(temp->content);
 	return (cnt);
 }
 
@@ -232,7 +243,10 @@ int parse_line(t_list *history, t_env *env)
 	c = 0;
 	h_cnt = 0;
 	//cursor.col++;
+
 	get_cursor_position(&cursor);
+
+
 	cursor.max_col = 0;
 	cursor.prev_col = 0;
 	cursor.last_col_flag = 0;
