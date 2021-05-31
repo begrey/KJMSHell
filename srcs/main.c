@@ -26,6 +26,7 @@ void signalHandler(int sig){
 				{
 					free(g_line);
 					g_line = ft_strdup("");
+					g_line[0] = 0;
 					sigint_cursor();
 				}
 				g_line[0] = -3;
@@ -86,7 +87,7 @@ int main(int argc, char **argv, char **envp)
 	{
 		//히스토리 리스트 추가
 		ft_lstadd_back(&history, ft_lstnew(ft_strdup(g_line)));
-		if ((i = make_list(list, g_line, env)) == 0)
+		if ((i = make_list(list, env)) == 0)
 		;
 		//	break;
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
