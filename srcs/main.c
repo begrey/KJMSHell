@@ -20,16 +20,13 @@ void signalHandler(int sig){
 			}
 			else
 			{
-				if (g_line[0] == 0)
-					write(1, "\nKJMSHell(｡☌ᴗ☌｡) >> ", 30);
-				else 
+				if (g_line[0] != 0)
 				{
 					free(g_line);
 					g_line = ft_strdup("");
-					g_line[0] = 0;
-					sigint_cursor();
 				}
 				g_line[0] = -3;
+				write(1, "\nKJMSHell(｡☌ᴗ☌｡) >> ", 30);
 			}
     }
     if(sig==SIGQUIT){ //ctrl-'\'
@@ -61,10 +58,10 @@ void	set_signal_return(t_env *env)
 
 int main(int argc, char **argv, char **envp)
 {
-	int		read;
 	t_list	*history;
-	t_line	*list;
 	t_env	*env;
+	int		read;
+	char	*list;
 	int		i;
 
 	i = -1;
@@ -87,8 +84,10 @@ int main(int argc, char **argv, char **envp)
 	while((read = parse_line(history, env)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
 	{
 		//히스토리 리스트 추가
-		ft_lstadd_back(&history, ft_lstnew(ft_strdup(g_line)));
-		if ((i = make_list(list, env)) == 0)
+		list = ft_strdup(g_line);
+		list[ft_strlen(list) - 1] = '\0';
+		ft_lstadd_back(&history, ft_lstnew(list));
+		if ((i = make_list(env)) == 0)
 		;
 		//	break;
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
@@ -97,6 +96,7 @@ int main(int argc, char **argv, char **envp)
 			return (-1);
 		set_signal_return(env);
 		(g_line)[0] = 0;
+		//free(list);
 	}
 	printf("exit\n");
 	return (return_return(env)); //i

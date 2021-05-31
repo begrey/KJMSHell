@@ -72,7 +72,7 @@ void	delete_end(t_cursor *cursor)
 	get_cursor_position(cursor);
 	if ((int)ft_strlen(g_line) == 0)
 	{
-		delete_line(cursor);
+		//delete_line(cursor);
 		return ;
 	}
 	cursor->prev_col = cursor->col; //맨 마지막 col 2개는 같은 좌표 취급 당해서!
@@ -252,9 +252,9 @@ int parse_line(t_list *history, t_env *env)
 		}
 		else if (c == BACKSPACE)
 		{ 
+			delete_end(&cursor);
 			if((remove_c()) == -1)
 				return (0);
-			delete_end(&cursor);
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{

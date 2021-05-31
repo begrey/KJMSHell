@@ -196,6 +196,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	int		status;
 	int		fd_wr;
 	int		fd_op;
+	int		fd_temp;
 	int		j;
 	char	*temp_str;
 
@@ -301,9 +302,15 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	status = 0;
 	temp = line;
 	if (fd_wr > 0)
+	{
+		fd_temp = dup(1);
 		dup2(fd_wr, 1);
+	}
 	exec_command(temp, re_name[j], env, pip_flag);
-	if (!(close(fd_wr)))
-		printf("not\n");
+	if (fd_wr > 0)
+	{
+		dup2(fd_temp, 1);
+		close(fd_wr);
+	}
 	return (status); // exec에서 종료하기때문에 이 구문이 실행되지 않는다.
 }
