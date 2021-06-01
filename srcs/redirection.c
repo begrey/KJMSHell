@@ -79,23 +79,22 @@ int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지
 t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 {
 	t_line	*temp;
-	t_line	*free1;
-	t_line	*free2;
+	t_line	*redir;
+	t_line	*file;
 
 	if (!line)
 	{
 		line = ft_listnew(ft_strdup(""));
 		return (line);
 	}
+	temp = line;
 	while (line && which_redir((line)->arg))
 	{
-		free1 = line;
-		free2 = line->next;
+		redir = line;
+		file = line->next;
 		(line) = (line)->next->next;
-		if (free1)
-			free(free1);
-		if (free2)
-			free(free2);
+		free_struct(redir);				// free(free1);
+		free_struct(file);				// free(free2);
 		if (line != NULL)
 			(line)->prev = NULL;
 	}
@@ -104,24 +103,22 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 	{
 		if (which_redir(temp->arg))
 		{
-			free1 = temp;
-//			free2 = temp->next;
+			redir = temp;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
-//			free(free1);
+			free_struct(redir);					// free(free1);
 			temp = temp->next;
-			free1 = temp;
-//			temp->prev->next = temp->next;
-//			free(free2);
-			if (temp->prev)
+			if (temp && temp->prev)
 			{
-					temp->prev->next = temp->next;
-					if (temp->next)
-						temp->next->prev = temp->prev;
+				file = temp;
+				temp->prev->next = temp->next;
+				if (temp->next)
+					temp->next->prev = temp->prev;
+				free_struct(file);				// free(free2);
 			}
 		}
 		temp = temp->next;
-	}							// echo a >b 일 때 b가 없어야 함
+	}
 	return (line);
 }
 
@@ -158,12 +155,10 @@ char	*ft_del_quote(char *str)
 	int		j;
 	int		num;
 	char	compare;
-	int		*quote;
 
 	num = check_num_delquote(str);
 	temp = (char *)malloc(sizeof(char) * (num + 1));
 	temp[num] = '\0';
-	quote = (int *)malloc(sizeof(int) * (ft_strlen(str) - num));
 	s = (char *)str;
 	flag = 0;
 
@@ -204,19 +199,30 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	temp = line;
 	re_num = redir_num(temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
+	re_name[re_num] = NULL;
 	re_type = (int *)malloc(sizeof(int) * (re_num));
 	temp = line;
 	put_redir(temp, &re_name, &re_type);
 
 
+/*
 
-
-
-
-	// 리다이렉션 구조체 삭제(ing)			// 릭 잡는 중
 	temp = line;
-	line = ft_list_delredir(temp);		// 세니타이저 에러 || 누수(free)
+	while (temp)
+	{
+		line = line->next;
+//		free_struct(temp);		// 구조체만 free를 하면 구조체의 멤버 (char *arg)에 접근할 방법이 사라져서 누수가 발생함
+//		free(temp);
+		temp = line;
+	}
 
+while (1)
+	;
+*/
+
+	// 리다이렉션 구조체 삭제(ing)			// 릭 제거
+	temp = line;
+	line = ft_list_delredir(temp);		// 세니타이저 에러 || 누수(free)		// 진행중
 
 
 
@@ -229,7 +235,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	{
 		temp_str = temp->arg;
 		temp->arg = delete_escape(temp->arg);
-//		free(temp_str); 있으면 세니타이즈 에러
+		free(temp_str);
 		temp = temp->next;
 	}
 
@@ -244,10 +250,12 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	while (temp)
 	{
 		temp_str = temp->arg;
+
 		(temp)->arg = ft_del_quote((temp)->arg);
 		free(temp_str);
 		temp = (temp)->next;
 	}
+
 
 
 
@@ -263,6 +271,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 		free(temp_str);
 		temp = temp->next;
 	}
+
 
 
 
@@ -285,7 +294,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 			// printf("?\n");
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
-				printf("????? %s\n", strerror(errno));
+				printf("%s\n", strerror(errno));
 				put_return(1, env);
 				return(0);
 			}
@@ -294,12 +303,16 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	}
 
 
+	char *input;
 	temp = line;
-	if (j == -1 || temp->next != NULL)
+	// < 확인 하는 곳
+	if (j == -1 || temp->next)		// 릭 발생
 	{
-		j = 0;					// 나중에 다시 생각해봐야
-		re_name[j] = NULL;
+		j = 0;					// 구조 다시 생각해봐야
+		input = NULL;
 	}
+	else
+		input = re_name[j];
 	status = 0;
 	temp = line;
 	if (fd_wr > 0)
@@ -307,7 +320,7 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 		fd_temp = dup(1);
 		dup2(fd_wr, 1);
 	}
-	exec_command(temp, re_name[j], env, pip_flag);
+	exec_command(temp, input, env, pip_flag);
 	if (fd_wr > 0)
 	{
 		dup2(fd_temp, 1);

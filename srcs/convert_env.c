@@ -105,6 +105,8 @@ static int		get_new_len(const char *str, t_env *env)
 	int		env_var_len;
 	int		new_len;
 	int		flag;		// ' 작은 따옴표일때만 켜짐 (플래그 켜지면 convert 적용 안함)
+	char	*temp;
+	char	*temp2;
 
 	flag = 0;
 	new_len = 0;
@@ -115,7 +117,11 @@ static int		get_new_len(const char *str, t_env *env)
 		flag = check_flag(*s, flag);
 		if ((env_len = if_effective(s, flag)))
 		{
-			env_var_len = ft_strlen(extract_env(exact_envstr(s), env));
+			temp = exact_envstr(s);
+			temp2 = extract_env(temp, env);
+			env_var_len = ft_strlen(temp2);
+			free(temp);
+			free(temp2);
 			s = s + env_len;
 			new_len += env_var_len;
 		}
@@ -128,6 +134,29 @@ static int		get_new_len(const char *str, t_env *env)
 	return (new_len);
 }
 
+char		*ft_append(char *s, char c)
+{
+	int		i;
+	int		len;
+	char	*str;
+
+	i = 0;
+	len = 0;
+	if (s != NULL)
+		len = ft_strlen(s);
+	if (!(str = (char *)malloc(sizeof(char) * (len + 2))))
+		return (NULL);
+	str[len + 1] = '\0';
+	while (len > 0 && s[i])
+	{
+		str[i] = s[i];
+		i++;
+	}
+	str[i] = c;
+	free(s);
+	return (str);
+}
+
 char		*convert_env(const char *str, t_env *env)
 {
 	char	*s;
@@ -136,16 +165,13 @@ char		*convert_env(const char *str, t_env *env)
 	char	*result;
 	int		flag;
 	char	*temp;
+	char	*temp2;
+	char	*temp3;
 
-//	result = NULL;
+	result = NULL;
 	flag = 0;
-	result = ft_strdup("");
-	new_len = get_new_len(str, env);
-
-//	result = (char *)malloc(sizeof(new_len + 1));
-
-
-//	result[new_len] = '\0';
+//	result = ft_strdup("");
+	new_len = get_new_len(str, env); // 1개
 
 	env_len = 0;
 	s = (char *)str;
@@ -156,15 +182,18 @@ char		*convert_env(const char *str, t_env *env)
 		if ((env_len = if_effective(s, flag)))
 		{
 			temp = result;
-//			result = str_append2(result, extract_env(exact_envstr(s), env));
-			result = ft_strjoin(result, extract_env(exact_envstr(s), env));
+			temp3 = exact_envstr(s);
+			temp2 = extract_env(temp3, env);		// 1개 $USER
+			free(temp3);
+			result = ft_strjoin(result, temp2);
+			free(temp2);
 			free(temp);
 			s = s + env_len;
 		}
 		else
 		{
 			temp = result;
-			result = str_append3(result, *s);
+			result = ft_append(result, *s);
 	//		free(temp);
 		}
 		s++;

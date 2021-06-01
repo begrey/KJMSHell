@@ -132,9 +132,10 @@ void	list_split_addback(t_line **lst, char *arg)
 	
 	while (split_token[i])
 	{
-		ft_listadd_back(lst, ft_listnew(split_token[i]));
+		ft_listadd_back(lst, ft_listnew(ft_strdup(split_token[i])));
 		i++;
 	}
+	free_split(split_token);
 }
 
 int		check_single_escape(const char *s)
@@ -168,15 +169,22 @@ int		ft_strerror(char *s)
 
 int		make_list(t_env *env)
 {
+
 	t_line	*line;
 	char	**split_line;
 	char	*escape_line;
 	int i;
 	char	*temp;
+	char	*s_line;
 
 	line = NULL;
-	escape_line = convert_escape(ft_strdup(g_line));
+
+	s_line = ft_strdup(g_line);
+	escape_line = convert_escape(s_line);
+	free(s_line);
+
 	escape_line[ft_strlen(escape_line) - 1] = '\0';
+
 
 
 	if (check_single_escape(escape_line) == -1)
@@ -184,6 +192,8 @@ int		make_list(t_env *env)
 
 	if (!(split_line = ft_split_quote(escape_line)))
 		return (ft_strerror("syntax error\n"));
+
+
 
 
 
@@ -203,37 +213,50 @@ int		make_list(t_env *env)
 
 
 
+
+
+
 	i = 0;
 	while (split_line[i])
 	{
 		temp = split_line[i];
-		split_line[i] = convert_env(split_line[i], env);		// 누수 너무 많음
+		split_line[i] = convert_env(split_line[i], env);		// 누수 x
 		free(temp);
 		i++;
 	}
 
 
 
+	
+	
+
+
 	i = 0;
-	while (split_line[i])							// 누수 발생 ... 
+	while (split_line[i])
 	{
-		if (is_token_quote(split_line[i]))
+		if ((is_token_quote(split_line[i])))
 		{
 			list_split_addback(&line, split_line[i]);
 		}
 		else
+		{
 			ft_listadd_back(&line, ft_listnew(split_line[i]));
+		}
 		i++;
 	}
-	// **split_line free 해주기
+
+
+	free_split(split_line);
+
+
 
 	if ((redir_syn_check(line)) == -1)
 		return (-1);
 
 
-	if ((token_syn_check(line)) == -1)
-		return (-1);
 
+	if ((token_syn_check(line)) == -1)		// 그냥 엔터치면 세그폴트
+		return (-1);
 
 	i = split_by_semi(line, env);
 

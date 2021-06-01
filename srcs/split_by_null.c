@@ -90,6 +90,7 @@ int		split_by_semi(t_line *line, t_env *env)
 	int		i;
 	int		j;
 
+	j = 0;
 	temp = line;
 	iter = line;
 	while (temp != NULL)

@@ -5,6 +5,7 @@ void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag)
 {
 	char	*command;
 
+
 	command = line->arg;
 	if (ft_strcmp(command, "echo") == 0)
 		ft_echo(line->next, pip_flag, env);
@@ -25,4 +26,6 @@ void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag)
 	else 
 		other_command(line, env, file_name, pip_flag);
 	file_name = NULL;
+	while (1)
+		;
 }

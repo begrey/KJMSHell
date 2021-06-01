@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	free_split(char **split)
+void	free_split(char **split)
 {
 	int		i;
 
