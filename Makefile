@@ -39,7 +39,7 @@ SRCS		= ./srcs/convert_env.c \
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -f
 CC			= gcc
-FLAGS		= -Wall -Wextra -Werror
+FLAGS		= -Wall -Wextra -Werror -fsanitize=address
 
 all : $(NAME)
 

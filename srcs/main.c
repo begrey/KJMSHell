@@ -82,7 +82,6 @@ int main(int argc, char **argv, char **envp)
     signal(SIGTSTP, signalHandler);
     signal(SIGQUIT, signalHandler);
 	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
-	int j = 0;
 	while((read = parse_line(history, env)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
 	{
 		//히스토리 리스트 추가
@@ -90,21 +89,12 @@ int main(int argc, char **argv, char **envp)
 		list[ft_strlen(list) - 1] = '\0';
 		ft_lstadd_back(&history, ft_lstnew(list));
 		i = make_list(env);
-			while(1)
-		;
-		
-		//	break;
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		set_signal_return(env);
 		free(g_line);
 		if (!(g_line = malloc(1)))
 			return (-1);
 		(g_line)[0] = 0;
-		j++;
-		if (j == 4)
-			break;
-		
-		//free(list);
 	}
 	printf("exit\n");
 	return (return_return(env)); //i

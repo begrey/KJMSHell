@@ -19,6 +19,7 @@ t_line *ft_list_null_term(t_line *lst, int index)
 {
 	int i;
 	t_line *temp;
+	t_line *free_temp;
 
 	i = 0;
 	while (lst != NULL)
@@ -29,6 +30,8 @@ t_line *ft_list_null_term(t_line *lst, int index)
 				temp = lst->next;
 			else
 				temp = lst->next->next;
+			free_temp = lst->next;
+			free(free_temp);
 			lst->next = NULL;
 			return (temp);	
 		}
@@ -48,7 +51,10 @@ int ft_split_list_token(t_line *lst, char token)
 	while (temp != NULL)
 	{
 		if (temp->arg[0] == token)
+		{
+			free(temp->arg);
 			return (i);
+		}
 		i++;
 		temp = temp->next;
 	}
@@ -101,7 +107,7 @@ void		split_by_semi(t_line *line, t_env *env)
 		split_by_pipe(iter, env);
 		iter = temp;
 	}
-	
+
 }
 
 

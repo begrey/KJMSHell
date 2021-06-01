@@ -140,7 +140,7 @@ void	list_split_addback(t_line **lst, char *arg)
 	{
 		//printf("ss %d %s\n", i, split_token[i]);
 		//temp_list = ft_strdup(split_token[i]);
-		ft_listadd_back(lst, ft_listnew(split_token[i]));
+		ft_listadd_back(lst, ft_listnew(ft_strdup(split_token[i])));
 		//printf("%p split %p\n", temp_list, split_token[i]);
 		//free(temp_list);
 		i++;
@@ -207,34 +207,27 @@ int m = 0;
 
 	free(escape_line);
 
-
-// char *aa;
-
-// 	int k  = 0;
-// 	while (split_line[k])
-// 	{
-// 		temp = split_line[k];
-// 		split_line[k] = ft_strtrim(split_line[k], " ");
-// 		aa = split_line[k];
-// 		free(temp);
-// 		k++;
-// 	}
+	int k  = 0;
+	while (split_line[k])
+	{
+		temp = split_line[k];
+		split_line[k] = ft_strtrim(split_line[k], " ");
+		free(temp);
+		k++;
+	}
 
 
 
-// 	i = 0;
-// 	while (split_line[i])
-// 	{
-// 		temp = split_line[i];
-// 		split_line[i] = convert_env(split_line[i], env);		// 누수 x
-// 		m++;
-// 		free(temp);
-// 		i++;
-// 	}
-// 	//printf("z[%p]\n", aa + 16);
+	i = 0;
+	while (split_line[i])
+	{
+		temp = split_line[i];
+		split_line[i] = convert_env(split_line[i], env);		// 누수 x
+		m++;
+		free(temp);
+		i++;
+	}
 
-
-	
 
 
 	i = 0;
@@ -246,13 +239,10 @@ int m = 0;
 		}
 		else
 		{
-			printf("here\n");
-			ft_listadd_back(&line, ft_listnew(split_line[i]));
+			ft_listadd_back(&line, ft_listnew(ft_strdup(split_line[i])));
 		}
 		i++;
 	}
-	
-
 	
 
 
@@ -266,11 +256,7 @@ int m = 0;
 		return (-1);
 	
 	split_by_semi(line, env);
-	//free(line);
-	
-	free_struct(line);
 	free_split(split_line);
-while (1)
-;
+	//free_struct(line);
 	return (0);
 }

@@ -51,10 +51,11 @@ int pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준
         close(pip_temp->fd[READ]);
         int status;
         while (wait(&status) > 0);
+        free_pipe(pip);
+             
         return (status);
 
 }
-
 
 void    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -> | -> pwd
         t_line *temp;
@@ -107,5 +108,10 @@ void    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat 
                 j = pipe_exec(pipe, arg_list, env);
                 put_return(j / 256, env);
         }
-
+       free_list_struct(arg_list);
+//        printf("1 %p\n", temp);
+//         printf("2 %p\n", pipe);
+//          printf("3 %p\n", iter);
+//           printf("4 %p\n", arg_list);
+       
 }
