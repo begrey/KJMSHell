@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/01 10:13:52 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/01 11:39:25 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 	}
 
 
-	str = ft_strdup("");
+	//str = ft_strdup("");
 	if (command_line[1] == NULL)			// export 단독으로 들어왔을 때
 	{
 		ft_env_sort(&env);// idx 정렬 한번 하기
@@ -46,33 +46,13 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 		{
 			if (idx->key[0] != '?')
 			{
-				str_temp = str;
-				str = ft_strjoin(str, "declare -x ");
-				free(str_temp);
-				str_temp = str;
-				str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
-				free(str_temp);
+				printf("declare -x %s", idx->key);
 				if (idx->if_value)
-				{
-					str_temp = str;
-					str = ft_strjoin(str, "=");
-					free(str_temp);
-					str_temp = str;
-					str = ft_strjoin(str, "\"");
-					free(str_temp);
-					str_temp = str;
-					str = ft_strjoin(str, idx->value);
-					free(str_temp);
-					str_temp = str;
-					str = ft_strjoin(str, "\"");
-					free(str_temp);
-				}
-				str_temp = str;
-				str = ft_strjoin(str, "\n");
-				free(str_temp);
+					printf("=\"%s\"\n", idx->value);
 			}
 			idx = idx->next; 
 		}
+		//write(1, str, ft_strlen(str)); 		// 수정해야 
 	}
 	else						// export 이외에 인자가 있을
 	{
@@ -84,15 +64,13 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 			{
 				key = find_key(command_line[i]);
 				ex_env = extract_env(key, env);
-				if ((temp = ft_envfind(&env, ex_env)))	// 여기 다시 짜야
-				{
-					free(key);
-					free(ex_env);
+				free(key);
+				if ((temp = ft_envfind(&env, ex_env)))	
 					temp = ft_envfind(&env, ex_env);
-				}
 				else
 				{
 					(*temp).key = extract_env(find_key(command_line[i]), env);
+				printf("aaa\n");
 					ft_envadd_back(&env, temp);
 				}
 				if (ft_strchr(command_line[i], '=') != 0)
@@ -105,24 +83,15 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 				{
 					(*temp).if_value = 0;
 				}
+				free(ex_env);
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
-			{
-				str_temp = str;
-				str = ft_strjoin(str, "export: ");
-				free(str_temp);
-				str_temp = str;
-				str = ft_strjoin(str, &command_line[i][0]);
-				free(str_temp);
-				str_temp = str;
-				str = ft_strjoin(str, ": not a valid identifier\n");
-				free(str_temp);
-			}
+				printf("export: %s: not a valid identifier\n", command_line[i]);
 			i++;
 			temp++;
 		}
 	}
-	write(1, str, ft_strlen(str));
+	
 	free_split(command_line);
 	if (pip_flag == 0)
 		exit(0);
@@ -131,7 +100,6 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 void	exec_env(t_line *line, t_env *env, int pip_flag)
 {
 	t_env	*idx;
-	char	*str;
 	char	**command_line;
 	int		len;
 	int		i;
@@ -149,26 +117,20 @@ void	exec_env(t_line *line, t_env *env, int pip_flag)
 
 	if (len > 1)
 	{
-		str = ft_strdup("env: No such file or directory\n");
+		printf("env: No such file or directory\n");
 		return ;
 	}
-	str = ft_strdup("");
 	if (command_line[1] == NULL)
 	{
 		idx = env;
 		while (idx)
 		{
 			if (idx->key[0] != '?' && idx->if_value)
-			{
-				str = ft_strjoin(str, idx->key);
-				str = ft_strjoin(str, "=");
-				str = ft_strjoin(str, idx->value);
-				str = ft_strjoin(str, "\n");
-			}
+				printf("%s=%s\n", idx->key, idx->value);
 			idx = idx->next; 
 		}
 	}
-	write(1, str, ft_strlen(str));
+
 	if (pip_flag == 0)
 		exit(0);
 }

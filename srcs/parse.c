@@ -19,8 +19,8 @@ int		is_token_quote(const char *str)
 	flag = 0;
 	s = (char *)str;
 
-	if (*s && !is_token(s))
-		ret = 1;
+	// if (*s && !is_token(s))
+	// 	ret = 1;
 	while (*s)
 	{
 		flag = flag_check(*s, flag);
@@ -69,6 +69,7 @@ char	**ft_token_split(char *arg)
 {
 	char	*s;
 	char	**split_token;
+//	char	*str;
 //	int		next_split;
 	int		split_num;
 	int		word_num;
@@ -89,6 +90,10 @@ char	**ft_token_split(char *arg)
 	{
 		if (is_token(s) == 1)
 		{
+			// str = (char *)malloc(sizeof(char) * (2));
+			// str[0] = *s;
+			// str[1] = '\0';
+			// split_token[i] = str;
 			split_token[i] = (char *)malloc(sizeof(char) * (2));
 			split_token[i][0] = *s;
 			split_token[i][1] = '\0';
@@ -126,13 +131,18 @@ void	list_split_addback(t_line **lst, char *arg)
 
 	int		i;
 	char	**split_token;
+	char	*temp_list;
 
 	i = 0;
 	split_token = ft_token_split(arg);
 	
 	while (split_token[i])
 	{
-		ft_listadd_back(lst, ft_listnew(ft_strdup(split_token[i])));
+		//printf("ss %d %s\n", i, split_token[i]);
+		//temp_list = ft_strdup(split_token[i]);
+		ft_listadd_back(lst, ft_listnew(split_token[i]));
+		//printf("%p split %p\n", temp_list, split_token[i]);
+		//free(temp_list);
 		i++;
 	}
 	free_split(split_token);
@@ -177,6 +187,9 @@ int		make_list(t_env *env)
 	char	*temp;
 	char	*s_line;
 
+
+int m = 0;
+
 	line = NULL;
 
 	s_line = ft_strdup(g_line);
@@ -186,48 +199,41 @@ int		make_list(t_env *env)
 	escape_line[ft_strlen(escape_line) - 1] = '\0';
 
 
-
 	if (check_single_escape(escape_line) == -1)
 		return (ft_strerror("syntax error\n"));
 
 	if (!(split_line = ft_split_quote(escape_line)))
 		return (ft_strerror("syntax error\n"));
 
+	free(escape_line);
+
+
+// char *aa;
+
+// 	int k  = 0;
+// 	while (split_line[k])
+// 	{
+// 		temp = split_line[k];
+// 		split_line[k] = ft_strtrim(split_line[k], " ");
+// 		aa = split_line[k];
+// 		free(temp);
+// 		k++;
+// 	}
 
 
 
+// 	i = 0;
+// 	while (split_line[i])
+// 	{
+// 		temp = split_line[i];
+// 		split_line[i] = convert_env(split_line[i], env);		// 누수 x
+// 		m++;
+// 		free(temp);
+// 		i++;
+// 	}
+// 	//printf("z[%p]\n", aa + 16);
 
 
-
-
-
-
-	int k  = 0;
-	while (split_line[k])
-	{
-		temp = split_line[k];
-		split_line[k] = ft_strtrim(split_line[k], " ");
-		free(temp);
-		k++;
-	}
-
-
-
-
-
-
-	i = 0;
-	while (split_line[i])
-	{
-		temp = split_line[i];
-		split_line[i] = convert_env(split_line[i], env);		// 누수 x
-		free(temp);
-		i++;
-	}
-
-
-
-	
 	
 
 
@@ -240,13 +246,14 @@ int		make_list(t_env *env)
 		}
 		else
 		{
+			printf("here\n");
 			ft_listadd_back(&line, ft_listnew(split_line[i]));
 		}
 		i++;
 	}
+	
 
-
-	free_split(split_line);
+	
 
 
 
@@ -257,8 +264,13 @@ int		make_list(t_env *env)
 
 	if ((token_syn_check(line)) == -1)		// 그냥 엔터치면 세그폴트
 		return (-1);
-
-	i = split_by_semi(line, env);
-
-	return (i);
+	
+	split_by_semi(line, env);
+	//free(line);
+	
+	free_struct(line);
+	free_split(split_line);
+while (1)
+;
+	return (0);
 }

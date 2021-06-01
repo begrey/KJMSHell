@@ -198,7 +198,6 @@ int find_history(t_list *history, int cnt, t_cursor *cursor)
 	}
 	delete_line(cursor);
 	write(1, temp->content, ft_strlen(temp->content));
-	cursor->prev_his = temp->content;
 	free(g_line);
 	g_line = ft_strdup(temp->content);
 	return (cnt);
