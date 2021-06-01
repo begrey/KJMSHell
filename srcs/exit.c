@@ -19,7 +19,10 @@ void	ft_exit(t_line *line, t_env *env, int pip_flag)
 	if (pip_flag == 0)
 		return;
 	if (line == NULL) //exit만 들어온 경우
+	{
+		free(g_line);
 		exit(return_return(env));
+	}
 	else
 	{
 		if (is_num(line->arg) == -1) //255 문자 포함될때

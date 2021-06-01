@@ -83,7 +83,7 @@ void ft_move_temp(t_line **temp, int i)
 // 	}
 // }
 
-int		split_by_semi(t_line *line, t_env *env)
+void		split_by_semi(t_line *line, t_env *env)
 {
 	t_line *temp;
 	t_line *iter;
@@ -98,10 +98,10 @@ int		split_by_semi(t_line *line, t_env *env)
 		i = ft_split_list_token(temp, ';');
 		temp = ft_list_null_term(temp, i);
 		ft_listiter(iter);
-		j = split_by_pipe(iter, env);
+		split_by_pipe(iter, env);
 		iter = temp;
 	}
-	return (j);
+	
 }
 
 

@@ -56,7 +56,7 @@ int pipe_exec(t_pipe *pip, t_line **list, t_env *env) //list는 파이프 기준
 }
 
 
-int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -> | -> pwd
+void    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -> | -> pwd
         t_line *temp;
         t_line *iter;
         t_pipe *pipe;
@@ -101,11 +101,11 @@ int    split_by_pipe(t_line *list, t_env *env) { // pwd -> | -> ls -> | -> cat -
                 pip--;
         }
         if (i == 0)
+                ft_redirection(list, env, 1); 
+	else
         {
-                ft_redirection(list, env, 1); //pipe인 경우가 아니면 fork를 하지 않는다!
-                return (status);
+                j = pipe_exec(pipe, arg_list, env);
+                put_return(j / 256, env);
         }
-        j = pipe_exec(pipe, arg_list, env);
-        put_return(j / 256, env);
-        return (j);
+
 }

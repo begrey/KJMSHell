@@ -181,7 +181,7 @@ char	*ft_del_quote(char *str)
 }
 
 
-int		ft_redirection(t_line *line, t_env *env, int pip_flag)
+void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 {
 
 	int		re_num;
@@ -211,8 +211,8 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	while (temp)
 	{
 		line = line->next;
-//		free_struct(temp);		// 구조체만 free를 하면 구조체의 멤버 (char *arg)에 접근할 방법이 사라져서 누수가 발생함
-//		free(temp);
+		free(temp->arg);
+		free(temp);
 		temp = line;
 	}
 
@@ -296,7 +296,7 @@ while (1)
 			{
 				printf("%s\n", strerror(errno));
 				put_return(1, env);
-				return(0);
+				return ;
 			}
 		}
 		i++;
@@ -326,5 +326,6 @@ while (1)
 		dup2(fd_temp, 1);
 		close(fd_wr);
 	}
-	return (status); // exec에서 종료하기때문에 이 구문이 실행되지 않는다.
+	free_split(re_name);
+	free(re_type);
 }

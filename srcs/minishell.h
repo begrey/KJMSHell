@@ -83,7 +83,7 @@ void		ft_pwd(int pip_flag, t_env *env);
 //	pipe.c
 void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env);
 int			pipe_exec(t_pipe *pip, t_line **list, t_env *env);
-int			split_by_pipe(t_line *list, t_env *env);
+void		split_by_pipe(t_line *list, t_env *env);
 
 //	exec_command.c
 void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag);
@@ -159,17 +159,18 @@ void	free_split(char **split);
 
 //		convert_env.c
 char		*convert_env(const char *str, t_env *env);
+char		*ft_append(char *s, char c);
 
 //		redir_syn_check.c
 int			redir_syn_check(t_line *line);
 
 //		split_by_null.c
-int			split_by_semi(t_line *line, t_env *env);
+void		split_by_semi(t_line *line, t_env *env);
 t_line		*ft_list_null_term(t_line *lst, int index);
 int			ft_split_list_token(t_line *lst, char token);
 
 //		redirection.c
-int			ft_redirection(t_line *line, t_env *env, int pip_flag);
+void		ft_redirection(t_line *line, t_env *env, int pip_flag);
 int			which_redir(char *s);
 
 //		token_syn_check.c

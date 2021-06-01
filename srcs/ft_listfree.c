@@ -2,9 +2,13 @@
 
 void	free_struct(t_line *list)
 {
-	if (list)
+	t_line *temp;
+
+	temp = list;
+	while (temp)
 	{
-		free(list->arg);
-		free(list);
+		list = list->next;
+		free(temp);
+		temp = list;
 	}
 }

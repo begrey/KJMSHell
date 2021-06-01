@@ -61,27 +61,41 @@ void		other_command_exec(t_line *line, t_env *env, char *file_name)
 	char	*new_path;
 	char	**argv;
 	char	*path_slash;
+	char	*temp_slash;
+	char	*temp_env;
 
-	path = ft_split(extract_env("$PATH", env), ':');
+	temp_env = extract_env("$PATH", env);
+	path = ft_split(temp_env, ':');
+	free(temp_env);
 	i = 0;
 	argv = make_list_argv(line, file_name);
 	//printf("%s   %s\n", argv[0], argv[1]);s
 	execve(line->arg, argv, NULL);
+	// free_split(argv);
+	// argv = make_list_argv(line, file_name);
 	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음
 	{  //ft_strncmp 를 이용해 환경변수 PATH부분과 앞이 똑같으면 그대로 실행, 아니면 직접 붙여주기
 		if ((ft_strncmp(path[i], line->arg, ft_strlen(path[i]))) != 0)
 		{//직접 환경변수 PATH 접합
+
 			path_slash = ft_strjoin(path[i], "/");
+			temp_slash = path_slash;
 			new_path = ft_strjoin(path_slash, line->arg);
+			free(temp_slash);
 		}
 		else
 			new_path = line->arg;
-		argv = make_list_argv(line, file_name);
+		//argv = make_list_argv(line, file_name);
 		execve(new_path, argv, NULL);
+		free(new_path);
 		i++;
 	}
+	free_split(argv);
+	free_split(path);
+
 	write(2, line->arg, ft_strlen(line->arg));
 	write(2, ": command not found\n", 20);
+
 	//printf("%s: command not found\n", line->arg);
 	put_return(127, env);
 	exit(127);
