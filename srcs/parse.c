@@ -201,6 +201,7 @@ int		make_list(t_env *env)
 
 
 
+
 	int k  = 0;
 	while (split_line[k])
 	{
@@ -227,10 +228,11 @@ int		make_list(t_env *env)
 
 
 	
+	
 
 
 	i = 0;
-	while (split_line[i])							// 누수 발생 ... 
+	while (split_line[i])
 	{
 		if ((is_token_quote(split_line[i])))
 		{
@@ -243,14 +245,17 @@ int		make_list(t_env *env)
 		i++;
 	}
 
+
 	free_split(split_line);
+
 
 
 	if ((redir_syn_check(line)) == -1)
 		return (-1);
 
 
-	if ((token_syn_check(line)) == -1)
+
+	if ((token_syn_check(line)) == -1)		// 그냥 엔터치면 세그폴트
 		return (-1);
 
 	i = split_by_semi(line, env);
