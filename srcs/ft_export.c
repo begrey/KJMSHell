@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/31 15:50:16 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/01 10:13:52 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 	t_env	*idx;
 	int		len;
 	char	**command_line;
+	char	*str_temp;
+	char	*key;
+	char	*ex_env;
+
 
 	len = ft_listsize(line);
 	command_line = (char **)malloc(sizeof(char *) * (len + 1));
@@ -32,6 +36,7 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 		line = line->next;
 	}
 
+
 	str = ft_strdup("");
 	if (command_line[1] == NULL)			// export 단독으로 들어왔을 때
 	{
@@ -41,16 +46,30 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 		{
 			if (idx->key[0] != '?')
 			{
+				str_temp = str;
 				str = ft_strjoin(str, "declare -x ");
+				free(str_temp);
+				str_temp = str;
 				str = ft_strjoin(str, idx->key);		// 메모리 릭 체크해야
+				free(str_temp);
 				if (idx->if_value)
 				{
+					str_temp = str;
 					str = ft_strjoin(str, "=");
+					free(str_temp);
+					str_temp = str;
 					str = ft_strjoin(str, "\"");
+					free(str_temp);
+					str_temp = str;
 					str = ft_strjoin(str, idx->value);
+					free(str_temp);
+					str_temp = str;
 					str = ft_strjoin(str, "\"");
+					free(str_temp);
 				}
+				str_temp = str;
 				str = ft_strjoin(str, "\n");
+				free(str_temp);
 			}
 			idx = idx->next; 
 		}
@@ -61,11 +80,15 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 		i = 1;
 		while (command_line[i])
 		{
-			if ((command_line[i][0] >= 'A' && command_line[i][0] <= 'Z') || (command_line[i][0] >= 'a' && command_line[i][0] <= 'z') || command_line[i][0] == '$')
+			if (is_alpha(command_line[i][0]) || is_dollar(command_line[i][0]))
 			{
-				if (ft_envfind(&env, extract_env(find_key(command_line[i]), env)))	// 여기 다시 짜야
+				key = find_key(command_line[i]);
+				ex_env = extract_env(key, env);
+				if ((temp = ft_envfind(&env, ex_env)))	// 여기 다시 짜야
 				{
-					temp = ft_envfind(&env, convert_env(find_key(command_line[i]), env));
+					free(key);
+					free(ex_env);
+					temp = ft_envfind(&env, ex_env);
 				}
 				else
 				{
@@ -85,16 +108,22 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 			{
+				str_temp = str;
 				str = ft_strjoin(str, "export: ");
+				free(str_temp);
+				str_temp = str;
 				str = ft_strjoin(str, &command_line[i][0]);
+				free(str_temp);
+				str_temp = str;
 				str = ft_strjoin(str, ": not a valid identifier\n");
+				free(str_temp);
 			}
-
 			i++;
 			temp++;
 		}
 	}
 	write(1, str, ft_strlen(str));
+	free_split(command_line);
 	if (pip_flag == 0)
 		exit(0);
 }
@@ -151,6 +180,8 @@ void	exec_unset(t_line *line, t_env *env, int pip_flag)
 	int		i;
 	int		len;
 	char	**command_line;
+	char	*temp;
+	char	*key;
 
 	len = ft_listsize(line);
 	command_line = (char **)malloc(sizeof(char *) * (len + 1));
@@ -163,6 +194,7 @@ void	exec_unset(t_line *line, t_env *env, int pip_flag)
 		line = line->next;
 	}
 
+
 	i = 1;
 	while (i < len)
 	{
@@ -170,16 +202,19 @@ void	exec_unset(t_line *line, t_env *env, int pip_flag)
 		begin = env;
 		while (begin)
 		{
-			if (ft_strcmp(begin->key, find_key(command_line[i])) == 0)
+			key = find_key(command_line[i]);
+			if (ft_strcmp(begin->key, key) == 0)
 			{
 				if (now->next)
 					now->next = begin->next;
 			}
 			now = begin;
 			begin = begin->next;
+			free(key);
 		}
 		i++;
 	}
+	free_split(command_line);
 	if (pip_flag == 0)
 		exit(0);
 }

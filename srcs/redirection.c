@@ -199,10 +199,10 @@ int		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	temp = line;
 	re_num = redir_num(temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
+	re_name[re_num] = NULL;
 	re_type = (int *)malloc(sizeof(int) * (re_num));
 	temp = line;
 	put_redir(temp, &re_name, &re_type);
-
 
 
 /*
@@ -294,7 +294,7 @@ while (1)
 			// printf("?\n");
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
-				printf("????? %s\n", strerror(errno));
+				printf("%s\n", strerror(errno));
 				put_return(1, env);
 				return(0);
 			}
@@ -303,15 +303,16 @@ while (1)
 	}
 
 
-	while (1)				// 여기서 다시 시작
-		;
-
+	char *input;
 	temp = line;
-	if (j == -1 || temp->next != NULL)		// 릭 발생
+	// < 확인 하는 곳
+	if (j == -1 || temp->next)		// 릭 발생
 	{
 		j = 0;					// 구조 다시 생각해봐야
-		re_name[j] = NULL;
+		input = NULL;
 	}
+	else
+		input = re_name[j];
 	status = 0;
 	temp = line;
 	if (fd_wr > 0)
@@ -319,8 +320,7 @@ while (1)
 		fd_temp = dup(1);
 		dup2(fd_wr, 1);
 	}
-
-	exec_command(temp, re_name[j], env, pip_flag);
+	exec_command(temp, input, env, pip_flag);
 	if (fd_wr > 0)
 	{
 		dup2(fd_temp, 1);

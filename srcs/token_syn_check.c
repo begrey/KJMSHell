@@ -13,7 +13,8 @@ int		token_syn_check(t_line *line)
 
 	temp = line;
 
-	if (semi_pipe((line)->arg))		// 처음부터 세미 파이프면 안됨
+
+	if (line && semi_pipe((line)->arg))		// 처음부터 세미 파이프면 안됨
 	{
 		printf("syntax error near unexpected token \'%c\'\n", line->arg[0]);
 		return (-1);
