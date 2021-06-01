@@ -204,6 +204,8 @@ char		*convert_escape(char *s);
 void		ft_exit(t_line *line, t_env *env, int pip_flag);
 
 void		free_struct(t_line *list);
+void		free_list_struct(t_line **list);
+void		free_pipe(t_pipe *list);
 
 // //		util_list.c
 // t_env	*ft_listnew(void *key, void *value)

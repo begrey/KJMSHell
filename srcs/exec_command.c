@@ -25,4 +25,5 @@ void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag)
 		;
 	else 
 		other_command(line, env, file_name, pip_flag);
+
 }

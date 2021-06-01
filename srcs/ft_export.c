@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/01 11:39:25 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/01 16:17:38 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 				key = find_key(command_line[i]);
 				ex_env = extract_env(key, env);
 				free(key);
-				if ((temp = ft_envfind(&env, ex_env)))	
+				if ((ft_envfind(&env, ex_env)))	
 					temp = ft_envfind(&env, ex_env);
 				else
 				{

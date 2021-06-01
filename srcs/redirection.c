@@ -242,9 +242,6 @@ while (1)
 
 
 
-
-
-
 	// 리스트에서 quote 제거(ing)			// 릭 제거
 	temp = line;
 	while (temp)
