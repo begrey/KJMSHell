@@ -47,7 +47,7 @@ typedef struct s_env
 	struct s_env	*next;
 }				t_env;
 
-char	*g_line;  //기존 line과 겹쳐서 임시로 g_line으로 함
+char	*g_line;
 
 typedef	struct	s_redirc
 {

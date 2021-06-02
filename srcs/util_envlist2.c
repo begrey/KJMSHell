@@ -12,6 +12,7 @@ void	put_return(int ret, t_env *env)
 	{
 		if (temp->key[0] == '?')
 		{
+			free(temp->value);
 			temp->value = num;		// free 해줘야 함
 		}
 		temp = temp->next;
@@ -63,12 +64,13 @@ char	*find_key(const char *str)
 char	*find_value(const char *str)
 {
 	char	*value;
+	char	*result;
 	int		i;
 	int		equal;
 	int		flag;
 
 	flag = 0;
-	value = ft_strdup((char *)str);
+	value = (char *)str;
 	equal = 0;
 	i = 0;
 	while (value[i])
@@ -80,5 +82,6 @@ char	*find_value(const char *str)
 		}
 		i++;
 	}
-	return (value + equal + 1);
+	result = ft_strdup(value + equal + 1);
+	return (result);
 }
