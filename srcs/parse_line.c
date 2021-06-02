@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_line.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 12:36:46 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/06/02 17:42:23 by jimkwon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	num_len(int n)
+int					num_len(int n)
 {
-	int	i;
+	int				i;
 
 	i = 0;
 	if (n <= 0)
@@ -15,27 +27,12 @@ int	num_len(int n)
 	return (i);
 }
 
-void	get_cursor_position(t_cursor *cursor)
+void				set_cursor_row_col(t_cursor *cursor, char *buf)
 {
-	int		a;
-	int		i;
-	char	*buf;
-	int		ret;
-	int		temp;
-
-
-
+	int				a;
+	int				temp;
 
 	a = 0;
-	i = 1;
-	buf = NULL;
-	buf = (char *)malloc(sizeof(char) * 255);
-	char *ttemp = buf;
-	write(0, "\033[6n", 4);  //report cursor location
-	ret = read(0, buf, 254);
-	buf[ret] = '\0';
-	//int fd = open("./a", O_RDWR | O_CREAT | O_APPEND, 00777);
-	//write(fd, buf, ret);
 	while (*buf)
 	{
 		if (*buf >= '0' && *buf <= '9')
@@ -43,43 +40,46 @@ void	get_cursor_position(t_cursor *cursor)
 			if (a == 0)
 			{
 				cursor->row = atoi(buf) - 1;
-				//write(fd, "\nrow ", 5);
-				//write(fd, buf, 2);
-				//write(fd, ", ", 2);
 				buf += num_len(cursor->row);
 			}
 			else
 			{
-				//write(fd, "col ", 4);
 				temp = atoi(buf) - 1;
 				cursor->col = temp;
-				//write(fd, buf, 2);
-				//char c = cursor->first_row + 'A';
-				//write(fd, &c, 1);
-
 				break ;
 			}
 			a++;
 		}
 		buf++;
 	}
-	free(ttemp);
 }
 
-int		putchar_tc(int tc)
+void				get_cursor_position(t_cursor *cursor)
+{
+	char			*buf;
+	int				ret;
+
+	buf = (char *)malloc(sizeof(char) * 255);
+	write(0, "\033[6n", 4);
+	ret = read(0, buf, 254);
+	buf[ret] = '\0';
+	set_cursor_row_col(cursor, buf);
+	free(buf);
+}
+
+int					putchar_tc(int tc)
 {
 	write(1, &tc, 1);
 	return (0);
 }
 
-void	delete_end(t_cursor *cursor)
+void				delete_end(t_cursor *cursor)
 {
-
 	get_cursor_position(cursor);
 	if ((int)ft_strlen(g_line) == 0)
 		return ;
 	--(cursor->col);
-	if (cursor->col == -1) //한번 다음줄로 넘어갔다는 소리니까 next_flag on
+	if (cursor->col == -1)
 	{
 		cursor->row--;
 		cursor->col = cursor->max_col - 1;
@@ -87,10 +87,11 @@ void	delete_end(t_cursor *cursor)
 	tputs(tgoto(cursor->cm, cursor->col, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
 }
-int		remove_c(t_cursor *cursor)
+
+int					remove_c(t_cursor *cursor)
 {
-	char *str; //끝 문자 제거할 문자열
-	int i;
+	char			*str;
+	int				i;
 
 	i = 0;
 	if (ft_strlen(g_line) == 0)
@@ -98,14 +99,14 @@ int		remove_c(t_cursor *cursor)
 		g_line[0] = 0;
 		return (0);
 	}
-	if (cursor->last_col_flag == 1 && (cursor->col + 1) == cursor->max_col) // 맨끝이기 때문에 2번 지워야함.
+	if (cursor->last_col_flag == 1 && (cursor->col + 1) == cursor->max_col)
 	{
 		g_line[ft_strlen(g_line) - 1] = '\0';
 		cursor->last_col_flag = 0;
 	}
-	if(!(str = (char *)malloc(sizeof(char) * ft_strlen(g_line))))
-			return (-1);
-	while(i != (int)ft_strlen(g_line) - 1)
+	if (!(str = (char *)malloc(sizeof(char) * ft_strlen(g_line))))
+		return (-1);
+	while (i != (int)ft_strlen(g_line) - 1)
 	{
 		str[i] = g_line[i];
 		i++;
@@ -116,15 +117,15 @@ int		remove_c(t_cursor *cursor)
 	return (0);
 }
 
-int		append(char c)
+int					append(char c)
 {
-	char *str; //이어붙일 문자열
-	int i;
+	char			*str;
+	int				i;
 
 	i = 0;
-	if(!(str = (char *)malloc(sizeof(char) * (ft_strlen(g_line) + 2))))
-			return (-1);
-	while(g_line[i] != '\0')
+	if (!(str = (char *)malloc(sizeof(char) * (ft_strlen(g_line) + 2))))
+		return (-1);
+	while (g_line[i] != '\0')
 	{
 		str[i] = g_line[i];
 		i++;
@@ -137,23 +138,23 @@ int		append(char c)
 	return (0);
 }
 
-void delete_line(t_cursor *cursor)
+void				delete_line(t_cursor *cursor)
 {
-	int len;
+	int				len;
 
 	get_cursor_position(cursor);
-	len = cursor->col - 19;   //-19
+	len = cursor->col - 19;
 	if (cursor->col < 0)
 		cursor->col = 0;
 	tputs(tgoto(cursor->cm, cursor->col - len, cursor->row), 1, putchar_tc);
 	tputs(cursor->ce, 1, putchar_tc);
 }
 
-void	renew_history(t_list *history, int cnt) //히스토리 갱신
+void				renew_history(t_list *history, int cnt)
 {
-	t_list	*temp;
-	int		len;
-	int		i;
+	t_list			*temp;
+	int				len;
+	int				i;
 
 	if (history == NULL || cnt <= 0)
 		return ;
@@ -165,32 +166,40 @@ void	renew_history(t_list *history, int cnt) //히스토리 갱신
 		temp = temp->next;
 		i++;
 	}
-	temp->content = g_line;
+	free(temp->content);
+	temp->content = ft_strdup(g_line);
 }
 
-int find_history(t_list *history, int cnt, t_cursor *cursor)
+int					adjust_cnt(t_list *history, int cnt, t_cursor *cursor)
 {
-	t_list	*temp;
-	int		len;
-	int		i;
-
-	if (history == NULL)
-		return (0);
 	if (cnt <= 0)
 	{
 		delete_line(cursor);
 		free(g_line);
 		g_line = ft_strdup("");
-		return (0); // down_arrow 최소값 조정
+		return (0);
 	}
-	else if (cnt > ft_lstsize(history)) // up_arrow가 기존 히스토리 길이보다 큰 경우 최대값으로 조정
+	else if (cnt > ft_lstsize(history))
 	{
 		cnt = ft_lstsize(history);
 		return (cnt);
 	}
+	return (-1);
+}
+
+int					find_history(t_list *history, int cnt, t_cursor *cursor)
+{
+	t_list			*temp;
+	int				len;
+	int				i;
+
+	if (history == NULL)
+		return (0);
+	if ((i = adjust_cnt(history, cnt, cursor)) >= 0)
+		return (i);
 	temp = history;
 	i = 1;
-	len = ft_lstsize(history) - cnt + 1; // 맨 뒤부터 첫번쨰, cnt가 2고 사이즈가 5면 4번째 출력
+	len = ft_lstsize(history) - cnt + 1;
 	while (temp != NULL && i != len)
 	{
 		temp = temp->next;
@@ -203,19 +212,18 @@ int find_history(t_list *history, int cnt, t_cursor *cursor)
 	return (cnt);
 }
 
-void term_off(struct termios term)
+void				term_off(struct termios term)
 {
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag |= ICANON;
 	term.c_lflag |= ECHO;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-
 }
 
-struct termios term_on()
+struct termios		term_on(void)
 {
-	// 터미널 세팅 설정 
-	struct termios term;
+	struct termios	term;
+
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ICANON;
 	term.c_lflag &= ~ECHO;
@@ -225,78 +233,95 @@ struct termios term_on()
 	return (term);
 }
 
-int parse_line(t_list *history, t_env *env)
+void				init_cursor_term(t_cursor *cursor,
+struct termios *term, int *h_cnt)
 {
-	struct termios term;
-	term = term_on();
-	t_cursor cursor;
-
-		// termcap 초기화 
 	tgetent(NULL, "xterm");
-	cursor.cm = tgetstr("cm", NULL); //cursor motion
-	cursor.ce = tgetstr("ce", NULL); //clear line from cursor
-	
-	int c;
-	int h_cnt; //history count
+	cursor->cm = tgetstr("cm", NULL);
+	cursor->ce = tgetstr("ce", NULL);
+	cursor->max_col = 0;
+	cursor->prev_col = 0;
+	cursor->last_col_flag = 0;
+	*term = term_on();
+	*h_cnt = 0;
+}
 
-	c = 0;
-	h_cnt = 0;
-	//cursor.col++;
+int					put_cursor(t_cursor *cursor, struct termios term, char c)
+{
+	cursor->prev_col = cursor->col;
+	write(1, &c, 1);
+	get_cursor_position(cursor);
+	if (cursor->col == cursor->prev_col)
+		cursor->last_col_flag = 1;
+	if (cursor->max_col <= cursor->col)
+		cursor->max_col = cursor->col;
+	if ((append((char)c)) == -1)
+		return (0);
+	if ((char)c == '\n')
+	{
+		term_off(term);
+		return (1);
+	}
+	if (!g_line)
+		return (0);
+	return (-1);
+}
 
+int				check_c(t_list *history, int *h_cnt, t_cursor *cursor, int c)
+{
+	if (c == 4)
+	{
+		if ((int)g_line[0] == 4)
+		{
+			printf("exit\n");
+			return (-1);
+		}
+	}
+	if (c == U_ARROW)
+		*h_cnt = find_history(history, *h_cnt + 1, cursor);
+	else if (c == D_ARROW)
+		*h_cnt = find_history(history, *h_cnt - 1, cursor);
+	else if (c == BACKSPACE)
+	{
+		delete_end(cursor);
+		if ((remove_c(cursor)) == -1)
+			return (0);
+	}
+	return (-9);
+}
+
+void				set_sigint_env(t_env *env)
+{
+	put_return(1, env);
+	g_line[0] = 0;
+}
+
+int						parse_line(t_list *history, t_env *env)
+{
+	struct termios		term;
+	int					c;
+	int					h_cnt;
+	int					status;
+	t_cursor			cursor;
+
+	init_cursor_term(&cursor, &term, &h_cnt);
 	get_cursor_position(&cursor);
-
-
-	cursor.max_col = 0;
-	cursor.prev_col = 0;
-	cursor.last_col_flag = 0;
-	//printf("%d", cursor.first_row);
 	while (read(0, &c, sizeof(c)) > 0)
 	{
 		if (g_line[0] == -3)
+			set_sigint_env(env);
+		if (c == U_ARROW || c == D_ARROW || c == BACKSPACE || c == 4)
 		{
-			put_return(1, env);
-			g_line[0] = 0;
-		}
-		if (c == U_ARROW)
-		{
-			h_cnt = find_history(history, h_cnt + 1, &cursor);
-		}
-		else if (c == D_ARROW)
-		{
-			h_cnt = find_history(history, h_cnt - 1, &cursor);
-		}
-		else if (c == BACKSPACE)
-		{ 
-			delete_end(&cursor);
-			if((remove_c(&cursor)) == -1)
-				return (0);
+			if ((status = check_c(history, &h_cnt, &cursor, c)) >= -1)
+				return (-1);
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{
-			cursor.prev_col = cursor.col;
-			write(1, &c, 1);
-			get_cursor_position(&cursor);
-			if (cursor.col == cursor.prev_col) //마지막 두칸
-				cursor.last_col_flag = 1;
-			if (cursor.max_col <= cursor.col)
-				cursor.max_col = cursor.col;
-			if ((append((char)c)) == -1)
-				return (0);
-			if ((char)c == '\n')
-			{
-				term_off(term);
-				return (1);
-			}
-			if (!g_line)
-				return (0);
+			if ((status = put_cursor(&cursor, term, c)) >= 0)
+				return (status);
 			renew_history(history, h_cnt);
 		}
-		if (c == 4)
-		{
-			if ((int)g_line[0] == 4)
-				return (-1); //ctrl-d
-		}
-		c = 0; //flush buffer
+		c = 0;
 	}
 	return (-1);
 }

@@ -1,31 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 17:15:35 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/06/02 17:22:15 by jimkwon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char		*root_path(t_env *env)
 {
-	//환경변수 USER에서 받아옴
-	return(ft_strjoin(ft_strdup("/USERS/"), convert_env("$USER", env)));
+	char	*user;
+	char	*user_env;
+	char	*root_path;
+
+	user = ft_strdup("/USERS/");
+	user_env = convert_env("$USER", env);
+	root_path = ft_strjoin(user, user_env);
+	free(user);
+	free(user_env);
+	return (root_path);
 }
 
 char		*convert_root_path(t_line *line, t_env *env)
 {
-	//  ~/42Curses의 경우 /USER/jimkwon으로 치환
-	return (ft_strjoin(root_path(env), line->arg + 1));
+	char	*root_path_result;
+	char	*env_root;
+	char	*line_arg;
+
+	line_arg = ft_strdup(line->arg + 1);
+	env_root = root_path(env);
+	root_path_result = ft_strjoin(env_root, line_arg);
+	free(line_arg);
+	free(env_root);
+	return (root_path_result);
 }
 
 void		ft_cd(t_line *line, t_env *env, int pip_flag)
 {
 	int		check;
-	char 	*path;
+	char	*path;
 
-
-	//path 정해주기
-	if (line == NULL) // cd 만 입력한 경우
+	if (line == NULL)
 		path = root_path(env);
-	else if (line->arg[0] == '~') // 루트 디렉토리
+	else if (line->arg[0] == '~')
 		path = convert_root_path(line, env);
 	else
-		path = line->arg;	
+		path = ft_strdup(line->arg);
 	check = chdir(path);
+	free(path);
 	if (check != 0)
 	{
 		printf("cd: %s: %s\n", line->arg, strerror(errno));
@@ -33,20 +60,7 @@ void		ft_cd(t_line *line, t_env *env, int pip_flag)
 		return ;
 	}
 	if (pip_flag == 0)
-		exit(0); 
+		exit(0);
 	else
 		put_return(0, env);
 }
-
-// int main()
-// {
-// 	// ~/거나 cd 와 같은 경우 루트는 /Users/$USER 여야함 
-// 	t_line *list;
-
-// 	list = NULL;
-// 	//ft_listadd_back(&list, ft_listnew("../"));
-// 	ft_listadd_back(&list, ft_listnew("~/"));
-// 	//ft_listadd_back(&list, ft_listnew("/"));
-// 	ft_cd(list);
-// 	return 0;
-// }

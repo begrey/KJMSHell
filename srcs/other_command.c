@@ -1,36 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   other_command.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 16:44:30 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/06/02 17:07:26 by jimkwon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char		**make_list_argv(t_line *line, char *file_name)
 {
-	int		i;
 	int		len;
 	char	**argv;
-	t_line	*temp;
 
-	i = 0;
-	len = 0;
-	temp = line;
-	while (temp != NULL)
-	{
-		len++;
-		temp = temp->next;
-	}
+	len = ft_listsize(line);
 	if (file_name != NULL)
 		len++;
 	argv = (char **)malloc(sizeof(char *) * (len + 1));
 	argv[len] = NULL;
+	len = 0;
 	while (line != NULL)
 	{
-		argv[i] = line->arg;
+		argv[len] = line->arg;
 		line = line->next;
-		i++;
+		len++;
 	}
 	if (file_name != NULL)
-		argv[i++] = file_name;
-	argv[i] = NULL;
+		argv[len++] = file_name;
+	argv[len] = NULL;
 	return (argv);
 }
-void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag)
+
+void		other_command(t_line *line, t_env *env,
+char *file_name, int pip_flag)
 {
 	int		status;
 	pid_t	pid;
@@ -43,15 +49,36 @@ void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag)
 			wait(&status);
 			if (status >= 256)
 				status /= 256;
-			put_return(status, env); // (미출생)
+			put_return(status, env);
 		}
 		else
-		{
 			other_command_exec(line, env, file_name);
-		}
 	}
 	else
 		other_command_exec(line, env, file_name);
+}
+
+char		*make_env_path(t_line *line, char *path)
+{
+	char	*env_path;
+	char	*path_slash;
+	char	*temp_slash;
+
+	path_slash = ft_strjoin(path, "/");
+	temp_slash = path_slash;
+	env_path = ft_strjoin(path_slash, line->arg);
+	free(temp_slash);
+	return (env_path);
+}
+
+void		not_found_command(char **a, char **p, t_line *line, t_env *env)
+{
+	free_split(a);
+	free_split(p);
+	write(2, line->arg, ft_strlen(line->arg));
+	write(2, ": command not found\n", 20);
+	put_return(127, env);
+	exit(127);
 }
 
 void		other_command_exec(t_line *line, t_env *env, char *file_name)
@@ -60,8 +87,6 @@ void		other_command_exec(t_line *line, t_env *env, char *file_name)
 	char	**path;
 	char	*new_path;
 	char	**argv;
-	char	*path_slash;
-	char	*temp_slash;
 	char	*temp_env;
 
 	temp_env = extract_env("$PATH", env);
@@ -69,47 +94,16 @@ void		other_command_exec(t_line *line, t_env *env, char *file_name)
 	free(temp_env);
 	i = 0;
 	argv = make_list_argv(line, file_name);
-	//printf("%s   %s\n", argv[0], argv[1]);s
 	execve(line->arg, argv, NULL);
-	// free_split(argv);
-	// argv = make_list_argv(line, file_name);
-	while (path[i])	// 환경변수에서 PATH경로 찾아서 찾음
-	{  //ft_strncmp 를 이용해 환경변수 PATH부분과 앞이 똑같으면 그대로 실행, 아니면 직접 붙여주기
+	while (path[i])
+	{
 		if ((ft_strncmp(path[i], line->arg, ft_strlen(path[i]))) != 0)
-		{//직접 환경변수 PATH 접합
-
-			path_slash = ft_strjoin(path[i], "/");
-			temp_slash = path_slash;
-			new_path = ft_strjoin(path_slash, line->arg);
-			free(temp_slash);
-		}
+			new_path = make_env_path(line, path[i]);
 		else
-			new_path = line->arg;
-		//argv = make_list_argv(line, file_name);
+			new_path = ft_strdup(line->arg);
 		execve(new_path, argv, NULL);
 		free(new_path);
 		i++;
 	}
-	free_split(argv);
-	free_split(path);
-
-	write(2, line->arg, ft_strlen(line->arg));
-	write(2, ": command not found\n", 20);
-
-	//printf("%s: command not found\n", line->arg);
-	put_return(127, env);
-	exit(127);
+	not_found_command(argv, path, line, env);
 }
-// int main()
-// {
-// 	t_line *list;
-
-// 	list = NULL;
-// 	ft_listadd_back(&list, ft_listnew("echo"));
-// 	ft_listadd_back(&list, ft_listnew("hi"));
-// 	ft_listadd_back(&list, ft_listnew("everyone"));
-// 	//char	**argv = make_list_argv(list);
-// 	other_command(list);
-// 	//char *const argv[] = {"/bin/echo", "hi", NULL};
-// 	//execve("/bin/echo", argv, NULL);
-// }	

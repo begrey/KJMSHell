@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 09:28:27 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/02 12:05:52 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/02 17:22:55 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int			find_n_flag(t_line *line)
 
 void		ft_echo(t_line *line, int pip_flag, t_env *env)
 {
-
 	int		flag;
 
 	flag = find_n_flag(line);

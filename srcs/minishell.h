@@ -69,6 +69,14 @@ typedef struct s_line
 	struct s_line		*next;
 }				t_line;
 
+//  main.c
+
+void		signal_sigquit(int sig);
+void		signal_handler(int sig);
+void		set_signal_return(t_env *env);
+void		init_g_line(void);
+void		init(t_env **env, char **list, t_list **history);
+
 //	ft_echo.c
 void		ft_echo(t_line *line, int pip_flag, t_env *env);
 
@@ -95,12 +103,14 @@ void		other_command_exec(t_line *line, t_env *env, char *file_name);
 //	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
 int			num_len(int n);
 int			putchar_tc(int tc);
+void		set_cursor_row_col(t_cursor *cursor, char *buf);
 void		get_cursor_position(t_cursor *cursor);
 void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
 int			remove_c(t_cursor *cursor);
 int			append(char c);
 void		renew_history(t_list *history, int cnt);
+int			adjust_cnt(t_list *history, int cnt, t_cursor *cursor);
 int			find_history(t_list *history, int cnt, t_cursor *cursor);
 int			parse_line(t_list *history, t_env *env);
 struct termios		term_on();

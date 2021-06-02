@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_command.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 16:43:46 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/06/02 16:44:12 by jimkwon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-//echo -> abc -> aa or   pwd -> 등의 단일 커맨드와 arg가 들어온다.
-void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag)
+void		exec_command(t_line *line, char *file_name,
+t_env *env, int pip_flag)
 {
 	char	*command;
 
@@ -19,9 +31,9 @@ void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag)
 	else if (ft_strcmp(command, "env") == 0)
 		exec_env(line, env, pip_flag);
 	else if (ft_strcmp(command, "exit") == 0)
-		ft_exit(line->next, env, pip_flag); //프로세스만 종료되기 때문에 수정 필요
+		ft_exit(line->next, env, pip_flag);
 	else if (ft_strcmp(command, "") == 0)
 		;
-	else 
+	else
 		other_command(line, env, file_name, pip_flag);
 }
