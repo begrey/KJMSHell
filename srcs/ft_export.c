@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/01 16:17:38 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/02 11:13:36 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 	int		len;
 	char	**command_line;
 	char	*str_temp;
-	char	*key;
 	char	*ex_env;
+	//env에 넣어둘 인자들
+	char	*key;
+	char	*value;
+	int		if_value;
+	char	*ttemp; // find_env free할놈
 
 
 	len = ft_listsize(line);
@@ -48,7 +52,8 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 			{
 				printf("declare -x %s", idx->key);
 				if (idx->if_value)
-					printf("=\"%s\"\n", idx->value);
+					printf("=\"%s\"", idx->value);
+				printf("\n");
 			}
 			idx = idx->next; 
 		}
@@ -56,37 +61,60 @@ void	exec_export(t_line *line, t_env *env, int pip_flag)
 	}
 	else						// export 이외에 인자가 있을
 	{
-		temp = (t_env *)malloc(sizeof(t_env) * (len));
+		//temp = (t_env *)malloc(sizeof(t_env) * (len));
 		i = 1;
 		while (command_line[i])
 		{
+			key = find_key(command_line[i]);
+			ex_env = extract_env(key, env);
+			free(key);
 			if (is_alpha(command_line[i][0]) || is_dollar(command_line[i][0]))
 			{
-				key = find_key(command_line[i]);
-				ex_env = extract_env(key, env);
-				free(key);
-				if ((ft_envfind(&env, ex_env)))	
+				if (ft_strchr(command_line[i], '=') != 0) //등호가 있을때
+				{
+					if_value = 1;
+					ttemp = find_value(command_line[i]);
+					value = convert_env(ttemp, env);
+					free(ttemp);
+				}
+				else
+				{
+					if_value = 0;
+					value = NULL;
+				}
+				if ((ft_envfind(&env, ex_env)) && if_value == 1)	// 기존 내용을 대체
+				{
 					temp = ft_envfind(&env, ex_env);
-				else
-				{
-					(*temp).key = extract_env(find_key(command_line[i]), env);
-				printf("aaa\n");
-					ft_envadd_back(&env, temp);
+					temp->if_value = if_value;
+					free(temp->value);
+					temp->value = ft_strdup(value);
+					//  printf("%p %p \n", temp->value, value);
+					// printf("%s %s\n", temp->value, value);
 				}
-				if (ft_strchr(command_line[i], '=') != 0)
+				else // 없을 때 새로 만드는 구간
 				{
-					(*temp).if_value = 1;
-//					(*temp).value = extract_env(find_value(command_line[i]), env);
-					(*temp).value = convert_env(find_value(command_line[i]), env);
+					ttemp = find_key(command_line[i]);
+					key = extract_env(ttemp, env);
+					free(ttemp);
+					if (value == NULL)
+					{
+						ft_envadd_back(&env, ft_envnew(ft_strdup(key), ft_strdup(""), if_value));
+						t_env *why = ft_envlast(env);
+					}
+					else
+						ft_envadd_back(&env, ft_envnew(ft_strdup(key), ft_strdup(value), if_value));
+					free(key);
 				}
-				else
-				{
-					(*temp).if_value = 0;
-				}
-				free(ex_env);
+				//free(key);
+				free(value);			
+				// ttemp = ft_envlast(env)->value;
+			//	 printf("%p %p \n", ttemp, value);
+				// printf("%s %s \n", ttemp, value);
+				// printf("%s\n", ttemp);
 			}
 			else		// 변수명이 숫자나 특수문자로 시작하면 안됨
 				printf("export: %s: not a valid identifier\n", command_line[i]);
+			free(ex_env);
 			i++;
 			temp++;
 		}
@@ -118,6 +146,7 @@ void	exec_env(t_line *line, t_env *env, int pip_flag)
 	if (len > 1)
 	{
 		printf("env: No such file or directory\n");
+		free_split(command_line);
 		return ;
 	}
 	if (command_line[1] == NULL)
@@ -130,7 +159,7 @@ void	exec_env(t_line *line, t_env *env, int pip_flag)
 			idx = idx->next; 
 		}
 	}
-
+	free_split(command_line);
 	if (pip_flag == 0)
 		exit(0);
 }
@@ -198,8 +227,8 @@ char	*extract_env(char *str, t_env *env)
 		ret = ft_strdup("");
 		return (ret);
 	}
-	ret = ex->value;
+	ret = ft_strdup(ex->value);
 	if (!ret)
 		ret = ft_strdup("");
-	return (ft_strdup(ret));
+	return (ret);
 }

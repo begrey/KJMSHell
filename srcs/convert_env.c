@@ -170,7 +170,7 @@ char		*convert_env(const char *str, t_env *env)
 
 	result = NULL;
 	flag = 0;
-//	result = ft_strdup("");
+	result = ft_strdup("");
 	new_len = get_new_len(str, env); // 1개
 
 	env_len = 0;

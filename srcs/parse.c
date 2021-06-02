@@ -254,7 +254,7 @@ int m = 0;
 
 	if ((token_syn_check(line)) == -1)		// 그냥 엔터치면 세그폴트
 		return (-1);
-	
+
 	split_by_semi(line, env);
 	free_split(split_line);
 	//free_struct(line);
