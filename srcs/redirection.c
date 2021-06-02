@@ -1,58 +1,73 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 14:04:24 by sunmin            #+#    #+#             */
+/*   Updated: 2021/06/02 17:11:47 by sunmin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int		is_redir(char c)
+int			is_redir(char c)
 {
 	if (c == '>' || c == '<')
 		return (1);
 	return (0);
 }
 
-int		put_redir(t_line *line, char ***re_name, int **re_type)
+void		put_left_or_right(t_line **temp, int *type)
+{
+	if ((*temp)->arg[0] == '<')
+	{
+		(*type) = 3;
+		(*temp) = (*temp)->next;
+	}
+	else
+	{
+		(*type) = 1;
+		if ((*temp)->arg[1] == '>')
+			(*type) = 2;
+		(*temp) = (*temp)->next;
+	}
+}
+
+void		put_redir(t_line *line, char ***re_name, int **re_type)
 {
 	t_line	*temp;
 	int		flag;
 	int		type;
 	int		i;
 
-	i = 0;
+	i = -1;
 	temp = line;
-	while (temp)			// 1,2,3 으로 다시 해야 함		 >=1, >>=2, <=3
+	while (temp)
 	{
 		type = 0;
 		if (is_redir(temp->arg[0]))
 		{
-			if (temp->arg[0] == '<')
-			{
-				type = 3;
-				temp = temp->next;
-			}
-			else
-			{	
-				type = 1;
-				if (temp->arg[1] == '>')
-					type = 2;
-				temp = temp->next;
-			}
+			put_left_or_right(&temp, &type);
 			flag = 0;
 			while (temp && !is_redir(temp->arg[0]))
 			{
 				if (flag == 0)
 				{
-					(*re_type)[i] = type;
+					(*re_type)[++i] = type;
 					(*re_name)[i] = ft_strdup(temp->arg);
 				}
 				temp = temp->next;
 				flag++;
 			}
-			i++;
 		}
 		if (temp && !is_redir(temp->arg[0]))
 			temp = temp->next;
 	}
-	return (0);
 }
 
-int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지 같이
+int			redir_num(t_line *line)
 {
 	int		num;
 	t_line	*temp;
@@ -76,7 +91,7 @@ int		redir_num(t_line *line)		// 구조체 안에 redir 정보 넣는 것 까지
 	return (num);
 }
 
-t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
+t_line		*ft_list_delredir(t_line *line)
 {
 	t_line	*temp;
 	t_line	*redir;
@@ -93,8 +108,8 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 		redir = line;
 		file = line->next;
 		(line) = (line)->next->next;
-		free_struct(redir);				// free(free1);
-		free_struct(file);				// free(free2);
+		free_struct(redir);
+		free_struct(file);
 		if (line != NULL)
 			(line)->prev = NULL;
 	}
@@ -106,7 +121,7 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 			redir = temp;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
-			free_struct(redir);					// free(free1);
+			free_struct(redir);
 			temp = temp->next;
 			if (temp && temp->prev)
 			{
@@ -114,7 +129,7 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 				temp->prev->next = temp->next;
 				if (temp->next)
 					temp->next->prev = temp->prev;
-				free_struct(file);				// free(free2);
+				free_struct(file);
 			}
 		}
 		temp = temp->next;
@@ -122,7 +137,7 @@ t_line	*ft_list_delredir(t_line *line)		// 세니타이저 에러 있음
 	return (line);
 }
 
-int		check_num_delquote(char *str)		// 잘됨
+int			check_num_delquote(char *str)
 {
 	int		num;
 	char	*s;
@@ -144,26 +159,20 @@ int		check_num_delquote(char *str)		// 잘됨
 	return (num);
 }
 
-
-
-char	*ft_del_quote(char *str)
+char		*ft_del_quote(char *str)
 {
 	char	*temp;
 	char	flag;
 	char	*s;
 	int		i;
-	int		j;
-	int		num;
 	char	compare;
 
-	num = check_num_delquote(str);
-	temp = (char *)malloc(sizeof(char) * (num + 1));
-	temp[num] = '\0';
+	i = check_num_delquote(str);
+	temp = (char *)malloc(sizeof(char) * (i + 1));
+	temp[i] = '\0';
 	s = (char *)str;
 	flag = 0;
-
-	i = 0;
-	j = 0;
+	i = -1;
 	while (*s)
 	{
 		compare = flag;
@@ -172,18 +181,60 @@ char	*ft_del_quote(char *str)
 			s++;
 		else
 		{
-			temp[i] = *s;
-			i++;
+			temp[++i] = *s;
 			s++;
 		}
 	}
 	return (temp);
 }
 
+void		delete_escape_list(t_line *line)
+{
+	t_line	*temp;
+	char	*str;
+
+	temp = line;
+	while (temp)
+	{
+		str = temp->arg;
+		temp->arg = delete_escape(temp->arg);
+		free(str);
+		temp = temp->next;
+	}
+}
+
+void		del_qoute_list(t_line *line)
+{
+	t_line	*temp;
+	char	*str;
+
+	temp = line;
+	while (temp)
+	{
+		str = temp->arg;
+		(temp)->arg = ft_del_quote((temp)->arg);
+		free(str);
+		temp = (temp)->next;
+	}
+}
+
+void		restore_escape_list(t_line *line)
+{
+	t_line	*temp;
+	char	*str;
+
+	temp = line;
+	while (temp)
+	{
+		str = temp->arg;
+		temp->arg = restore_escape(temp->arg);
+		free(str);
+		temp = temp->next;
+	}
+}
 
 void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 {
-
 	int		re_num;
 	int		i;
 	char	**re_name;
@@ -194,7 +245,7 @@ void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	int		fd_op;
 	int		fd_temp;
 	int		j;
-	char	*temp_str;
+	char	*input;
 
 	temp = line;
 	re_num = redir_num(temp);
@@ -203,92 +254,27 @@ void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	re_type = (int *)malloc(sizeof(int) * (re_num));
 	temp = line;
 	put_redir(temp, &re_name, &re_type);
-
-
-/*
-
 	temp = line;
-	while (temp)
-	{
-		line = line->next;
-		free(temp->arg);
-		free(temp);
-		temp = line;
-	}
-
-while (1)
-	;
-*/
-
-	// 리다이렉션 구조체 삭제(ing)			// 릭 제거
-	temp = line;
-	line = ft_list_delredir(temp);		// 세니타이저 에러 || 누수(free)		// 진행중
-
-
-
-
-
-
-	//	escape 제거
-	temp = line;							// 릭 제거
-	while (temp)
-	{
-		temp_str = temp->arg;
-		temp->arg = delete_escape(temp->arg);
-		free(temp_str);
-		temp = temp->next;
-	}
-
-
-
-
-	// 리스트에서 quote 제거(ing)			// 릭 제거
-	temp = line;
-	while (temp)
-	{
-		temp_str = temp->arg;
-
-		(temp)->arg = ft_del_quote((temp)->arg);
-		free(temp_str);
-		temp = (temp)->next;
-	}
-
-
-
-
-
-
-
-	// 아스키 -값 복구						// 릭 제거
-	temp = line;
-	while (temp)
-	{
-		temp_str = temp->arg;
-		temp->arg = restore_escape(temp->arg);
-		free(temp_str);
-		temp = temp->next;
-	}
-
-
-
-
+	line = ft_list_delredir(temp);
+	delete_escape_list(line);
+	del_qoute_list(line);
+	restore_escape_list(line);
 	fd_wr = -1;
 	j = -1;
 	i = 0;
 	while (i < re_num)
 	{
-		if (re_type[i] == 1)		// >
+		if (re_type[i] == 1)
 		{
 			fd_wr = open(re_name[i], O_RDWR | O_CREAT | O_TRUNC, 00777);
 		}
-		else if (re_type[i] == 2)	// >>
+		else if (re_type[i] == 2)
 		{
 			fd_wr = open(re_name[i], O_RDWR | O_APPEND | O_CREAT, 00777);
 		}
-		else if (re_type[i] == 3)	//	<
+		else if (re_type[i] == 3)
 		{
 			j = i;
-			// printf("?\n");
 			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
 			{
 				printf("%s\n", strerror(errno));
@@ -298,14 +284,10 @@ while (1)
 		}
 		i++;
 	}
-
-
-	char *input;
 	temp = line;
-	// < 확인 하는 곳
-	if (j == -1 || temp->next)		// 릭 발생
+	if (j == -1 || temp->next)
 	{
-		j = 0;					// 구조 다시 생각해봐야
+		j = 0;
 		input = NULL;
 	}
 	else

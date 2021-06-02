@@ -1,25 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   convert_env.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 14:36:18 by sunmin            #+#    #+#             */
+/*   Updated: 2021/06/02 17:31:53 by sunmin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static char		*exact_envstr(char *str)
+char		*put_return_value(char *res)
+{
+	res = (char *)malloc(sizeof(char) * 3);
+	res[0] = '$';
+	res[1] = '?';
+	res[2] = '\0';
+	return (res);
+}
+
+static char	*exact_envstr(char *str)
 {
 	char	*s;
 	int		len;
 	int		i;
 	char	*res;
 
+	res = NULL;
 	s = (char *)str;
 	if (*s == '$')
 		s++;
 	len = 1;
 	if (*s == '?')
-	{
-		res = (char *)malloc(sizeof(char) * 3);
-		res[0] = '$';
-		res[1] = '?';
-		res[2] = '\0';
-		return (res);
-	}
-	while (((*s >= 'A' && *s <= 'Z') || (*s >= 'a' && *s <= 'z') || (*s == '?')))
+		return (put_return_value(res));
+	while ((is_alpha(*s) || (*s == '?')))
 	{
 		s++;
 		len++;
@@ -35,7 +51,7 @@ static char		*exact_envstr(char *str)
 	return (res);
 }
 
-static int		if_env_dollar(char c1, char c2) // $ 단독, $# 특수문자 체크 (일단 문자, ?만 와야)
+static int	if_env_dollar(char c1, char c2)
 {
 	if (c1 == '$')
 	{
@@ -43,12 +59,12 @@ static int		if_env_dollar(char c1, char c2) // $ 단독, $# 특수문자 체크 
 			return (1);
 	}
 	return (0);
-} 
+}
 
-static int		check_flag(char c, int flag)
+static int	check_flag(char c, int flag)
 {
 	if (flag == 0)
-	{			
+	{
 		if (c == '\'')
 			flag = 1;
 	}
@@ -57,12 +73,10 @@ static int		check_flag(char c, int flag)
 		if (c == '\'')
 			flag = 0;
 	}
-
 	return (flag);
 }
 
-
-static int		check_env_len(const char *str)	// 플래그를 고려 안해도 됨(그런 인풋만 들어옴)
+static int	check_env_len(const char *str)
 {
 	char	*s;
 	int		len;
@@ -75,53 +89,59 @@ static int		check_env_len(const char *str)	// 플래그를 고려 안해도 됨(
 		return (1);
 	while (*s && is_alpha(*s))
 	{
-			len++;
+		len++;
 		s++;
 	}
 	return (len);
 }
 
-static int		if_effective(const char *str, int flag)
+static int	if_effective(const char *str, int flag)
 {
 	char	*s;
 
-
 	s = (char *)str;
-
-		if (!flag)
+	if (!flag)
+	{
+		if (if_env_dollar(*s, *(s + 1)))
 		{
-			if (if_env_dollar(*s, *(s + 1)))
-			{
-				return (check_env_len(s));		// $USER=sunmin 이라고 치면 5를 반환
-			}
+			return (check_env_len(s));
 		}
+	}
 	return (0);
 }
 
-static int		get_new_len(const char *str, t_env *env)
+int			free_temp(char *s, t_env *env)
+{
+	char	*temp;
+	char	*temp2;
+	int		env_var_len;
+
+	env_var_len = 0;
+	temp = exact_envstr(s);
+	temp2 = extract_env(temp, env);
+	env_var_len = ft_strlen(temp2);
+	free(temp);
+	free(temp2);
+	return (env_var_len);
+}
+
+static int	get_new_len(const char *str, t_env *env)
 {
 	char	*s;
 	int		env_len;
 	int		env_var_len;
 	int		new_len;
-	int		flag;		// ' 작은 따옴표일때만 켜짐 (플래그 켜지면 convert 적용 안함)
-	char	*temp;
-	char	*temp2;
+	int		flag;
 
 	flag = 0;
 	new_len = 0;
-	env_len = 0;
 	s = (char *)str;
 	while (*s)
 	{
 		flag = check_flag(*s, flag);
 		if ((env_len = if_effective(s, flag)))
 		{
-			temp = exact_envstr(s);
-			temp2 = extract_env(temp, env);
-			env_var_len = ft_strlen(temp2);
-			free(temp);
-			free(temp2);
+			env_var_len = free_temp(s, env);
 			s = s + env_len;
 			new_len += env_var_len;
 		}
@@ -157,6 +177,18 @@ char		*ft_append(char *s, char c)
 	return (str);
 }
 
+void		join_env_temp(char *s, char **result, t_env *env)
+{
+	char	*temp1;
+	char	*temp2;
+
+	temp2 = exact_envstr(s);
+	temp1 = extract_env(temp2, env);
+	free(temp2);
+	*result = ft_strjoin(*result, temp1);
+	free(temp1);
+}
+
 char		*convert_env(const char *str, t_env *env)
 {
 	char	*s;
@@ -164,62 +196,24 @@ char		*convert_env(const char *str, t_env *env)
 	int		new_len;
 	char	*result;
 	int		flag;
-	char	*temp;
-	char	*temp2;
-	char	*temp3;
 
 	result = NULL;
 	flag = 0;
 	result = ft_strdup("");
-	new_len = get_new_len(str, env); // 1개
-
+	new_len = get_new_len(str, env);
 	env_len = 0;
 	s = (char *)str;
-
 	while (*s)
 	{
 		flag = check_flag(*s, flag);
 		if ((env_len = if_effective(s, flag)))
 		{
-			temp = result;
-			temp3 = exact_envstr(s);
-			temp2 = extract_env(temp3, env);		// 1개 $USER
-			free(temp3);
-			result = ft_strjoin(result, temp2);
-			free(temp2);
-			free(temp);
+			join_env_temp(s, &result, env);
 			s = s + env_len;
 		}
 		else
-		{
-			temp = result;
 			result = ft_append(result, *s);
-	//		free(temp);
-		}
 		s++;
-
 	}
 	return (result);
 }
-
-
-/*
-int		main(void)
-{
-	char	*str;
-	char	**split;
-	int		i;
-
-	str = ft_strdup("echo a$USER\"$USER\"$USERa $USER \'$USER\'");
-	printf("input :%s\n", str);
-	split = ft_split_quote(str);
-	i = 0;
-	while (split[i])
-	{
-		split[i] = convert_env(split[i]);
-		printf("split[i] :%s\n", split[i]);
-		i++;
-	}
-	return (0);
-}
-*/

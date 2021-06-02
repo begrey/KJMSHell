@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_listfree.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 16:09:37 by sunmin            #+#    #+#             */
+/*   Updated: 2021/06/02 16:10:29 by sunmin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void	free_struct(t_line *list)
+void		free_struct(t_line *list)
 {
-	t_line *temp;
+	t_line	*temp;
 
 	temp = list;
 	while (temp)
@@ -14,7 +26,7 @@ void	free_struct(t_line *list)
 	}
 }
 
-void	free_pipe(t_pipe *list)
+void		free_pipe(t_pipe *list)
 {
 	t_pipe *temp;
 
@@ -27,10 +39,10 @@ void	free_pipe(t_pipe *list)
 	}
 }
 
-void	free_list_struct(t_line **list)
+void		free_list_struct(t_line **list)
 {
-	int i;
-	t_line *temp;
+	int		i;
+	t_line	*temp;
 
 	i = 0;
 	while (list[i] != NULL)
