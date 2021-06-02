@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:04:24 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 17:11:47 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/02 22:19:46 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,13 @@ void		put_left_or_right(t_line **temp, int *type)
 	}
 }
 
-void		put_redir(t_line *line, char ***re_name, int **re_type)
+void		put_redir(t_line *temp, char ***re_name, int **re_type)
 {
-	t_line	*temp;
 	int		flag;
 	int		type;
 	int		i;
 
 	i = -1;
-	temp = line;
 	while (temp)
 	{
 		type = 0;
@@ -108,8 +106,8 @@ t_line		*ft_list_delredir(t_line *line)
 		redir = line;
 		file = line->next;
 		(line) = (line)->next->next;
-		free_struct(redir);
-		free_struct(file);
+//		free_struct(redir);
+//		free_struct(file);
 		if (line != NULL)
 			(line)->prev = NULL;
 	}
@@ -121,7 +119,7 @@ t_line		*ft_list_delredir(t_line *line)
 			redir = temp;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
-			free_struct(redir);
+		//	free_struct(redir);
 			temp = temp->next;
 			if (temp && temp->prev)
 			{
@@ -129,7 +127,7 @@ t_line		*ft_list_delredir(t_line *line)
 				temp->prev->next = temp->next;
 				if (temp->next)
 					temp->next->prev = temp->prev;
-				free_struct(file);
+		//		free_struct(file);
 			}
 		}
 		temp = temp->next;
@@ -236,11 +234,11 @@ void		restore_escape_list(t_line *line)
 void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 {
 	int		re_num;
-	int		i;
 	char	**re_name;
 	int		*re_type;
+
+	int		i;
 	t_line	*temp;
-	int		status;
 	int		fd_wr;
 	int		fd_op;
 	int		fd_temp;
@@ -248,17 +246,16 @@ void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	char	*input;
 
 	temp = line;
-	re_num = redir_num(temp);
-	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
-	re_name[re_num] = NULL;
-	re_type = (int *)malloc(sizeof(int) * (re_num));
-	temp = line;
-	put_redir(temp, &re_name, &re_type);
-	temp = line;
 	line = ft_list_delredir(temp);
 	delete_escape_list(line);
 	del_qoute_list(line);
 	restore_escape_list(line);
+
+	re_num = redir_num(temp);
+	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
+	re_name[re_num] = NULL;
+	re_type = (int *)malloc(sizeof(int) * (re_num));
+	put_redir(temp, &re_name, &re_type);
 	fd_wr = -1;
 	j = -1;
 	i = 0;
@@ -292,7 +289,6 @@ void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	}
 	else
 		input = re_name[j];
-	status = 0;
 	temp = line;
 	if (fd_wr > 0)
 	{
