@@ -1,102 +1,102 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 12:09:15 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/06/02 17:42:10 by jimkwon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-void sigint_cursor()
+void		signal_sigquit(int sig)
 {
-	t_cursor cursor;
-	tgetent(NULL, "xterm");
-
-	cursor.cm = tgetstr("cm", NULL); //cursor motion
-	cursor.ce = tgetstr("ce", NULL); //clear line from cursor
-	get_cursor_position(&cursor);
-	delete_line(&cursor);
+	if (ft_strchr(g_line, '\n') != NULL)
+	{
+		g_line[0] = -2;
+		printf("Quit: %d\n", sig);
+	}
 }
 
-void signalHandler(int sig){
-    if(sig==SIGINT){ //ctrl-c
-/*			if (ft_strchr(g_line, '\n') != NULL)
-			{
-				g_line[0] = -1;
-				printf("\n");
-			}
-			else
-			{
-				if (g_line[0] != 0)
-				{
-					free(g_line);
-					g_line = ft_strdup("");
-				}
-				g_line[0] = -3;
-				write(1, "\nKJMSHell(｡☌ᴗ☌｡) >> ", 30);
-			} */
-		exit(0);
-    }	
-    if(sig==SIGQUIT){ //ctrl-'\'
+void		signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
 		if (ft_strchr(g_line, '\n') != NULL)
 		{
-			g_line[0] = -2; 
-            printf("Quit: %d\n", sig);
+			g_line[0] = -1;
+			printf("\n");
 		}
-    }
-}
-
-void	iter_history(t_list *history)
-{
-	while (history != NULL)
-	{
-		printf("history: %s -> ", history->content);
-		history = history->next;
+		else
+		{
+			if (g_line[0] != 0)
+			{
+				free(g_line);
+				g_line = ft_strdup("");
+			}
+			g_line[0] = -3;
+			write(1, "\nKJMSHell(｡☌ᴗ☌｡) >> ", 30);
+		}
 	}
-	printf("\n");
+	if (sig == SIGQUIT)
+		signal_sigquit(sig);
 }
 
-void	set_signal_return(t_env *env)
+void		set_signal_return(t_env *env)
 {
-	if (g_line[0] == -1) // 명령어 실행 중  ctrl-c
+	if (g_line[0] == -1)
 		put_return(130, env);
-	else if (g_line[0] == -2) // 명령어 실행 중 ctrl-'\'
+	else if (g_line[0] == -2)
 		put_return(131, env);
 }
 
-int main(int argc, char **argv, char **envp)
+void		init_g_line(void)
+{
+	if (!(g_line = malloc(1)))
+		return ;
+	(g_line)[0] = 0;
+}
+
+void		init(t_env **env, char **list, t_list **history)
+{
+	*env = NULL;
+	*list = NULL;
+	*history = NULL;
+	init_g_line();
+	signal(SIGINT, signal_handler);
+	signal(SIGTSTP, signal_handler);
+	signal(SIGQUIT, signal_handler);
+	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
+}
+
+int			main(int argc, char **argv, char **envp)
 {
 	t_list	*history;
 	t_env	*env;
 	int		read;
 	char	*list;
-	int		i;
 
-	i = -1;
-	env = NULL;
-	list = NULL;
-	history = NULL;
-	if (!(g_line = malloc(1)))
-		return (-1);
-	(g_line)[0] = 0;
-	if (argc != 1)											// 쉘에서 bash aa 이런 식으로 배쉬를 실행할 때
+	if (argc != 1)
 	{
 		write(1, "cannot excute binary file\n", 26);
 		return (126);
 	}
+	init(&env, &list, &history);
 	env = init_env(envp, env);
-	signal(SIGINT, signalHandler);
-    signal(SIGTSTP, signalHandler);
-    signal(SIGQUIT, signalHandler);
-	write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
-	while((read = parse_line(history, env)) > 0)						// 방향키(왼, 위, 오, 아) 들어올 때 처리해야 함
+	while ((read = parse_line(history, env)) > 0)
 	{
-		//히스토리 리스트 추가
 		list = ft_strdup(g_line);
 		list[ft_strlen(list) - 1] = '\0';
 		ft_lstadd_back(&history, ft_lstnew(list));
-		i = make_list(env);
+		make_list(env);
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		set_signal_return(env);
 		free(g_line);
-		if (!(g_line = malloc(1)))
-			return (-1);
-		(g_line)[0] = 0;
+		init_g_line();
 	}
-	printf("exit\n");
-	return (return_return(env)); //i
+	return (return_return(env));
 	argv = NULL;
 }
