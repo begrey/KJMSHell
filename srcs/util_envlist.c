@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   util_envlist.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 14:33:22 by sunmin            #+#    #+#             */
+/*   Updated: 2021/06/02 14:34:12 by sunmin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_env	*ft_envnew(void *key, void *value, int if_value)
@@ -30,26 +42,15 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 	last = ft_envlast(temp);
 	if (last)
 	{
-		last->next = new;		// 없으면 터짐
+		last->next = new;
 		new->prev = last;
 	}
-	new->next = (NULL);		// 없으면 터짐
-
-
-/*	if (lst == NULL || new == NULL)
-		return ;
-	if (*lst == NULL)
-		*lst = new;
-	last = ft_envlast(*lst);
-	last->next = new;
 	new->next = (NULL);
-	*/
 }
 
 t_env	*ft_envlast(t_env *lst)
 {
 	t_env *temp;
-
 
 	if (lst == NULL)
 		return (NULL);
@@ -70,5 +71,5 @@ t_env	*ft_envfind(t_env **lst, char *s)
 			return (begin);
 		begin = begin->next;
 	}
-	return NULL;
+	return (NULL);
 }

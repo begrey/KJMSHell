@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   util_envlist2.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/02 14:35:14 by sunmin            #+#    #+#             */
+/*   Updated: 2021/06/02 14:35:43 by sunmin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-void	put_return(int ret, t_env *env)
+void		put_return(int ret, t_env *env)
 {
-	t_env *temp;
+	t_env	*temp;
 	char	*num;
 
 	temp = env;
@@ -13,15 +24,15 @@ void	put_return(int ret, t_env *env)
 		if (temp->key[0] == '?')
 		{
 			free(temp->value);
-			temp->value = num;		// free 해줘야 함
+			temp->value = num;
 		}
 		temp = temp->next;
 	}
 }
 
-int		return_return(t_env *env)		// 쓸 필요 없을 것 같음
+int			return_return(t_env *env)
 {
-	t_env *temp;
+	t_env	*temp;
 
 	temp = env;
 	while (temp)
@@ -35,13 +46,13 @@ int		return_return(t_env *env)		// 쓸 필요 없을 것 같음
 	return (0);
 }
 
-char	*find_key(const char *str)
+char		*find_key(const char *str)
 {
 	int		i;
 	int		equal;
 	char	*key;
 	int		flag;
-	
+
 	flag = 0;
 	key = ft_strdup((char *)str);
 	equal = 0;
@@ -61,7 +72,7 @@ char	*find_key(const char *str)
 	return (key);
 }
 
-char	*find_value(const char *str)
+char		*find_value(const char *str)
 {
 	char	*value;
 	char	*result;
