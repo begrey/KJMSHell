@@ -3,12 +3,16 @@ C = clang
 NAME		= minishell
 LIBFT		= libft.a
 
-SRCS		= ./srcs/convert_env.c \
+SRCS		= ./srcs/parse/convert_env.c \
+			  ./srcs/parse/convert_env_util.c \
+			  ./srcs/parse/convert_env_util2.c \
 			  ./srcs/split_by_null.c \
 			  ./srcs/token_syn_check.c \
 			  ./srcs/parse.c \
 			  ./srcs/util_envlist.c \
-			  ./srcs/ft_export.c \
+			  ./srcs/exec/ft_export.c \
+			  ./srcs/exec/ft_export_util.c \
+			  ./srcs/exec/ft_export_util2.c \
 			  ./srcs/ft_split_quote.c \
 			  ./srcs/util_envlist2.c \
 			  ./srcs/util_list.c \
@@ -17,11 +21,14 @@ SRCS		= ./srcs/convert_env.c \
 			  ./srcs/util_str.c \
 			  ./srcs/redirection.c \
 			  ./srcs/main.c \
-			  ./srcs/ft_env_sort.c \
-			  ./srcs/convert_escape.c \
+			  ./srcs/exec/ft_env_sort.c \
+			  ./srcs/parse/convert_escape.c \
+			  ./srcs/parse/convert_escape_util.c \
 			  ./srcs/ft_free.c \
 			  ./srcs/stream/pipe.c \
 			  ./srcs/util/util_pipe.c \
+			  ./srcs/exec/ft_env.c \
+			  ./srcs/exec/ft_unset.c \
 			  ./srcs/exec/exec_command.c \
 			  ./srcs/exec/ft_cd.c \
 			  ./srcs/exec/ft_echo.c \

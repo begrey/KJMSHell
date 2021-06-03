@@ -6,11 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:50:43 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 17:38:41 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 13:47:44 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void		ft_env_sort(t_env **env)
 {

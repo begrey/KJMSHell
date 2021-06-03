@@ -137,7 +137,16 @@ int			ft_pipesize(t_line *list);
 void	exec_export(t_line *line, t_env *env, int pip_flag);
 void	exec_env(t_line *line, t_env *env, int pip_flag);
 void	exec_unset(t_line *line, t_env *env, int pip_flag);
+
+//ft_export_util.c
 char	*extract_env(char *str, t_env *env);
+void	if_value_or_not(t_line **tmp, int *if_value, char **value, t_env *env);
+void	make_if_value_export(t_env *env, char *ex_env, char *value);
+void	make_no_value_export(char *ex_env, t_env *env);
+void	put_if_value_export(t_env *temp, char *value);
+//ft_export_util2.c
+void	printf_export(t_env *env);
+int		is_alpha_dollar_str(char *s);
 
 // sunmin 추가
 
@@ -172,7 +181,18 @@ void	free_split(char **split);
 
 //		convert_env.c
 char		*convert_env(const char *str, t_env *env);
+void		join_env_temp(char *s, char **result, t_env *env);
+int			get_new_len(const char *str, t_env *env);
+int			if_effective(const char *str, int flag);
+char		*exact_envstr(char *str);
+//		convert_env_util.c
+int			check_flag(char c, int flag);
+int			check_env_len(const char *str);
+char		*put_return_value(char *res);
+//		convert_env_util2.c
 char		*ft_append(char *s, char c);
+int			free_temp(char *s, t_env *env);
+int			if_env_dollar(char c1, char c2);
 
 //		redir_syn_check.c
 int			redir_syn_check(t_line *line);
@@ -209,6 +229,8 @@ void		ft_env_sort(t_env **env);
 char		*delete_escape(char *s);
 char		*restore_escape(char *s);
 char		*convert_escape(char *s);
+//		convert_escape_util.c
+void		init_var(int *i, int *flag);
 
 //		exit.c
 void		ft_exit(t_line *line, t_env *env, int pip_flag);
@@ -216,6 +238,14 @@ void		ft_exit(t_line *line, t_env *env, int pip_flag);
 void		free_struct(t_line *list);
 void		free_list_struct(t_line **list);
 void		free_pipe(t_pipe *list);
+
+//		ft_env.c
+void	exec_env(t_line *line, t_env *env, int pip_flag);
+void	pip_exit(int pip_flag);
+void	print_env(t_env *idx);
+//		ft_unset.c
+void	exec_unset(t_line *line, t_env *env, int pip_flag);
+void	free_single_env(t_env *env);
 
 #endif
 
