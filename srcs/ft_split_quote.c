@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:51:42 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 10:16:28 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 11:00:52 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,60 +164,84 @@ int			check_word_num_return(char *s, int *word_num)
 	return (1);
 }
 
-char		**ft_split_quote(char *s)
+void		check_space_word_num(char **s, int *word_num, int *len)
 {
-	char	**split;
+	while (is_space(*(*s)))
+		(*s)++;
+	if (*(*s))
+	{
+		(*word_num)++;
+		(*len) = 0;
+		(*s)--;
+	}
+}
+
+void		split_i_malloc(char **split, int *word_len, int i)
+{
+	split[i] = (char *)malloc(sizeof(char) * (word_len[i] + 1));
+	split[i][word_len[i]] = '\0';
+}
+
+char		**return_if_flag(int *word_len, char **split)
+{
+	free(word_len);
+	free_split(split);
+	return (NULL);
+}
+
+void		next_when_is_space(char **s)
+{
+	while (is_space(*(*s)))
+		(*s)++;
+}
+
+void		split_malloc(char ***split, int word_num2)
+{
+	(*split) = (char **)malloc(sizeof(char *) * (word_num2 + 1));
+	(*split)[word_num2] = NULL;
+}
+
+char		put_split_quote(char **s, int *word_num, int *len, char ***split)
+{
 	char	flag;
+
+	flag = '\0';
+	while (*(*s))
+	{
+		flag = flag_check(*(*s), flag);
+		if (!flag && is_space(*(*s)))
+			check_space_word_num(&(*s), &(*word_num), &(*len));
+		(*split)[(*word_num) - 1][(*len)] = *(*s);
+		(*s)++;
+		(*len)++;
+	}
+	return (flag);
+}
+
+char		**ft_split_quote(char *s, char **split, char flag)
+{
 	int		word_num;
 	int		word_num2;
 	int		len;
 	int		*word_len;
 	int		i;
 
-	flag = '\0';
-	split = NULL;
 	if (s[0] == '\0')
 		return (return_if_null(split));
 	split = NULL;
 	word_num2 = get_word_num(s);
 	word_len = get_word_len(s, flag, 1);
-	split = (char **)malloc(sizeof(char *) * (word_num2 + 1));
-	split[word_num2] = NULL;
+	split_malloc(&split, word_num2);
 	i = -1;
 	while (++i < word_num2)
-	{
-		split[i] = (char *)malloc(sizeof(char) * (word_len[i] + 1));
-		split[i][word_len[i]] = '\0';
-	}
-	while (is_space(*s))
-		s++;
+		split_i_malloc(split, word_len, i);
+	next_when_is_space(&s);
 	if ((check_word_num_return(s, &word_num)) == 0)
 		return (NULL);
 	len = 0;
-	while (*s)
-	{
-		flag = flag_check(*s, flag);
-		if (!flag && is_space(*s))
-		{
-			while (is_space(*s))
-				s++;
-			if (*s)
-			{
-				word_num++;
-				len = 0;
-				s--;
-			}
-		}
-		split[word_num - 1][len] = *s;
-		s++;
-		len++;
-	}
+	flag = put_split_quote(&s, &word_num, &len, &split);
 	if (flag)
-	{
-		free(word_len);
-		free_split(split);
-		return (0);
-	}
+		return (return_if_flag(word_len, split));
 	free(word_len);
 	return (split);
 }

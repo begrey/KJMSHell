@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:00:42 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 10:37:27 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:22:25 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env)
 {
