@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:00:42 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 11:22:25 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 11:40:46 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void		dup_pipe(t_line *list, int pipefd[2], int flags, t_env *env)
 			perror("dup2");
 	close(pipefd[READ]);
 	close(pipefd[WRITE]);
-	ft_redirection(list, env, cpid);
+	ft_redirection(list, env, cpid, NULL);
 }
 
 void		pipe_struct(t_pipe *pip)
@@ -115,7 +115,7 @@ void		split_by_pipe(t_line *list, t_env *env)
 		i--;
 	}
 	if (pip == 0)
-		ft_redirection(list, env, 1);
+		ft_redirection(list, env, 1, NULL);
 	else
 	{
 		i = pipe_exec(pipe, arg_list, env);

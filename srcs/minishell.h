@@ -183,7 +183,7 @@ t_line		*ft_list_null_term(t_line *lst, int index);
 int			ft_split_list_token(t_line *lst, char token);
 
 //		redirection.c
-void		ft_redirection(t_line *line, t_env *env, int pip_flag);
+void		ft_redirection(t_line *line, t_env *env, int pip_flag, int *fd);
 int			which_redir(char *s);
 
 //		token_syn_check.c
