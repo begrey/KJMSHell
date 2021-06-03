@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:36:18 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 18:28:27 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 18:51:51 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int			if_effective(const char *str, int flag)
 	char	*s;
 
 	s = (char *)str;
+	if (*s == '$' && !is_alpha(*(s + 1)))
+		return (0);
 	if (!flag)
 	{
 		if (if_env_dollar(*s, *(s + 1)))
@@ -121,7 +123,7 @@ char		*convert_env(const char *str, t_env *env)
 			s = s + env_len;
 		}
 		else
-			result = ft_append(result, *s);
+			convert_env_append(&s, &result);
 		s++;
 	}
 	return (result);

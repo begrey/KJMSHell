@@ -6,11 +6,17 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 13:27:06 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 18:17:45 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 18:52:34 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void		convert_env_append(char **s, char **result)
+{
+	if (*(*s) != '$')
+		(*result) = ft_append((*result), *(*s));
+}
 
 int			if_env_dollar(char c1, char c2)
 {
@@ -54,6 +60,7 @@ int			free_temp(char *s, t_env *env)
 	env_var_len = 0;
 	temp = exact_envstr(s);
 	temp2 = extract_env(temp, env);
+	printf("temp2 %s\n", temp2);
 	env_var_len = ft_strlen(temp2);
 	free(temp);
 	free(temp2);

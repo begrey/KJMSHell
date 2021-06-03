@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 13:24:15 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 18:28:38 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 18:41:09 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			check_env_len(const char *str)
 	s = (char *)str;
 	if (*s == '$')
 		s++;
-	if (*s == '?')
+	if (*s == '?' || iis_num(*s))
 		return (1);
 	while (*s && (is_alpha(*s) || iis_num(*s)))
 	{
