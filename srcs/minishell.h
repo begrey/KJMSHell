@@ -69,7 +69,7 @@ typedef struct s_line
 	struct s_line		*next;
 }				t_line;
 
-//  main.c
+//  signal.c
 
 void		signal_sigquit(int sig);
 void		signal_handler(int sig);
@@ -100,32 +100,38 @@ void		exec_command(t_line *line, char *file_name, t_env *env, int pip_flag);
 void		other_command(t_line *line, t_env *env, char *file_name, int pip_flag);
 void		other_command_exec(t_line *line, t_env *env, char *file_name);
 
-//	parse_line.c    후에 히스토리랑 커서 별로 바꾸자
-int			num_len(int n);
+//	input_line.c    후에 히스토리랑 커서 별로 바꾸자
+int			remove_c(t_cursor *cursor);
+int			append(char c);
+int					put_cursor(t_cursor *cursor, struct termios term, char c);
+int				check_c(t_list *history, int *h_cnt, t_cursor *cursor, int c);
+int			input_line(t_list *history, t_env *env, int c);
+
+//	cursor.c
 int			putchar_tc(int tc);
 void		set_cursor_row_col(t_cursor *cursor, char *buf);
 void		get_cursor_position(t_cursor *cursor);
 void		delete_end(t_cursor *cursor);
 void		delete_line(t_cursor *cursor);
-int			remove_c(t_cursor *cursor);
-int			append(char c);
+
+//  history.c
 void		renew_history(t_list *history, int cnt);
 int			adjust_cnt(t_list *history, int cnt, t_cursor *cursor);
 int			find_history(t_list *history, int cnt, t_cursor *cursor);
-int			parse_line(t_list *history, t_env *env);
+
+//	term.c
+void				init_cursor_term(t_cursor *cursor,
+struct termios *term, int *h_cnt);
 struct termios		term_on();
 void		term_off();
+int			num_len(int n); 
+void				set_sigint_env(t_env *env);
 
-//	ft_add_back.c
-void		ft_pipeadd_back(t_pipe **pip, t_pipe *new);
-
-
-//	ft_last.c
-t_pipe		*ft_pipelast(t_pipe *lst);
-
-
-//	ft_new.c
+//	util_pipe.c
 t_pipe		*ft_pipenew();
+t_pipe		*ft_pipelast(t_pipe *lst);
+void		ft_pipeadd_back(t_pipe **pip, t_pipe *new);
+int			ft_pipesize(t_line *list);
 
 //ft_export.c
 void	exec_export(t_line *line, t_env *env, int pip_flag);
