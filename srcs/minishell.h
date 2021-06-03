@@ -142,14 +142,11 @@ char	*extract_env(char *str, t_env *env);
 // sunmin 추가
 
 
-//		ft_listadd_back.c
+//		util_list.c
 void		ft_listadd_back(t_line **lst, t_line *new);
-
-//		ft_listlast.c
 t_line		*ft_listlast(t_line *lst);
-
-//		ft_listnew.c
 t_line		*ft_listnew(char *content);
+int			ft_listsize(t_line *line);
 
 //		util_envlist.c
 t_env		*ft_envnew(void *key, void *value, int if_value);
@@ -205,9 +202,6 @@ int			is_alpha(char c);
 int			is_dollar(char c);
 char	*str_appendchar(char *s1, char c);
 
-//		ft_listsize.c
-int			ft_listsize(t_line *line);
-
 //		ft_env_sort.c
 void		ft_env_sort(t_env **env);
 
@@ -223,9 +217,6 @@ void		free_struct(t_line *list);
 void		free_list_struct(t_line **list);
 void		free_pipe(t_pipe *list);
 
-// //		util_list.c
-// t_env	*ft_listnew(void *key, void *value)
-// void	ft_listadd_back(t_env **lst, t_env *new)
 #endif
 
 
