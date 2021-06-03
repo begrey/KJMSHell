@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:04:24 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 22:19:46 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 09:12:35 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void		put_left_or_right(t_line **temp, int *type)
 	}
 }
 
+void		next_temp_flag(t_line **temp, int *flag)
+{
+
+	(*temp) = (*temp)->next;
+	(*flag)++;
+}
+
 void		put_redir(t_line *temp, char ***re_name, int **re_type)
 {
 	int		flag;
@@ -56,8 +63,7 @@ void		put_redir(t_line *temp, char ***re_name, int **re_type)
 					(*re_type)[++i] = type;
 					(*re_name)[i] = ft_strdup(temp->arg);
 				}
-				temp = temp->next;
-				flag++;
+				next_temp_flag(&temp, &flag);
 			}
 		}
 		if (temp && !is_redir(temp->arg[0]))
@@ -246,16 +252,16 @@ void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	char	*input;
 
 	temp = line;
-	line = ft_list_delredir(temp);
-	delete_escape_list(line);
-	del_qoute_list(line);
-	restore_escape_list(line);
-
 	re_num = redir_num(temp);
 	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
 	re_name[re_num] = NULL;
 	re_type = (int *)malloc(sizeof(int) * (re_num));
 	put_redir(temp, &re_name, &re_type);
+	line = ft_list_delredir(temp);
+	delete_escape_list(line);
+	del_qoute_list(line);
+	restore_escape_list(line);
+
 	fd_wr = -1;
 	j = -1;
 	i = 0;
