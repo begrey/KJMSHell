@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:10:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 19:05:04 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 20:58:32 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ int		make_list(t_env *env)
 	errno = 0;
 	split = NULL;
 	line = NULL;
+	g_line[ft_strlen(g_line) - 1] = '\0';
 	s_line = ft_strdup(g_line);
 	escape_line = convert_escape(s_line);
 	free(s_line);
-	escape_line[ft_strlen(escape_line) - 1] = '\0';
 	if (check_single_escape(escape_line) == -1
 			|| !(split_line = ft_split_quote(escape_line, split, '\0')))
 		return (ft_strerror("syntax error\n"));

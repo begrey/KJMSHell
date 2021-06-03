@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:29:02 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 19:17:41 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 20:59:18 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int		ft_strerror(char *s)
 	char *temp;
 
 	temp = s;
-	printf("%s", temp);
 	return (-1);
 }
 
@@ -56,7 +55,7 @@ int		is_token_quote(const char *str)		// 여기가 문제임
 		}
 		s++;
 	}
-	if(*s)
+	if (is_token(s - 1))
 		ret++;
 	return (ret);
 }
