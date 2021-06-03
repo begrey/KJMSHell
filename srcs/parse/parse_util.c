@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:28:51 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 14:44:37 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 19:07:38 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	**ft_token_split(char *arg)
 
 	s = (char *)arg;
 	split_num = is_token_quote(arg);
+	printf("dd %d\n", split_num);//
 	split_token = (char **)malloc(sizeof(char *) * (split_num + 1));
 	split_token[split_num] = NULL;
 	i = -1;
@@ -64,6 +65,12 @@ char	**ft_token_split(char *arg)
 			s = put_token_bytes(split_token, s, i);
 		else
 			s = put_bytes(split_token, s, i);
+	}
+	int m = 0;//
+	while (split_token[m])
+	{
+		printf("%s\n", split_token[m]);
+		m++;
 	}
 	return (split_token);
 }

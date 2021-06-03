@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:29:02 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 14:34:29 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 19:17:41 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		is_token(char *s)
 	return (0);
 }
 
-int		is_token_quote(const char *str)
+int		is_token_quote(const char *str)		// 여기가 문제임
 {
 	char		*s;
 	char		flag;
@@ -56,6 +56,8 @@ int		is_token_quote(const char *str)
 		}
 		s++;
 	}
+	if(*s)
+		ret++;
 	return (ret);
 }
 
