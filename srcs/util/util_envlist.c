@@ -6,11 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:33:22 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 14:34:12 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 14:15:29 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_env	*ft_envnew(void *key, void *value, int if_value)
 {

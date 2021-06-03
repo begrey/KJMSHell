@@ -6,11 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:31:21 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 14:32:47 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 14:15:42 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int		ft_strcmp(char *dest, char *src)
 {

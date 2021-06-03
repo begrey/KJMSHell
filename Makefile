@@ -6,25 +6,27 @@ LIBFT		= libft.a
 SRCS		= ./srcs/parse/convert_env.c \
 			  ./srcs/parse/convert_env_util.c \
 			  ./srcs/parse/convert_env_util2.c \
-			  ./srcs/split_by_null.c \
-			  ./srcs/token_syn_check.c \
-			  ./srcs/parse.c \
-			  ./srcs/util_envlist.c \
+			  ./srcs/parse/split_by_null.c \
+			  ./srcs/parse/token_syn_check.c \
+			  ./srcs/parse/parse.c \
+			  ./srcs/parse/parse_util.c \
+			  ./srcs/parse/parse_util2.c \
+			  ./srcs//util/util_envlist.c \
 			  ./srcs/exec/ft_export.c \
 			  ./srcs/exec/ft_export_util.c \
 			  ./srcs/exec/ft_export_util2.c \
 			  ./srcs/ft_split_quote.c \
-			  ./srcs/util_envlist2.c \
-			  ./srcs/util_list.c \
-			  ./srcs/init_env.c \
-			  ./srcs/redir_syn_check.c \
-			  ./srcs/util_str.c \
+			  ./srcs/util/util_envlist2.c \
+			  ./srcs/util/util_list.c \
+			  ./srcs/parse/init_env.c \
+			  ./srcs/parse/redir_syn_check.c \
+			  ./srcs/util/util_str.c \
 			  ./srcs/redirection.c \
 			  ./srcs/main.c \
 			  ./srcs/exec/ft_env_sort.c \
 			  ./srcs/parse/convert_escape.c \
 			  ./srcs/parse/convert_escape_util.c \
-			  ./srcs/ft_free.c \
+			  ./srcs/util/ft_free.c \
 			  ./srcs/stream/pipe.c \
 			  ./srcs/util/util_pipe.c \
 			  ./srcs/exec/ft_env.c \

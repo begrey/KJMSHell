@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/26 15:28:21 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 14:58:27 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 14:12:27 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_env	*init_env(char *envp[], t_env *env)
 {

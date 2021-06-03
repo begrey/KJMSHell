@@ -6,11 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:00:37 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 15:05:25 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 14:20:11 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int			syntax_print(char c)
 {

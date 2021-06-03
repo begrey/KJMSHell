@@ -6,11 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:35:14 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 14:35:43 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 14:15:33 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void		put_return(int ret, t_env *env)
 {

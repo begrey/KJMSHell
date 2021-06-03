@@ -212,6 +212,18 @@ int			token_syn_check(t_line *line);
 //		parse.c
 int			is_token(char *s);
 int			make_list(t_env *env);
+//		parse_util.c
+char	*put_bytes(char **split_token, char *s, int i);
+void	list_split_addback(t_line **lst, char *arg);
+char	**ft_token_split(char *arg);
+char	*put_token_byte(char **split_token, char *s, int i, char c);
+char	*put_token_bytes(char **split_token, char *s, int i);
+
+//		parse_util2.c
+int		ft_strerror(char *s);
+int		is_token(char *s);
+int		is_token_quote(const char *str);
+int		where_token(char *str);
 
 //		util_str.c
 int			ft_strcmp(char *dest, char *src);
