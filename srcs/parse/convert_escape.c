@@ -6,11 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:48:23 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 16:09:00 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 13:46:16 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./minishell.h"
+#include "../minishell.h"
 
 void		convert_minus_escape(int flag, char **s, int *i, char **result)
 {
@@ -23,12 +23,6 @@ void		convert_minus_escape(int flag, char **s, int *i, char **result)
 			(*result)[*i] = -1 * (*(*s));
 		}
 	}
-}
-
-void		init_var(int *i, int *flag)
-{
-	*i = -1;
-	*flag = 1;
 }
 
 char		*convert_escape(char *s)

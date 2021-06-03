@@ -6,22 +6,13 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:36:18 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 17:31:53 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 13:38:24 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-char		*put_return_value(char *res)
-{
-	res = (char *)malloc(sizeof(char) * 3);
-	res[0] = '$';
-	res[1] = '?';
-	res[2] = '\0';
-	return (res);
-}
-
-static char	*exact_envstr(char *str)
+char		*exact_envstr(char *str)
 {
 	char	*s;
 	int		len;
@@ -42,60 +33,13 @@ static char	*exact_envstr(char *str)
 	}
 	res = (char *)malloc(sizeof(char) * (len + 1));
 	res[len] = '\0';
-	i = 0;
-	while (i < len)
-	{
+	i = -1;
+	while (++i < len)
 		res[i] = str[i];
-		i++;
-	}
 	return (res);
 }
 
-static int	if_env_dollar(char c1, char c2)
-{
-	if (c1 == '$')
-	{
-		if ((c2 >= 'A' && c2 <= 'Z') || (c2 >= 'a' && c2 <= 'z') || (c2 == '?'))
-			return (1);
-	}
-	return (0);
-}
-
-static int	check_flag(char c, int flag)
-{
-	if (flag == 0)
-	{
-		if (c == '\'')
-			flag = 1;
-	}
-	else
-	{
-		if (c == '\'')
-			flag = 0;
-	}
-	return (flag);
-}
-
-static int	check_env_len(const char *str)
-{
-	char	*s;
-	int		len;
-
-	len = 0;
-	s = (char *)str;
-	if (*s == '$')
-		s++;
-	if (*s == '?')
-		return (1);
-	while (*s && is_alpha(*s))
-	{
-		len++;
-		s++;
-	}
-	return (len);
-}
-
-static int	if_effective(const char *str, int flag)
+int			if_effective(const char *str, int flag)
 {
 	char	*s;
 
@@ -110,22 +54,7 @@ static int	if_effective(const char *str, int flag)
 	return (0);
 }
 
-int			free_temp(char *s, t_env *env)
-{
-	char	*temp;
-	char	*temp2;
-	int		env_var_len;
-
-	env_var_len = 0;
-	temp = exact_envstr(s);
-	temp2 = extract_env(temp, env);
-	env_var_len = ft_strlen(temp2);
-	free(temp);
-	free(temp2);
-	return (env_var_len);
-}
-
-static int	get_new_len(const char *str, t_env *env)
+int			get_new_len(const char *str, t_env *env)
 {
 	char	*s;
 	int		env_len;
@@ -152,29 +81,6 @@ static int	get_new_len(const char *str, t_env *env)
 		}
 	}
 	return (new_len);
-}
-
-char		*ft_append(char *s, char c)
-{
-	int		i;
-	int		len;
-	char	*str;
-
-	i = 0;
-	len = 0;
-	if (s != NULL)
-		len = ft_strlen(s);
-	if (!(str = (char *)malloc(sizeof(char) * (len + 2))))
-		return (NULL);
-	str[len + 1] = '\0';
-	while (len > 0 && s[i])
-	{
-		str[i] = s[i];
-		i++;
-	}
-	str[i] = c;
-	free(s);
-	return (str);
 }
 
 void		join_env_temp(char *s, char **result, t_env *env)
