@@ -6,11 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:59:26 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 17:38:26 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 14:13:07 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int			which_redir(char *s)
 {

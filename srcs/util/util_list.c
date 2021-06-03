@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 11:55:36 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 11:57:21 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 14:15:37 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int			ft_listsize(t_line *line)
 {

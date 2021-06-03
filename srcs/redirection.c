@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:04:24 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 12:22:34 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 14:25:37 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,6 @@ t_line		*ft_list_delredir(t_line *line)
 		redir = line;
 		file = line->next;
 		(line) = (line)->next->next;
-//		free_struct(redir);
-//		free_struct(file);
 		if (line != NULL)
 			(line)->prev = NULL;
 	}
@@ -124,7 +122,8 @@ t_line		*ft_list_delredir(t_line *line)
 			redir = temp;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
-		//	free_struct(redir);
+			free(redir->arg);
+			free(redir);
 			temp = temp->next;
 			if (temp && temp->prev)
 			{
@@ -132,7 +131,8 @@ t_line		*ft_list_delredir(t_line *line)
 				temp->prev->next = temp->next;
 				if (temp->next)
 					temp->next->prev = temp->prev;
-		//		free_struct(file);
+				free(file->arg);
+				free(file);
 			}
 		}
 		temp = temp->next;
