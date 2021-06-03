@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 13:27:06 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 18:52:34 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 19:01:48 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int			free_temp(char *s, t_env *env)
 	env_var_len = 0;
 	temp = exact_envstr(s);
 	temp2 = extract_env(temp, env);
-	printf("temp2 %s\n", temp2);
 	env_var_len = ft_strlen(temp2);
 	free(temp);
 	free(temp2);

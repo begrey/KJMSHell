@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:36:18 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 18:51:51 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 19:00:53 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			if_effective(const char *str, int flag)
 	s = (char *)str;
 	if (*s == '$' && !is_alpha(*(s + 1)))
 		return (0);
-	if (!flag)
+	if (flag != 1)
 	{
 		if (if_env_dollar(*s, *(s + 1)))
 		{
