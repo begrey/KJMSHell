@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_by_null.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/03 11:48:22 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/06/03 11:50:41 by jimkwon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int ft_listiter(t_line *lst)
+int			ft_listiter(t_line *lst)
 {
-	int i;
-	t_line *temp;
+	int		i;
+	t_line	*temp;
 
 	i = 0;
 	temp = lst;
@@ -15,36 +27,36 @@ int ft_listiter(t_line *lst)
 	return (i);
 }
 
-t_line *ft_list_null_term(t_line *lst, int index)
+t_line		*ft_list_null_term(t_line *lst, int index)
 {
-	int i;
-	t_line *temp;
-	t_line *free_temp;
+	int		i;
+	t_line	*temp;
+	t_line	*free_temp;
 
 	i = 0;
 	while (lst != NULL)
 	{
 		if (i == (index - 1))
 		{
-			if (lst->next == NULL) //token 없이 마지막 null만날때,
+			if (lst->next == NULL)
 				temp = lst->next;
 			else
 				temp = lst->next->next;
 			free_temp = lst->next;
 			free(free_temp);
 			lst->next = NULL;
-			return (temp);	
+			return (temp);
 		}
 		lst = lst->next;
 		i++;
 	}
-	return lst;
+	return (lst);
 }
 
-int ft_split_list_token(t_line *lst, char token)
+int			ft_split_list_token(t_line *lst, char token)
 {
-	int i;
-	t_line *temp;
+	int		i;
+	t_line	*temp;
 
 	i = 0;
 	temp = lst;
@@ -61,8 +73,7 @@ int ft_split_list_token(t_line *lst, char token)
 	return (i);
 }
 
-
-void ft_move_temp(t_line **temp, int i)
+void		ft_move_temp(t_line **temp, int i)
 {
 	while (temp != NULL && i != 0)
 	{
@@ -71,28 +82,10 @@ void ft_move_temp(t_line **temp, int i)
 	}
 }
 
-// void	split_by_pipe(t_line **line)
-// {
-// 	t_line *temp;
-// 	t_line *iter;
-// 	int		i;
-
-// 	temp = *line;
-// 	iter = *line;
-// 	while (temp != NULL)
-// 	{
-// 		i = ft_split_list_token(temp, '|');
-// 		temp = ft_list_null_term(temp, i);
-// 		ft_listiter(iter);
-// 		ft_redirection(&iter);
-// 		iter = temp;
-// 	}
-// }
-
 void		split_by_semi(t_line *line, t_env *env)
 {
-	t_line *temp;
-	t_line *iter;
+	t_line	*temp;
+	t_line	*iter;
 	int		i;
 	int		j;
 
@@ -107,40 +100,4 @@ void		split_by_semi(t_line *line, t_env *env)
 		split_by_pipe(iter, env);
 		iter = temp;
 	}
-
 }
-
-
-/*
-int main()
-{
-	t_line *list;
-	t_line *temp;
-	t_line *iter;
-	int i;
-
-	list = NULL;
-	//pwd -> | ls -> | -> pwd -> ; -> echo -> abc
-	ft_listadd_back(&list, ft_listnew("pwd"));
-	ft_listadd_back(&list, ft_listnew("ls"));
-	ft_listadd_back(&list, ft_listnew("|"));
-	ft_listadd_back(&list, ft_listnew("ls"));
-	ft_listadd_back(&list, ft_listnew("|"));
-	ft_listadd_back(&list, ft_listnew("pwd"));
-	ft_listadd_back(&list, ft_listnew("pwd"));
-	ft_listadd_back(&list, ft_listnew(";"));
-	ft_listadd_back(&list, ft_listnew("echo"));
-	ft_listadd_back(&list, ft_listnew("abc"));
-	temp = list;
-	iter = list;
-	while (temp != NULL)
-	{
-		i = ft_split_list_token(temp, ';');
-		//printf("arg : %s  i : %d\n", temp->arg, i);
-		temp = ft_list_null_term(temp, i);
-		ft_listiter(iter);
-		iter = temp;
-		printf("\n");
-	}
-}
-*/

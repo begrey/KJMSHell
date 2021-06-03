@@ -3,63 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   util_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/02 16:31:13 by sunmin            #+#    #+#             */
-/*   Updated: 2021/05/03 09:04:58 by sunmin           ###   ########.fr       */
+/*   Created: 2021/06/03 11:55:36 by jimkwon           #+#    #+#             */
+/*   Updated: 2021/06/03 11:57:21 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*ft_listnew(void *key, void *value)
+int			ft_listsize(t_line *line)
 {
-	t_env	*new;
+	t_line	*temp;
+	int		len;
 
-	if (!(new = (t_env *)malloc(sizeof(t_env))))
-		return (0);
-	new->key = key;
-	new->value = value;
-	return (new);
-}
-
-void	ft_listadd_back(t_env **lst, t_env *new)
-{
-	t_env	*last;
-
-	if (lst == NULL || new == NULL)
-		return ;
-	if (*lst == NULL)
-		*lst = new;
-	last = ft_listlast(*lst);
-	last->next = new;
-	new->next = (NULL);
-}
-
-t_env	*ft_listlast(t_env *lst)
-{
-	if (lst == NULL)
-		return (NULL);
-	while (lst)
+	len = 0;
+	temp = line;
+	while (temp != NULL)
 	{
-		if (lst->next)
-			lst = lst->next;
-		else
-			break;
+		len++;
+		temp = temp->next;
 	}
+	return (len);
+}
+
+t_line		*ft_listlast(t_line *lst)
+{
+	t_line	*temp;
+
+	if (!lst)
+		return (NULL);
+	temp = lst;
+	while (temp->next != NULL)
+		temp = temp->next;
+	return (temp);
+}
+
+t_line		*ft_listnew(char *content)
+{
+	t_line	*lst;
+
+	if (!(lst = (t_line *)malloc(sizeof(t_line) * 1)))
+		return (NULL);
+	lst->arg = content;
+	lst->next = NULL;
+	lst->prev = NULL;
 	return (lst);
 }
 
-t_env	*ft_listfind(t_env **lst, char *s)
+void		ft_listadd_back(t_line **lst, t_line *new)
 {
-	t_env *begin;
+	t_line	*last;
+	t_line	*temp;
 
-	begin = *lst;
-	while (begin)
+	temp = *lst;
+	if (temp == NULL)
 	{
-		if ((ft_strcmp(begin->key, s)) == 0)
-			return (begin);
-		begin = begin->next;
+		*lst = new;
+		new->next = NULL;
+		new->prev = NULL;
+		return ;
 	}
-	return NULL;
+	temp = *lst;
+	last = ft_listlast(temp);
+	last->next = new;
+	new->prev = last;
 }

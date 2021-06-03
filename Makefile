@@ -5,34 +5,30 @@ LIBFT		= libft.a
 
 SRCS		= ./srcs/convert_env.c \
 			  ./srcs/split_by_null.c \
-			  ./srcs/exec/exec_command.c \
-			  ./srcs/stream/pipe.c \
-			  ./srcs/exec/ft_cd.c \
-			  ./srcs/util/util_pipe.c \
 			  ./srcs/token_syn_check.c \
-			  ./srcs/exec/ft_echo.c \
-			  ./srcs/exec/ft_pwd.c \
 			  ./srcs/parse.c \
 			  ./srcs/util_envlist.c \
 			  ./srcs/ft_export.c \
 			  ./srcs/ft_split_quote.c \
-			  ./srcs/system/input_line.c \
 			  ./srcs/util_envlist2.c \
-			  ./srcs/ft_listadd_back.c \
-			  ./srcs/ft_split_syn.c \
-			  ./srcs/ft_listlast.c \
+			  ./srcs/util_list.c \
 			  ./srcs/init_env.c \
 			  ./srcs/redir_syn_check.c \
 			  ./srcs/util_str.c \
-			  ./srcs/ft_listnew.c \
 			  ./srcs/redirection.c \
-			  ./srcs/exec/other_command.c \
 			  ./srcs/main.c \
-			  ./srcs/ft_listsize.c \
 			  ./srcs/ft_env_sort.c \
 			  ./srcs/convert_escape.c \
+			  ./srcs/ft_free.c \
+			  ./srcs/stream/pipe.c \
+			  ./srcs/util/util_pipe.c \
+			  ./srcs/exec/exec_command.c \
+			  ./srcs/exec/ft_cd.c \
+			  ./srcs/exec/ft_echo.c \
+			  ./srcs/exec/ft_pwd.c \
 			  ./srcs/exec/ft_exit.c \
-			  ./srcs/ft_listfree.c \
+			  ./srcs/exec/other_command.c \
+			  ./srcs/system/input_line.c \
 			  ./srcs/system/signal.c \
 			  ./srcs/system/cursor.c \
 			  ./srcs/system/history.c \
