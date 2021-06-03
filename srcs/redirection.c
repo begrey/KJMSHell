@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:04:24 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 11:26:54 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 12:22:34 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void		next_temp_flag(t_line **temp, int *flag)
 	(*flag)++;
 }
 
-void		put_redir(t_line *temp, char ***re_name, int **re_type)
+void		put_redir(t_line *line, char ***re_name, int **re_type, int i)
 {
 	int		flag;
 	int		type;
-	int		i;
+	t_line	*temp;
 
-	i = -1;
+	temp = line;
 	while (temp)
 	{
 		type = 0;
@@ -236,75 +236,86 @@ void		restore_escape_list(t_line *line)
 	}
 }
 
-void		ft_redirection(t_line *line, t_env *env, int pip_flag)
+int			redirection_open(int **fd, int re_num, int *re_type, char **re_name)
+{
+	int		i;
+	int		j;
+
+	j = -1;
+	i = -1;
+	(*fd) = (int *)malloc(sizeof(int) * 2);
+	(*fd)[1] = -1;
+	while (++i < re_num)
+	{
+		if (re_type[i] == 1)
+			(*fd)[1] = open(re_name[i], O_RDWR | O_CREAT | O_TRUNC, 00777);
+		else if (re_type[i] == 2)
+			(*fd)[1] = open(re_name[i], O_RDWR | O_APPEND | O_CREAT, 00777);
+		else if (re_type[i] == 3)
+		{
+			j = i;
+			if (((*fd)[0] = open(re_name[i], O_RDONLY, 00777)) < 0)
+			{
+				printf("%s\n", strerror(errno));
+				return (-2);
+			}
+		}
+	}
+	return (j);
+}
+
+void		convert_stream(int *fd, int *fd_temp)
+{
+	if (fd[1] > 0)
+	{
+		(*fd_temp) = dup(1);
+		dup2(fd[1], 1);
+	}
+}
+
+void		restore_stream(int *fd, int fd_temp)
+{
+	if (fd[1] > 0)
+	{
+		dup2(fd_temp, 1);
+		close(fd[1]);
+	}
+}
+
+void		init_re_name(t_line *line, int *re_num,
+		int **re_type, char ***re_name)
+{
+	(*re_num) = redir_num(line);
+	(*re_name) = (char **)malloc(sizeof(char *) * ((*re_num) + 1));
+	(*re_name)[(*re_num)] = NULL;
+	(*re_type) = (int *)malloc(sizeof(int) * ((*re_num)));
+}
+
+void		ft_redirection(t_line *line, t_env *env, int pip_flag, int *fd)
 {
 	int		re_num;
 	char	**re_name;
 	int		*re_type;
-	int		i;
-	t_line	*temp;
-	int		fd_wr;
-	int		fd_op;
 	int		fd_temp;
 	int		j;
-	char	*input;
 
-	temp = line;
-	re_num = redir_num(temp);
-	re_name = (char **)malloc(sizeof(char *) * (re_num + 1));
-	re_name[re_num] = NULL;
-	re_type = (int *)malloc(sizeof(int) * (re_num));
-	put_redir(temp, &re_name, &re_type);
-	line = ft_list_delredir(temp);
+	init_re_name(line, &re_num, &re_type, &re_name);
+	put_redir(line, &re_name, &re_type, -1);
+	line = ft_list_delredir(line);
 	delete_escape_list(line);
 	del_qoute_list(line);
 	restore_escape_list(line);
-
-	fd_wr = -1;
-	j = -1;
-	i = 0;
-	while (i < re_num)
+	if ((j = redirection_open(&fd, re_num, re_type, re_name)) == -2)
 	{
-		if (re_type[i] == 1)
-		{
-			fd_wr = open(re_name[i], O_RDWR | O_CREAT | O_TRUNC, 00777);
-		}
-		else if (re_type[i] == 2)
-		{
-			fd_wr = open(re_name[i], O_RDWR | O_APPEND | O_CREAT, 00777);
-		}
-		else if (re_type[i] == 3)
-		{
-			j = i;
-			if ((fd_op = open(re_name[i], O_RDONLY, 00777)) < 0)
-			{
-				printf("%s\n", strerror(errno));
-				put_return(1, env);
-				return ;
-			}
-		}
-		i++;
+		put_return(1, env);
+		return ;
 	}
-	temp = line;
-	if (j == -1 || temp->next)
-	{
-		j = 0;
-		input = NULL;
-	}
+	convert_stream(fd, &fd_temp);
+	if (j == -1 || line->next)
+		exec_command(line, NULL, env, pip_flag);
 	else
-		input = re_name[j];
-	temp = line;
-	if (fd_wr > 0)
-	{
-		fd_temp = dup(1);
-		dup2(fd_wr, 1);
-	}
-	exec_command(temp, input, env, pip_flag);
-	if (fd_wr > 0)
-	{
-		dup2(fd_temp, 1);
-		close(fd_wr);
-	}
+		exec_command(line, re_name[j], env, pip_flag);
+	restore_stream(fd, fd_temp);
 	free_split(re_name);
 	free(re_type);
 }
