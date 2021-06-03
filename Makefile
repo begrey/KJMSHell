@@ -15,13 +15,20 @@ SRCS		= ./srcs/parse/convert_env.c \
 			  ./srcs/exec/ft_export.c \
 			  ./srcs/exec/ft_export_util.c \
 			  ./srcs/exec/ft_export_util2.c \
-			  ./srcs/ft_split_quote.c \
+			  ./srcs/parse/ft_split_quote.c \
+			  ./srcs/parse/ft_split_quote_util.c \
+			  ./srcs/parse/ft_split_quote_util2.c \
+			  ./srcs/parse/ft_split_quote_util3.c \
 			  ./srcs/util/util_envlist2.c \
 			  ./srcs/util/util_list.c \
 			  ./srcs/parse/init_env.c \
 			  ./srcs/parse/redir_syn_check.c \
 			  ./srcs/util/util_str.c \
-			  ./srcs/redirection.c \
+			  ./srcs/util/util_str2.c \
+			  ./srcs/stream/redirection.c \
+			  ./srcs/stream/redirection_util.c \
+			  ./srcs/stream/redirection_util2.c \
+			  ./srcs/stream/redirection_util3.c \
 			  ./srcs/main.c \
 			  ./srcs/exec/ft_env_sort.c \
 			  ./srcs/parse/convert_escape.c \
