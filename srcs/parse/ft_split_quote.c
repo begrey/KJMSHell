@@ -6,38 +6,11 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:51:42 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 11:00:52 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 15:37:06 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void		free_split(char **split)
-{
-	int		i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
-int			is_space(const char c)
-{
-	if (c == ' ' || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
-}
-
-int			is_quote(const char c)
-{
-	if (c == '\'' || c == '\"')
-		return (1);
-	return (0);
-}
+#include "../minishell.h"
 
 char		flag_check(const char c, char flag)
 {
@@ -57,20 +30,6 @@ char		flag_check(const char c, char flag)
 			flag = '\0';
 	}
 	return (flag);
-}
-
-void		if_not_flag_quote(char **s, int *word_num)
-{
-	if (is_space(*(*s)))
-	{
-		while (is_space(*(*s)))
-			(*s)++;
-		if (*(*s))
-		{
-			(*word_num)++;
-			(*s)--;
-		}
-	}
 }
 
 static int	get_word_num(const char *str)
@@ -102,20 +61,6 @@ static int	get_word_num(const char *str)
 	return (word_num);
 }
 
-void		is_space_len(char **s, int *word_num, int **word_len2, int *len)
-{
-	while (is_space(*(*s)))
-		(*s)++;
-	if (*(*s))
-	{
-		(*word_num)++;
-		*(*word_len2) = *len;
-		(*word_len2)++;
-		(*len) = 0;
-		(*s)--;
-	}
-}
-
 int			*get_word_len(const char *str, char flag, int word_num)
 {
 	char	*s;
@@ -123,6 +68,7 @@ int			*get_word_len(const char *str, char flag, int word_num)
 	int		*word_len;
 	int		*word_len2;
 
+	word_len = NULL;
 	word_len = (int *)malloc(sizeof(int) * get_word_num(str));
 	word_len2 = word_len;
 	s = (char *)str;
@@ -142,63 +88,6 @@ int			*get_word_len(const char *str, char flag, int word_num)
 	if (len)
 		*word_len2 = len;
 	return (word_len);
-}
-
-char		**return_if_null(char **split)
-{
-	split = (char **)malloc(sizeof(char *) * (2));
-	split[1] = NULL;
-	split[0] = ft_strdup("");
-	return (split);
-}
-
-int			check_word_num_return(char *s, int *word_num)
-{
-	if (*s)
-		*word_num = 1;
-	else
-	{
-		*word_num = 0;
-		return (0);
-	}
-	return (1);
-}
-
-void		check_space_word_num(char **s, int *word_num, int *len)
-{
-	while (is_space(*(*s)))
-		(*s)++;
-	if (*(*s))
-	{
-		(*word_num)++;
-		(*len) = 0;
-		(*s)--;
-	}
-}
-
-void		split_i_malloc(char **split, int *word_len, int i)
-{
-	split[i] = (char *)malloc(sizeof(char) * (word_len[i] + 1));
-	split[i][word_len[i]] = '\0';
-}
-
-char		**return_if_flag(int *word_len, char **split)
-{
-	free(word_len);
-	free_split(split);
-	return (NULL);
-}
-
-void		next_when_is_space(char **s)
-{
-	while (is_space(*(*s)))
-		(*s)++;
-}
-
-void		split_malloc(char ***split, int word_num2)
-{
-	(*split) = (char **)malloc(sizeof(char *) * (word_num2 + 1));
-	(*split)[word_num2] = NULL;
 }
 
 char		put_split_quote(char **s, int *word_num, int *len, char ***split)
