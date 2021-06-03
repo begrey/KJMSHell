@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 17:07:59 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 11:21:59 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 17:48:37 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_exit(t_line *line, t_env *env, int pip_flag)
 	{
 		if (is_num(line->arg) == -1)
 		{
-			printf("exit: %s: numeric argument required\n", line->arg);
+			printf("exit\nexit: %s: numeric argument required\n", line->arg);
 			exit(255);
 		}
 		else
