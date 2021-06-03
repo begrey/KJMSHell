@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 17:47:56 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 18:19:55 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,4 +248,6 @@ void				pip_exit(int pip_flag);
 void				print_env(t_env *idx);
 void				exec_unset(t_line *line, t_env *env, int pip_flag);
 void				free_single_env(t_env *env);
+void				exit_not_directory(char **argv);
+int					iis_num(char c);
 #endif
