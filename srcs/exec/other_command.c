@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:44:30 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 10:14:44 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:22:10 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char		**make_list_argv(t_line *line, char *file_name)
 {

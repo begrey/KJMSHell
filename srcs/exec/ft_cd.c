@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 17:15:35 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/02 17:22:15 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:21:46 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char		*root_path(t_env *env)
 {

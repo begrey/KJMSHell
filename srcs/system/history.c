@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 10:54:21 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 10:56:35 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:22:39 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int					adjust_cnt(t_list *history, int cnt, t_cursor *cursor)
 {

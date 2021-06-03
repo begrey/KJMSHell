@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:43:46 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/02 16:44:12 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:21:36 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void		exec_command(t_line *line, char *file_name,
 t_env *env, int pip_flag)

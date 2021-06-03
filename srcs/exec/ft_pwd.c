@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 17:23:37 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/02 17:23:53 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:22:04 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void		ft_pwd(int pip_flag, t_env *env)
 {

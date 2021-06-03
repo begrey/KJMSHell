@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:04:24 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 09:12:35 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 11:26:54 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void		put_left_or_right(t_line **temp, int *type)
 
 void		next_temp_flag(t_line **temp, int *flag)
 {
-
 	(*temp) = (*temp)->next;
 	(*flag)++;
 }
@@ -242,7 +241,6 @@ void		ft_redirection(t_line *line, t_env *env, int pip_flag)
 	int		re_num;
 	char	**re_name;
 	int		*re_type;
-
 	int		i;
 	t_line	*temp;
 	int		fd_wr;

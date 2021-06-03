@@ -167,7 +167,7 @@ int			return_return(t_env *env);
 t_env		*init_env(char *envp[], t_env *env);
 
 //		ft_split_quote.c
-char		**ft_split_quote(char *str);
+char		**ft_split_quote(char *str, char **split, char flag);
 int			is_space(const char c);		//  나중에 util로 빼기
 char		flag_check(const char c, char flag); // util
 int			is_quote(const char c);		// util로 빼기

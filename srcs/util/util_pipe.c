@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 10:36:21 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 11:03:38 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:23:29 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 t_pipe		*ft_pipenew(void)
 {

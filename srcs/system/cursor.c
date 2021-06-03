@@ -6,11 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 10:51:58 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 10:54:09 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 11:22:34 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int					putchar_tc(int tc)
 {
