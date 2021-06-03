@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:36:18 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 13:38:24 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 17:31:55 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,14 @@ void		join_env_temp(char *s, char **result, t_env *env)
 {
 	char	*temp1;
 	char	*temp2;
+	char	*temp3;
 
 	temp2 = exact_envstr(s);
 	temp1 = extract_env(temp2, env);
 	free(temp2);
+	temp3 = *result;
 	*result = ft_strjoin(*result, temp1);
+	free(temp3);
 	free(temp1);
 }
 

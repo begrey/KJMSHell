@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 11:00:13 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 15:23:01 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 17:32:45 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ void		signal_handler(int sig)
 		}
 		else
 		{
-			if (g_line[0] != 0)
+			if (g_line[0] != -3 && ft_strlen(g_line))
 			{
 				free(g_line);
 				g_line = ft_strdup("");
 			}
-			g_line[0] = -3;
+			else
+				g_line[0] = -3;
 			write(1, "\nKJMSHell(｡☌ᴗ☌｡) >> ", 30);
 		}
 	}
