@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:36:18 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 17:31:55 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 18:28:27 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char		*exact_envstr(char *str)
 	len = 1;
 	if (*s == '?')
 		return (put_return_value(res));
-	while ((is_alpha(*s) || (*s == '?')))
+	while ((is_alpha(*s) || (*s == '?')) || iis_num(*s))
 	{
 		s++;
 		len++;

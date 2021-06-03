@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:10:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 15:58:41 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 18:10:26 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int		make_list(t_env *env)
 	char	*s_line;
 	char	**split;
 
+	errno = 0;
 	split = NULL;
 	line = NULL;
 	s_line = ft_strdup(g_line);

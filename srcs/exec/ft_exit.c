@@ -6,11 +6,18 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 17:07:59 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 17:48:37 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/03 18:22:08 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int		iis_num(char c)
+{
+	if (!(c >= '0' && c <= '9'))
+		return (0);
+	return (1);
+}
 
 int		is_num(char *line)
 {
@@ -69,5 +76,14 @@ void	ft_exit(t_line *line, t_env *env, int pip_flag)
 			exit_with_num(line, env);
 			return ;
 		}
+	}
+}
+
+void	exit_not_directory(char **argv)
+{
+	if (errno && (argv[0][0] == '.' || argv[0][0] == '/'))
+	{
+		printf("%s: %s\n", argv[0], strerror(errno));
+		exit(126);
 	}
 }
