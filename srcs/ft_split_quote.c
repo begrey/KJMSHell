@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:51:42 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 19:36:22 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 08:53:05 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,11 @@ void		is_space_len(char **s, int *word_num, int **word_len2, int *len)
 	}
 }
 
-int			*get_word_len(const char *str)
+int			*get_word_len(const char *str, char flag)
 {
 	char	*s;
-	char	flag;
 	int		word_num;
 	int		len;
-	int		split_point;
 	int		*word_len;
 	int		*word_len2;
 
@@ -135,12 +133,8 @@ int			*get_word_len(const char *str)
 	if (!(*s))
 		return (NULL);
 	word_num = 1;
-	flag = '\0';
-	split_point = 0;
 	while (*s)
 	{
-		if (split_point != word_num)
-			split_point = word_num;
 		flag = flag_check(*s, flag);
 		if (!flag)
 		{
@@ -175,12 +169,13 @@ char		**ft_split_quote(const char *str)
 	int		*word_len;
 	int		i;
 
+	flag = '\0';
 	split = NULL;
 	if (str[0] == '\0')
 		return (return_if_null(split));
 	split = NULL;
 	word_num2 = get_word_num(str);
-	word_len = get_word_len(str);
+	word_len = get_word_len(str, flag);
 	split = (char **)malloc(sizeof(char *) * (word_num2 + 1));
 	split[word_num2] = NULL;
 	i = -1;
@@ -199,7 +194,6 @@ char		**ft_split_quote(const char *str)
 		word_num = 0;
 		return (NULL);
 	}
-	flag = '\0';
 	len = 0;
 	split_point = 0;
 	while (*s)

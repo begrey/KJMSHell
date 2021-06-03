@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/02 22:04:23 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/03 08:48:40 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ void	make_if_value_export(t_env *env, char *ex_env, char *value)
 {
 	t_env	*temp;
 	int		if_value;
-	
+
 	if_value = 1;
 	temp = ft_envfind(&env, ex_env);
 	if (temp == NULL)
 	{
-		ft_envadd_back(&env, ft_envnew(ft_strdup(ex_env), ft_strdup(value), if_value));
+		ft_envadd_back(&env, ft_envnew(ft_strdup(ex_env),
+					ft_strdup(value), if_value));
 	}
-
 }
 
 void	make_no_value_export(char *ex_env, t_env *env)
@@ -89,9 +89,9 @@ void	make_no_value_export(char *ex_env, t_env *env)
 	temp = ft_envfind(&env, ex_env);
 	if (temp == NULL)
 	{
-		ft_envadd_back(&env, ft_envnew(ft_strdup(ex_env), ft_strdup(""), if_value));
+		ft_envadd_back(&env, ft_envnew(ft_strdup(ex_env),
+					ft_strdup(""), if_value));
 	}
-
 }
 
 void	put_if_value_export(t_env *temp, char *value)
@@ -189,6 +189,12 @@ void	print_env(t_env *idx)
 	}
 }
 
+void	pip_exit(int pip_flag)
+{
+	if (pip_flag == 0)
+		exit(0);
+}
+
 void	exec_env(t_line *line, t_env *env, int pip_flag)
 {
 	t_env	*idx;
@@ -215,8 +221,7 @@ void	exec_env(t_line *line, t_env *env, int pip_flag)
 	if (command_line[1] == NULL)
 		print_env(idx);
 	free_split(command_line);
-	if (pip_flag == 0)
-		exit(0);
+	pip_exit(pip_flag);
 }
 
 void	free_single_env(t_env *env)
