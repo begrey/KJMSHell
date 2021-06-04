@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 15:27:30 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 15:31:33 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:04:29 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ char		**return_if_null(char **split)
 	return (split);
 }
 
-char		**return_if_flag(int *word_len, char **split)
+char		**return_if_flag(int *word_len, char **split, char *s)
 {
+	free(s);
 	free(word_len);
 	free_split(split);
 	return (NULL);

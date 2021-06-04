@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:51:42 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 20:37:39 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:13:03 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,18 +90,18 @@ int			*get_word_len(const char *str, char flag, int word_num)
 	return (word_len);
 }
 
-char		put_split_quote(char **s, int *word_num, int *len, char ***split)
+char		put_split_quote(char *s, int *word_num, int *len, char ***split)
 {
 	char	flag;
 
 	flag = '\0';
-	while (*(*s))
+	while (*(s))
 	{
-		flag = flag_check(*(*s), flag);
-		if (!flag && is_space(*(*s)))
-			check_space_word_num(&(*s), &(*word_num), &(*len));
-		(*split)[(*word_num) - 1][(*len)] = *(*s);
-		(*s)++;
+		flag = flag_check(*(s), flag);
+		if (!flag && is_space(*(s)))
+			check_space_word_num(&(s), &(*word_num), &(*len));
+		(*split)[(*word_num) - 1][(*len)] = *(s);
+		(s)++;
 		(*len)++;
 	}
 	return (flag);
@@ -124,13 +124,12 @@ char		**ft_split_quote(char *s, char **split, char flag)
 	i = -1;
 	while (++i < word_num2)
 		split_i_malloc(split, word_len, i);
-	next_when_is_space(&s);
 	if ((check_word_num_return(s, &word_num)) == 0)
 		return (NULL);
 	len = 0;
-	flag = put_split_quote(&s, &word_num, &len, &split);
+	flag = put_split_quote(s, &word_num, &len, &split);
 	if (flag)
-		return (return_if_flag(word_len, split));
+		return (return_if_flag(word_len, split, s));
 	free(word_len);
 	return (split);
 }

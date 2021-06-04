@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 15:28:29 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 15:33:35 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:12:01 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,11 @@ void		is_space_len(char **s, int *word_num, int **word_len2, int *len)
 		(*len) = 0;
 		(*s)--;
 	}
+}
+
+void		init_make_list(char ***split, t_line **line)
+{
+	errno = 0;
+	*split = NULL;
+	*line = NULL;
 }

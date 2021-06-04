@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:59:26 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 20:21:09 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:09:13 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	forbidden_char(char c)
 	return (0);
 }
 
-int			redir_syn_check(t_line *line)
+int			redir_syn_check(t_line *line, char **split)
 {
 	t_line	*lst;
 	int		n;
@@ -41,6 +41,8 @@ int			redir_syn_check(t_line *line)
 	{
 		if (which_redir(lst->arg) && !lst->next)
 		{
+			free_struct(line);
+			free_split(split);
 			printf("syntax error near unexpected token \'newline\'\n");
 			return (-1);
 		}
@@ -49,6 +51,8 @@ int			redir_syn_check(t_line *line)
 			lst = lst->next;
 			if (which_redir(lst->arg) || forbidden_char(lst->arg[0]))
 			{
+				free_struct(line);
+				free_split(split);
 				printf("syntax error near unexpected token\n");
 				return (-1);
 			}
