@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/03 09:28:27 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 13:36:08 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 13:11:43 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,17 @@ int			find_n_flag(t_line *line)
 void		ft_echo(t_line *line, int pip_flag, t_env *env)
 {
 	int		flag;
+	int		prev;
 
-	flag = find_n_flag(line);
-	if (flag == 1)
-		line = line->next;
+	prev = 0;
+	while (line != NULL)
+	{
+		if ((flag = find_n_flag(line)) == 1)
+			line = line->next;
+		else
+			break ;
+		prev = flag;
+	}
 	while (line != NULL)
 	{
 		write(1, line->arg, ft_strlen(line->arg));
@@ -43,7 +50,7 @@ void		ft_echo(t_line *line, int pip_flag, t_env *env)
 			write(1, " ", 1);
 		line = line->next;
 	}
-	if (flag == 0)
+	if (prev == 0)
 		write(1, "\n", 1);
 	if (pip_flag == 0)
 		exit(0);

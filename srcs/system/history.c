@@ -6,19 +6,21 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 10:54:21 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 10:12:45 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 13:15:10 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int					adjust_cnt(t_his *history, int cnt, t_cursor *cursor)
+int					adjust_cnt(t_his *history,
+int cnt, t_cursor *cursor, char *origin_line)
 {
 	if (cnt <= 0)
 	{
 		delete_line(cursor);
 		free(g_line);
-		g_line = ft_strdup("");
+		g_line = ft_strdup(origin_line);
+		write(1, g_line, ft_strlen(g_line));
 		return (0);
 	}
 	else if (cnt > ft_hissize(history))
@@ -27,21 +29,22 @@ int					adjust_cnt(t_his *history, int cnt, t_cursor *cursor)
 		return (cnt);
 	}
 	return (-1);
+	printf("%d\n", cursor->col);
 }
 
-int					find_history(t_his *history, int cnt, t_cursor *cursor)
+int					find_history(t_prompt *prom, int cnt, t_cursor *cursor)
 {
 	t_his			*temp;
 	int				len;
 	int				i;
 
-	if (history == NULL)
+	if (prom->history == NULL)
 		return (0);
-	if ((i = adjust_cnt(history, cnt, cursor)) >= 0)
+	if ((i = adjust_cnt(prom->history, cnt, cursor, prom->origin_line)) >= 0)
 		return (i);
-	temp = history;
+	temp = prom->history;
 	i = 1;
-	len = ft_hissize(history) - cnt + 1;
+	len = ft_hissize(prom->history) - cnt + 1;
 	while (temp != NULL && i != len)
 	{
 		temp = temp->next;
@@ -62,7 +65,6 @@ void				renew_history(t_his *history, int cnt)
 
 	if (history == NULL || cnt <= 0)
 		return ;
-	history->cnt = cnt;
 	temp = history;
 	i = 1;
 	len = ft_hissize(history) - cnt + 1;
@@ -75,16 +77,14 @@ void				renew_history(t_his *history, int cnt)
 	temp->content = ft_strdup(g_line);
 }
 
-void				restore_history(t_his *history)
+void				restore_history(t_his *history, int cnt)
 {
 	t_his			*temp;
 	int				len;
 	int				i;
-	int				cnt;
 
 	if (history == NULL)
 		return ;
-	cnt = history->cnt;
 	if (cnt <= 0)
 		return ;
 	temp = history;
@@ -97,4 +97,10 @@ void				restore_history(t_his *history)
 	}
 	free(temp->content);
 	temp->content = ft_strdup(temp->prev_his);
+}
+
+void				free_origin_line(t_prompt *prom)
+{
+	free(prom->origin_line);
+	prom->origin_line = ft_strdup(g_line);
 }

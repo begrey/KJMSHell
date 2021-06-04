@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:36:46 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 10:11:20 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 13:15:10 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int						append(char c)
 }
 
 int						put_cursor(t_cursor *cursor,
-struct termios term, char c, t_his *history)
+struct termios term, char c, t_prompt *prom)
 {
 	cursor->prev_col = cursor->col;
 	write(1, &c, 1);
@@ -76,7 +76,7 @@ struct termios term, char c, t_his *history)
 		return (0);
 	if ((char)c == '\n')
 	{
-		restore_history(history);
+		restore_history(prom->history, prom->h_cnt);
 		term_off(term);
 		return (1);
 	}
@@ -85,8 +85,7 @@ struct termios term, char c, t_his *history)
 	return (-1);
 }
 
-int						check_c(t_his *history,
-int *h_cnt, t_cursor *cursor, int c)
+int						check_c(t_prompt *prom, t_cursor *cursor, int c)
 {
 	if (c == 4)
 	{
@@ -97,26 +96,30 @@ int *h_cnt, t_cursor *cursor, int c)
 		}
 	}
 	if (c == U_ARROW)
-		*h_cnt = find_history(history, *h_cnt + 1, cursor);
+	{
+		if (prom->h_cnt == 0)
+			free_origin_line(prom);
+		prom->h_cnt = find_history(prom, prom->h_cnt + 1, cursor);
+	}
 	else if (c == D_ARROW)
-		*h_cnt = find_history(history, *h_cnt - 1, cursor);
+		prom->h_cnt = find_history(prom, prom->h_cnt - 1, cursor);
 	else if (c == BACKSPACE)
 	{
 		delete_end(cursor);
 		if ((remove_c(cursor)) == -1)
 			return (0);
+		renew_history(prom->history, prom->h_cnt);
 	}
 	return (-9);
 }
 
-int						input_line(t_his *history, t_env *env, int c)
+int						input_line(t_prompt *prom, t_env *env, int c)
 {
 	struct termios		term;
-	int					h_cnt;
 	int					status;
 	t_cursor			cursor;
 
-	init_cursor_term(&cursor, &term, &h_cnt);
+	init_cursor_term(&cursor, &term, &(prom->h_cnt));
 	get_cursor_position(&cursor);
 	while (read(0, &c, sizeof(c)) > 0)
 	{
@@ -124,14 +127,14 @@ int						input_line(t_his *history, t_env *env, int c)
 			set_sigint_env(env);
 		if (c == U_ARROW || c == D_ARROW || c == BACKSPACE || c == 4)
 		{
-			if ((status = check_c(history, &h_cnt, &cursor, c)) == -1)
+			if ((status = check_c(prom, &cursor, c)) == -1)
 				return (-1);
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{
-			if ((status = put_cursor(&cursor, term, c, history)) >= 0)
+			if ((status = put_cursor(&cursor, term, c, prom)) >= 0)
 				return (status);
-			renew_history(history, h_cnt);
+			renew_history(prom->history, prom->h_cnt);
 		}
 		c = 0;
 	}

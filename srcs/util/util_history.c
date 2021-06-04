@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 09:44:52 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 10:08:26 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 13:12:01 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int				ft_hissize(t_his *his)
 	return (len);
 }
 
-t_his		*ft_hislast(t_his *his)
+t_his			*ft_hislast(t_his *his)
 {
-	t_his	*temp;
+	t_his		*temp;
 
 	if (!his)
 		return (NULL);
@@ -39,15 +39,14 @@ t_his		*ft_hislast(t_his *his)
 	return (temp);
 }
 
-t_his		*ft_hisnew(void *content)
+t_his			*ft_hisnew(void *content)
 {
-	t_his	*his;
+	t_his		*his;
 
 	if (!(his = (t_his *)malloc(sizeof(t_his) * 1)))
 		return (NULL);
 	his->content = content;
-	his->prev_his = content;
-	his->cnt = 0;
+	his->prev_his = ft_strdup(content);
 	his->next = NULL;
 	return (his);
 }

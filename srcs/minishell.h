@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 12:29:27 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 13:14:41 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,16 @@ typedef struct		s_his
 {
 	char			*content;
 	char			*prev_his;
-	int				cnt;
 	struct s_his	*next;
 }					t_his;
+
+typedef struct		s_prompt
+{
+	struct s_his	*history;
+	int				h_cnt;
+	char			*origin_line;
+	struct s_prompt *next;
+}					t_prompt;
 
 typedef struct		s_cursor
 {
@@ -93,7 +100,7 @@ void				signal_sigquit(int sig);
 void				signal_handler(int sig);
 void				set_signal_return(t_env *env);
 void				init_g_line(void);
-void				init(t_env **env, char **list, t_his **history);
+void				init(t_env **env, char **list, t_prompt **prom);
 void				ft_echo(t_line *line, int pip_flag, t_env *env);
 void				ft_cd(t_line *line, t_env *env, int pip_flag);
 char				*convert_root_path(t_line *line, t_env *env);
@@ -113,14 +120,13 @@ t_env *env, char *file_name);
 int					remove_c(t_cursor *cursor);
 int					append(char c);
 int					put_cursor(t_cursor *cursor,
-struct termios term, char c, t_his *history);
+struct termios term, char c, t_prompt *prom);
 int					ft_hissize(t_his *history);
 t_his				*ft_hislast(t_his *his);
 t_his				*ft_hisnew(void *content);
 void				ft_hisadd_back(t_his **his, t_his *new);
-int					check_c(t_his *history,
-int *h_cnt, t_cursor *cursor, int c);
-int					input_line(t_his *history, t_env *env, int c);
+int					check_c(t_prompt *prom, t_cursor *cursor, int c);
+int					input_line(t_prompt *prom, t_env *env, int c);
 int					putchar_tc(int tc);
 void				set_cursor_row_col(t_cursor *cursor, char *buf);
 void				get_cursor_position(t_cursor *cursor);
@@ -128,10 +134,11 @@ void				delete_end(t_cursor *cursor);
 void				delete_line(t_cursor *cursor);
 void				renew_history(t_his *history, int cnt);
 int					adjust_cnt(t_his *history,
+int cnt, t_cursor *cursor, char *origin_line);
+int					find_history(t_prompt *prom,
 int cnt, t_cursor *cursor);
-int					find_history(t_his *history,
-int cnt, t_cursor *cursor);
-void				restore_history(t_his *history);
+void				restore_history(t_his *history, int h_cnt);
+void				free_origin_line(t_prompt *prom);
 void				init_cursor_term(t_cursor *cursor,
 struct termios		*term, int *h_cnt);
 struct termios		term_on();
