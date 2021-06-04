@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:29:02 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 12:34:32 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:12:42 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int		is_token(char *s)
 {
 	if (*s == ';' || *s == '|' || (*s == '>' && *(s + 1) != '>') || *s == '<')
+	{
 		return (1);
+	}
 	else if (*s == '>' && *(s + 1) == '>')
 		return (2);
 	return (0);
@@ -49,7 +51,11 @@ void	if_not_flag(char *flag, char **s, int *ret)
 			}
 		}
 		else
+		{
+			if (!is_token((*s)) && is_token((*s) - 1))
+				(*ret)++;
 			(*s)++;
+		}
 	}
 	else
 		(*s)++;
@@ -66,11 +72,15 @@ int		is_token_quote(const char *str)
 	s = (char *)str;
 	if (*s)
 	{
-		ret++;
+		ret += 1;
 		s++;
 	}
-	if (*s && is_token(s - 1))
-		ret++;
+	if (*s && !is_token(s) && is_token(s - 1))
+	{
+		ret += 1;
+	}
+	if (*s)
+		s++;
 	while (*s)
 	{
 		flag = flag_check(*s, flag);

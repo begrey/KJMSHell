@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 15:27:58 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 09:57:44 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 12:58:15 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,17 @@ void		split_malloc(char ***split, int word_num2)
 	(*split)[word_num2] = NULL;
 }
 
-void		next_when_is_space(char **s)
+int			next_when_is_space(char **s)
 {
+	int		i;
+
+	i = 0;
 	while (is_space(*(*s)))
+	{
 		(*s)++;
+		i++;
+	}
+	return (i);
 }
 
 int			is_space(const char c)

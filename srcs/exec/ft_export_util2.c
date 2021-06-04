@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:00:54 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 14:07:07 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 13:52:13 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,20 @@ int		is_alpha_dollar_str(char *s)
 		str++;
 	}
 	return (1);
+}
+
+void	get_pwd_env(t_env *env)
+{
+	t_env	*temp;
+	char	*str;
+	char	*buf;
+	char	*temp_str;
+
+	buf = NULL;
+	str = getcwd(buf, 1);
+	temp = ft_envfind(&env, "PWD");
+	temp_str = temp->value;
+	temp->value = ft_strdup(str);
+	free(temp_str);
+	free(str);
 }
