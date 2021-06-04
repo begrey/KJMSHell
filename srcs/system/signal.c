@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 11:00:13 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 17:32:45 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 10:02:22 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void		signal_handler(int sig)
 			{
 				free(g_line);
 				g_line = ft_strdup("");
+				g_line[0] = -3;
 			}
 			else
 				g_line[0] = -3;
@@ -61,7 +62,7 @@ void		init_g_line(void)
 	(g_line)[0] = 0;
 }
 
-void		init(t_env **env, char **list, t_list **history)
+void		init(t_env **env, char **list, t_his **history)
 {
 	*env = NULL;
 	*list = NULL;

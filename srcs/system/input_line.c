@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:36:46 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 11:22:43 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:11:20 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int						append(char c)
 }
 
 int						put_cursor(t_cursor *cursor,
-struct termios term, char c)
+struct termios term, char c, t_his *history)
 {
 	cursor->prev_col = cursor->col;
 	write(1, &c, 1);
@@ -76,6 +76,7 @@ struct termios term, char c)
 		return (0);
 	if ((char)c == '\n')
 	{
+		restore_history(history);
 		term_off(term);
 		return (1);
 	}
@@ -84,7 +85,7 @@ struct termios term, char c)
 	return (-1);
 }
 
-int						check_c(t_list *history,
+int						check_c(t_his *history,
 int *h_cnt, t_cursor *cursor, int c)
 {
 	if (c == 4)
@@ -108,7 +109,7 @@ int *h_cnt, t_cursor *cursor, int c)
 	return (-9);
 }
 
-int						input_line(t_list *history, t_env *env, int c)
+int						input_line(t_his *history, t_env *env, int c)
 {
 	struct termios		term;
 	int					h_cnt;
@@ -128,7 +129,7 @@ int						input_line(t_list *history, t_env *env, int c)
 		}
 		else if (c != L_ARROW && c != R_ARROW)
 		{
-			if ((status = put_cursor(&cursor, term, c)) >= 0)
+			if ((status = put_cursor(&cursor, term, c, history)) >= 0)
 				return (status);
 			renew_history(history, h_cnt);
 		}

@@ -6,13 +6,13 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 10:54:21 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 11:22:39 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:12:45 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int					adjust_cnt(t_list *history, int cnt, t_cursor *cursor)
+int					adjust_cnt(t_his *history, int cnt, t_cursor *cursor)
 {
 	if (cnt <= 0)
 	{
@@ -21,17 +21,17 @@ int					adjust_cnt(t_list *history, int cnt, t_cursor *cursor)
 		g_line = ft_strdup("");
 		return (0);
 	}
-	else if (cnt > ft_lstsize(history))
+	else if (cnt > ft_hissize(history))
 	{
-		cnt = ft_lstsize(history);
+		cnt = ft_hissize(history);
 		return (cnt);
 	}
 	return (-1);
 }
 
-int					find_history(t_list *history, int cnt, t_cursor *cursor)
+int					find_history(t_his *history, int cnt, t_cursor *cursor)
 {
-	t_list			*temp;
+	t_his			*temp;
 	int				len;
 	int				i;
 
@@ -41,7 +41,7 @@ int					find_history(t_list *history, int cnt, t_cursor *cursor)
 		return (i);
 	temp = history;
 	i = 1;
-	len = ft_lstsize(history) - cnt + 1;
+	len = ft_hissize(history) - cnt + 1;
 	while (temp != NULL && i != len)
 	{
 		temp = temp->next;
@@ -54,17 +54,18 @@ int					find_history(t_list *history, int cnt, t_cursor *cursor)
 	return (cnt);
 }
 
-void				renew_history(t_list *history, int cnt)
+void				renew_history(t_his *history, int cnt)
 {
-	t_list			*temp;
+	t_his			*temp;
 	int				len;
 	int				i;
 
 	if (history == NULL || cnt <= 0)
 		return ;
+	history->cnt = cnt;
 	temp = history;
 	i = 1;
-	len = ft_lstsize(history) - cnt + 1;
+	len = ft_hissize(history) - cnt + 1;
 	while (temp != NULL && i != len)
 	{
 		temp = temp->next;
@@ -72,4 +73,28 @@ void				renew_history(t_list *history, int cnt)
 	}
 	free(temp->content);
 	temp->content = ft_strdup(g_line);
+}
+
+void				restore_history(t_his *history)
+{
+	t_his			*temp;
+	int				len;
+	int				i;
+	int				cnt;
+
+	if (history == NULL)
+		return ;
+	cnt = history->cnt;
+	if (cnt <= 0)
+		return ;
+	temp = history;
+	i = 1;
+	len = ft_hissize(history) - cnt + 1;
+	while (temp != NULL && i != len)
+	{
+		temp = temp->next;
+		i++;
+	}
+	free(temp->content);
+	temp->content = ft_strdup(temp->prev_his);
 }

@@ -49,6 +49,7 @@ SRCS		= ./srcs/parse/convert_env.c \
 			  ./srcs/system/cursor.c \
 			  ./srcs/system/history.c \
 			  ./srcs/system/term.c \
+			  ./srcs/util/util_history.c \
 
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -f
