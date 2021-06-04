@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:11:37 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 17:15:21 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 16:03:48 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ void		del_qoute_list(t_line *line)
 	temp = line;
 	while (temp)
 	{
-		str = temp->arg;
-		(temp)->arg = ft_del_quote((temp)->arg);
-		free(str);
+		if (ft_strlen(temp->arg) != 2)
+		{
+			str = temp->arg;
+			(temp)->arg = ft_del_quote((temp)->arg);
+			free(str);
+		}
 		temp = (temp)->next;
 	}
 }
