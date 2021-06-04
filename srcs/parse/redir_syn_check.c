@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:59:26 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 10:09:13 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 12:33:41 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,29 @@ static int	forbidden_char(char c)
 	return (0);
 }
 
+void		free_syntax_error(t_line *line, char **split)
+{
+	free_struct(line);
+	free_split(split);
+}
+
+void		init_redir_syn(int *n, t_line **lst, t_line *line)
+{
+	(*n) = 0;
+	(*lst) = line;
+}
+
 int			redir_syn_check(t_line *line, char **split)
 {
 	t_line	*lst;
 	int		n;
 
-	n = 0;
-	lst = line;
+	init_redir_syn(&n, &lst, line);
 	while (lst)
 	{
-		if (which_redir(lst->arg) && !lst->next)
+		if (which_redir(lst->arg) && (!lst->next || !(lst->next->arg[0])))
 		{
-			free_struct(line);
-			free_split(split);
+			free_syntax_error(line, split);
 			printf("syntax error near unexpected token \'newline\'\n");
 			return (-1);
 		}
@@ -51,8 +61,7 @@ int			redir_syn_check(t_line *line, char **split)
 			lst = lst->next;
 			if (which_redir(lst->arg) || forbidden_char(lst->arg[0]))
 			{
-				free_struct(line);
-				free_split(split);
+				free_syntax_error(line, split);
 				printf("syntax error near unexpected token\n");
 				return (-1);
 			}
