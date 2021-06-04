@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 11:00:13 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 10:02:22 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 13:34:58 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,14 @@ void		init_g_line(void)
 	(g_line)[0] = 0;
 }
 
-void		init(t_env **env, char **list, t_his **history)
+void		init(t_env **env, char **list, t_prompt **prom)
 {
 	*env = NULL;
 	*list = NULL;
-	*history = NULL;
+	if (!((*prom) = (t_prompt *)malloc(sizeof(t_prompt) * 1)))
+		return ;
+	(*prom)->history = NULL;
+	(*prom)->origin_line = ft_strdup("");
 	init_g_line();
 	signal(SIGINT, signal_handler);
 	signal(SIGTSTP, signal_handler);
