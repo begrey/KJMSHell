@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 18:52:52 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 08:49:15 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void				del_qoute_list(t_line *line);
 int					redirection_open(int **fd,
 int re_num, int *re_type, char **re_name);
 void				restore_escape_list(t_line *line);
-int					token_syn_check(t_line *line);
+int					token_syn_check(t_line *line, char **split);
 int					is_token(char *s);
 int					make_list(t_env *env);
 char				*put_bytes(char **split_token, char *s, int i);

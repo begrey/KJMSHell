@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:29:02 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 21:15:35 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 09:01:48 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,18 @@ int		is_token(char *s)
 	return (0);
 }
 
-int		is_token_quote(const char *str)		// 여기가 문제임
+void	token_num_plus(char **s, int *ret)
+{
+	if (is_token((*s)) == 1)
+		(*ret)++;
+	else if (is_token((*s)) == 2)
+	{
+		(*ret)++;
+		(*s)++;
+	}
+}
+
+int		is_token_quote(const char *str)
 {
 	char		*s;
 	char		flag;
@@ -39,18 +50,14 @@ int		is_token_quote(const char *str)		// 여기가 문제임
 	ret = 0;
 	flag = 0;
 	s = (char *)str;
+	if (is_token(s) && !is_token(s + 1))
+		return (1);
 	while (*s)
 	{
 		flag = flag_check(*s, flag);
 		if (!flag)
 		{
-			if (is_token(s) == 1)
-				ret++;
-			else if (is_token(s) == 2)
-			{
-				ret++;
-				s++;
-			}
+			token_num_plus(&s, &ret);
 			if (is_token(s) && !is_token(s + 1) && *(s + 1))
 				ret++;
 		}
