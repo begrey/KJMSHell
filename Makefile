@@ -55,7 +55,7 @@ SRCS		= ./srcs/parse/convert_env.c \
 OBJS		= $(SRCS:.c=.o)
 RM			= rm -f
 CC			= gcc
-CFLAGS		= -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS		= -Wall -Wextra -Werror -fsanitize=address
 
 all : $(NAME)
 

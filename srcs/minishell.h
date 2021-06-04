@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 13:14:41 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 15:07:57 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,10 +187,11 @@ int *word_len, int i);
 void				check_space_word_num(char **s,
 int *word_num, int *len);
 int					check_word_num_return(char *s, int *word_num);
-char				**return_if_flag(int *word_len, char **split, char *s);
+char				**return_if_flag(int *word_len, char **split,
+		char *s, int i);
 char				**return_if_null(char **split);
 void				split_malloc(char ***split, int word_num2);
-void				next_when_is_space(char **s);
+int					next_when_is_space(char **s);
 int					is_space(const char c);
 void				free_split(char **split);
 int					is_quote(const char c);
@@ -270,7 +271,8 @@ void				exec_unset(t_line *line, t_env *env, int pip_flag);
 void				free_single_env(t_env *env);
 void				exit_not_directory(char **argv);
 int					iis_num(char c);
-void				convert_env_append(char **s, char **result);
+void				convert_env_append(char *s, char **result);
 void				init_make_list(char ***split, t_line **line);
 void				if_not_flag(char *flag, char **s, int *ret);
+void				get_pwd_env(t_env *env);
 #endif

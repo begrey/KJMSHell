@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:36:18 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 09:18:13 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:07:39 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ char		*convert_env(const char *str, t_env *env)
 			s = s + env_len;
 		}
 		else
-			convert_env_append(&s, &result);
+			convert_env_append(s, &result);
 		s++;
 	}
 	return (result);

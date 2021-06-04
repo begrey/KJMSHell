@@ -6,16 +6,16 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 13:27:06 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 19:01:48 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:10:13 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void		convert_env_append(char **s, char **result)
+void		convert_env_append(char *s, char **result)
 {
-	if (*(*s) != '$')
-		(*result) = ft_append((*result), *(*s));
+	if (*(s) != '$')
+		(*result) = ft_append((*result), *(s));
 }
 
 int			if_env_dollar(char c1, char c2)

@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:10:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 11:34:15 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 14:57:54 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,10 @@ int		make_list(t_env *env)
 	char	*s_line;
 	char	**split;
 
+	get_pwd_env(env);
 	init_make_list(&split, &line);
-	g_line[ft_strlen(g_line) - 1] = '\0';
 	s_line = ft_strdup(g_line);
+	s_line[ft_strlen(s_line) - 1] = '\0';
 	escape_line = convert_escape(s_line);
 	free(s_line);
 	if (check_single_escape(escape_line) == -1

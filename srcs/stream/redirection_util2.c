@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:11:26 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 11:42:56 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 15:26:19 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,22 @@ void		list_last_del(t_line *temp, t_line *redir,
 			redir = temp;
 			temp->prev->next = temp->next;
 			temp->next->prev = temp->prev;
+			temp = temp->next;
 			free(redir->arg);
 			free(redir);
-			temp = temp->next;
 			if (temp && temp->prev)
 			{
 				file = temp;
 				temp->prev->next = temp->next;
 				if (temp->next)
 					temp->next->prev = temp->prev;
+				temp = temp->next;
 				free(file->arg);
 				free(file);
 			}
 		}
-		temp = temp->next;
+		else
+			temp = temp->next;
 	}
 }
 

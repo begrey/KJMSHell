@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:51:42 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 10:13:03 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 13:02:45 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,12 +124,13 @@ char		**ft_split_quote(char *s, char **split, char flag)
 	i = -1;
 	while (++i < word_num2)
 		split_i_malloc(split, word_len, i);
+	i = next_when_is_space(&s);
 	if ((check_word_num_return(s, &word_num)) == 0)
 		return (NULL);
 	len = 0;
 	flag = put_split_quote(s, &word_num, &len, &split);
 	if (flag)
-		return (return_if_flag(word_len, split, s));
+		return (return_if_flag(word_len, split, s, i));
 	free(word_len);
 	return (split);
 }
