@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 10:21:42 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/04 10:28:49 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ t_env				*init_env(char *envp[], t_env *env);
 char				flag_check(const char c, char flag);
 int					*get_word_len(const char *str,
 char flag, int word_num);
-char				put_split_quote(char **s,
+char				put_split_quote(char *s,
 int *word_num, int *len, char ***split);
 char				**ft_split_quote(char *s,
 char **split, char flag);
@@ -180,7 +180,7 @@ int *word_len, int i);
 void				check_space_word_num(char **s,
 int *word_num, int *len);
 int					check_word_num_return(char *s, int *word_num);
-char				**return_if_flag(int *word_len, char **split);
+char				**return_if_flag(int *word_len, char **split, char *s);
 char				**return_if_null(char **split);
 void				split_malloc(char ***split, int word_num2);
 void				next_when_is_space(char **s);
@@ -201,7 +201,7 @@ char				*put_return_value(char *res);
 char				*ft_append(char *s, char c);
 int					free_temp(char *s, t_env *env);
 int					if_env_dollar(char c1, char c2);
-int					redir_syn_check(t_line *line);
+int					redir_syn_check(t_line *line, char **split);
 void				split_by_semi(t_line *line, t_env *env);
 t_line				*ft_list_null_term(t_line *lst, int index);
 int					ft_split_list_token(t_line *lst, char token);
@@ -264,4 +264,5 @@ void				free_single_env(t_env *env);
 void				exit_not_directory(char **argv);
 int					iis_num(char c);
 void				convert_env_append(char **s, char **result);
+void				init_make_list(char ***split, t_line **line);
 #endif

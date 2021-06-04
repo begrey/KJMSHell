@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:29:02 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 09:01:48 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 09:33:57 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		is_token_quote(const char *str)
 	char		flag;
 	int			ret;
 
-	ret = 0;
+	ret = 1;
 	flag = 0;
 	s = (char *)str;
 	if (is_token(s) && !is_token(s + 1))
@@ -59,11 +59,13 @@ int		is_token_quote(const char *str)
 		{
 			token_num_plus(&s, &ret);
 			if (is_token(s) && !is_token(s + 1) && *(s + 1))
+			{
 				ret++;
+			}
 		}
 		s++;
 	}
-	if (is_token(s - 1))
+	if (is_token(s - 2))
 		ret++;
 	return (ret);
 }

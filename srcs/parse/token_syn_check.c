@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 15:00:37 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 09:03:48 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 09:12:46 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 int			syntax_print()
 {
-	printf("a\n");
 	printf("syntax error near unexpected token\n");
-	printf("b\n");
 	return (-1);
 }
 
@@ -32,7 +30,7 @@ int			token_syn_check(t_line *line, char **split)
 	t_line *temp;
 
 	temp = line;
-	if (line && semi_pipe((line)->arg))
+	if (line && semi_pipe(temp->arg))
 	{
 		free_struct(line);
 		free_split(split);

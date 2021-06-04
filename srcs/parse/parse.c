@@ -6,13 +6,13 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:10:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 09:03:05 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:11:25 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		check_single_escape(const char *s)
+int		check_single_escape(char *s)
 {
 	char *temp;
 
@@ -23,7 +23,10 @@ int		check_single_escape(const char *s)
 		{
 			temp++;
 			if (*temp == '\0')
+			{
+				free(s);
 				return (-1);
+			}
 		}
 		temp++;
 	}
@@ -83,9 +86,7 @@ int		make_list(t_env *env)
 	char	*s_line;
 	char	**split;
 
-	errno = 0;
-	split = NULL;
-	line = NULL;
+	init_make_list(&split, &line);
 	g_line[ft_strlen(g_line) - 1] = '\0';
 	s_line = ft_strdup(g_line);
 	escape_line = convert_escape(s_line);
@@ -97,7 +98,8 @@ int		make_list(t_env *env)
 	trim_split(split_line);
 	convert_split(split_line, env);
 	addback_split(split_line, &line);
-	if ((redir_syn_check(line)) == -1 || (token_syn_check(line, split_line)) == -1)
+	if ((redir_syn_check(line, split_line)) == -1 ||
+			(token_syn_check(line, split_line)) == -1)
 		return (-1);
 	split_by_semi(line, env);
 	free_split(split_line);
