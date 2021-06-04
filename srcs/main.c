@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:09:15 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 15:54:31 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 10:03:05 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int			main(int argc, char **argv, char **envp)
 {
-	t_list	*history;
+	t_his	*history;
 	t_env	*env;
 	int		read;
 	char	*list;
@@ -30,7 +30,7 @@ int			main(int argc, char **argv, char **envp)
 	{
 		list = ft_strdup(g_line);
 		list[ft_strlen(list) - 1] = '\0';
-		ft_lstadd_back(&history, ft_lstnew(list));
+		ft_hisadd_back(&history, ft_hisnew(list));
 		make_list(env);
 		write(1, "KJMSHell(｡☌ᴗ☌｡) >> ", 29);
 		set_signal_return(env);
