@@ -11,6 +11,7 @@ SRCS		= ./srcs/parse/convert_env.c \
 			  ./srcs/parse/parse.c \
 			  ./srcs/parse/parse_util.c \
 			  ./srcs/parse/parse_util2.c \
+			  ./srcs/parse/parse_util3.c \
 			  ./srcs//util/util_envlist.c \
 			  ./srcs/exec/ft_export.c \
 			  ./srcs/exec/ft_export_util.c \

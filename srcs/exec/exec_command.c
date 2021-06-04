@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:43:46 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 13:11:47 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 11:48:55 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_env *env, int pip_flag)
 {
 	char	*command;
 
+	if (line == NULL)
+		return ;
 	command = line->arg;
 	if (ft_strcmp(command, "echo") == 0)
 		ft_echo(line->next, pip_flag, env);

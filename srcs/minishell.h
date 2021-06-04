@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 10:28:49 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 12:29:27 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,4 +265,5 @@ void				exit_not_directory(char **argv);
 int					iis_num(char c);
 void				convert_env_append(char **s, char **result);
 void				init_make_list(char ***split, t_line **line);
+void				if_not_flag(char *flag, char **s, int *ret);
 #endif
