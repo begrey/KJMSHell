@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:10:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 21:15:47 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/04 09:03:05 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int		make_list(t_env *env)
 	trim_split(split_line);
 	convert_split(split_line, env);
 	addback_split(split_line, &line);
-	if ((redir_syn_check(line)) == -1 || (token_syn_check(line)) == -1)
+	if ((redir_syn_check(line)) == -1 || (token_syn_check(line, split_line)) == -1)
 		return (-1);
 	split_by_semi(line, env);
 	free_split(split_line);
