@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:00:54 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/05 14:33:01 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/05 15:59:39 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,23 +67,15 @@ void	get_pwd_env(t_env *env)
 	free(str);
 }
 
-void	change_oldpwd(t_env *env)
+void	change_oldpwd(t_env *env, char *str)
 {
 	t_env	*temp;
-	char	*str;
-	char	*buf;
 	char	*temp_str;
 
-	buf = NULL;
-	str = getcwd(buf, 1);
 	temp = ft_envfind(&env, "OLDPWD");
 	if (temp == NULL)
-	{
-		free(str);
 		return ;
-	}
 	temp_str = temp->value;
 	temp->value = ft_strdup(str);
 	free(temp_str);
-	free(str);
 }
