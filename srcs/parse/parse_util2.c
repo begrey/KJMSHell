@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:29:02 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 15:12:42 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/05 13:21:32 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,15 +72,16 @@ int		is_token_quote(const char *str)
 	s = (char *)str;
 	if (*s)
 	{
+		flag = flag_check(*s, flag);
 		ret += 1;
 		s++;
 	}
-	if (*s && !is_token(s) && is_token(s - 1))
-	{
+	flag = flag_check(*s, flag);
+	if (*s && (!is_token(s) && is_token(s - 1)))
 		ret += 1;
-	}
 	if (*s)
 		s++;
+	flag = flag_check(*s, flag);
 	while (*s)
 	{
 		flag = flag_check(*s, flag);
