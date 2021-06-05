@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 17:15:35 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 13:40:57 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/05 14:37:50 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void		ft_cd(t_line *line, t_env *env, int pip_flag)
 		path = convert_root_path(line, env);
 	else
 		path = ft_strdup(line->arg);
+	change_oldpwd(env);
 	check = chdir(path);
 	free(path);
 	if (check != 0)

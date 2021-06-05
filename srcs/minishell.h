@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/04 15:07:57 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/05 14:33:19 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ char				*put_return_value(char *res);
 char				*ft_append(char *s, char c);
 int					free_temp(char *s, t_env *env);
 int					if_env_dollar(char c1, char c2);
-int					redir_syn_check(t_line *line, char **split);
+int					redir_syn_check(t_line *line, char **split, t_env *env);
 void				split_by_semi(t_line *line, t_env *env);
 t_line				*ft_list_null_term(t_line *lst, int index);
 int					ft_split_list_token(t_line *lst, char token);
@@ -234,7 +234,7 @@ void				del_qoute_list(t_line *line);
 int					redirection_open(int **fd,
 int re_num, int *re_type, char **re_name);
 void				restore_escape_list(t_line *line);
-int					token_syn_check(t_line *line, char **split);
+int					token_syn_check(t_line *line, char **split, t_env *env);
 int					is_token(char *s);
 int					make_list(t_env *env);
 char				*put_bytes(char **split_token, char *s, int i);
@@ -275,4 +275,5 @@ void				convert_env_append(char *s, char **result);
 void				init_make_list(char ***split, t_line **line);
 void				if_not_flag(char *flag, char **s, int *ret);
 void				get_pwd_env(t_env *env);
+void				change_oldpwd(t_env *env);
 #endif

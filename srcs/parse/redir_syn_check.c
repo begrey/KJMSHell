@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 14:59:26 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 13:55:43 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/05 14:11:02 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ static int	forbidden_char(char c)
 	return (0);
 }
 
-void		free_syntax_error(t_line *line, char **split)
+void		free_syntax_error(t_line *line, char **split, t_env *env)
 {
 	free_struct(line);
 	free_split(split);
+	put_return(258, env);
 }
 
 void		init_redir_syn(int *n, t_line **lst, t_line *line)
@@ -42,7 +43,7 @@ void		init_redir_syn(int *n, t_line **lst, t_line *line)
 	(*lst) = line;
 }
 
-int			redir_syn_check(t_line *line, char **split)
+int			redir_syn_check(t_line *line, char **split, t_env *env)
 {
 	t_line	*lst;
 	int		n;
@@ -52,7 +53,7 @@ int			redir_syn_check(t_line *line, char **split)
 	{
 		if (which_redir(lst->arg) && (!lst->next || !(lst->next->arg[0])))
 		{
-			free_syntax_error(line, split);
+			free_syntax_error(line, split, env);
 			printf("syntax error near unexpected token \'newline\'\n");
 			return (-1);
 		}
@@ -61,7 +62,7 @@ int			redir_syn_check(t_line *line, char **split)
 			lst = lst->next;
 			if (which_redir(lst->arg) || forbidden_char(lst->arg[0]))
 			{
-				free_syntax_error(line, split);
+				free_syntax_error(line, split, env);
 				printf("syntax error near unexpected token\n");
 				return (-1);
 			}
