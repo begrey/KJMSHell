@@ -6,7 +6,7 @@
 /*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 12:28:10 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 12:28:53 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/05 15:11:33 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,11 @@ int		ft_strerror(char *s)
 	temp = s;
 	printf("%s", temp);
 	return (-1);
+}
+
+int		iis_num(char c)
+{
+	if (!(c >= '0' && c <= '9'))
+		return (0);
+	return (1);
 }

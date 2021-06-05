@@ -6,18 +6,11 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 17:07:59 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/03 18:22:08 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/05 15:14:22 by sunmin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int		iis_num(char c)
-{
-	if (!(c >= '0' && c <= '9'))
-		return (0);
-	return (1);
-}
 
 int		is_num(char *line)
 {
@@ -52,13 +45,26 @@ void	exit_with_num(t_line *line, t_env *env)
 	exit(status);
 }
 
+int		set_return_value(t_line *line, t_env *env)
+{
+	int	ret;
+
+	if (line)
+		ret = ft_atoi(line->arg);
+	else
+		ret = return_return(env);
+	return (ret);
+}
+
 void	ft_exit(t_line *line, t_env *env, int pip_flag)
 {
 	int	status;
+	int	return_value;
 
+	return_value = set_return_value(line, env);
 	status = 0;
 	if (pip_flag == 0)
-		return ;
+		exit(return_value);
 	if (line == NULL)
 	{
 		free(g_line);
