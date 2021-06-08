@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/01 13:20:32 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/03 14:08:51 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/08 10:49:27 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	put_export(t_line *tmp, char *key, char *value, t_env *env)
 		key = find_key(tmp->arg);
 		ex_env = extract_env(key, env);
 		temp = ft_envfind(&env, ex_env);
-		free(key);
 		if (is_alpha_dollar_str(key))
 		{
 			if_value_or_not(&tmp, &if_value, &value, env);
@@ -61,6 +60,7 @@ void	put_export(t_line *tmp, char *key, char *value, t_env *env)
 		}
 		else
 			printf("export: %s: not a valid identifier\n", tmp->arg);
+		free(key);
 		free(ex_env);
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/08 10:00:41 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/08 10:35:57 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -276,4 +276,5 @@ void				init_make_list(char ***split, t_line **line);
 void				if_not_flag(char *flag, char **s, int *ret);
 void				get_pwd_env(t_env *env);
 void				change_oldpwd(t_env *env, char *str);
+char				**env_to_envp(t_env *env);
 #endif
