@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:44:30 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/08 09:31:22 by jimkwon          ###   ########.fr       */
+/*   Updated: 2021/06/08 10:57:07 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		other_command_exec(t_line *line, t_env *env, char *file_name)
 	char	*temp_env;
 
 	argv = make_list_argv(line, file_name);
-	execve(line->arg, argv, NULL);
+	execve(line->arg, argv, env_to_envp(env));
 	temp_env = extract_env("$PATH", env);
 	path = ft_split(temp_env, ':');
 	free(temp_env);
