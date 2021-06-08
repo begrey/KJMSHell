@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_util2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:29:02 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/05 13:21:32 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/08 10:03:16 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,12 @@ void	if_not_flag(char *flag, char **s, int *ret)
 		(*s)++;
 }
 
-int		is_token_quote(const char *str)
+int		is_token_quote(const char *str, char flag)
 {
 	char		*s;
-	char		flag;
 	int			ret;
 
 	ret = 0;
-	flag = 0;
 	s = (char *)str;
 	if (*s)
 	{
@@ -77,7 +75,8 @@ int		is_token_quote(const char *str)
 		s++;
 	}
 	flag = flag_check(*s, flag);
-	if (*s && (!is_token(s) && is_token(s - 1)))
+	if (*s && ((!is_token(s) && is_token(s - 1))
+	|| (is_token(s) && !is_token(s - 1))))
 		ret += 1;
 	if (*s)
 		s++;

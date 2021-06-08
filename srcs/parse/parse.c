@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 12:10:01 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/05 14:13:26 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/08 10:03:15 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	addback_split(char **split_line, t_line **line)
 	i = 0;
 	while (split_line[i])
 	{
-		if ((is_token_quote(split_line[i])))
+		if ((is_token_quote(split_line[i], 0)))
 			list_split_addback(line, split_line[i]);
 		else
 			ft_listadd_back(line, ft_listnew(ft_strdup(split_line[i])));

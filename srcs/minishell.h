@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 17:34:11 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/05 15:58:07 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/08 10:00:41 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ char				*put_token_bytes(char **split_token,
 char *s, int i);
 int					ft_strerror(char *s);
 int					is_token(char *s);
-int					is_token_quote(const char *str);
+int					is_token_quote(const char *str, char flag);
 int					where_token(char *str);
 int					ft_strcmp(char *dest, char *src);
 char				*str_append1(char *s1, char *s2);
