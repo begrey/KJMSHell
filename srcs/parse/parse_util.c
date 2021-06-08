@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_util.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sunmin <msh4287@naver.com>                 +#+  +:+       +#+        */
+/*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/03 14:28:51 by sunmin            #+#    #+#             */
-/*   Updated: 2021/06/04 11:02:17 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/08 10:02:19 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**ft_token_split(char *arg)
 	int		i;
 
 	s = (char *)arg;
-	split_num = is_token_quote(arg);
+	split_num = is_token_quote(arg, 0);
 	split_token = (char **)malloc(sizeof(char *) * (split_num + 1));
 	split_token[split_num] = NULL;
 	i = -1;

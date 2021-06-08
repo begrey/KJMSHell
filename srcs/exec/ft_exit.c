@@ -6,7 +6,7 @@
 /*   By: jimkwon <jimkwon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 17:07:59 by jimkwon           #+#    #+#             */
-/*   Updated: 2021/06/05 15:14:22 by sunmin           ###   ########.fr       */
+/*   Updated: 2021/06/08 09:14:34 by jimkwon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	exit_with_num(t_line *line, t_env *env)
 	{
 		printf("exit\nexit: too many arguments\n");
 		put_return(1, env);
-		return ;
+		exit(1);
 	}
 	else if ((ft_strlen(line->arg) > 2) &&
 	(ft_atoi(line->arg) == -1 || ft_atoi(line->arg) == 0))
